@@ -19,6 +19,7 @@ class Game {
         this.weaponShrines = [];
         this.activeWeapon = null;
         this.soundManager = new SoundManager();
+        this.highScoreManager = new HighScoreManager();
         
         this.keys = {};
         this.mouse = { x: 0, y: 0, clicked: false };
@@ -56,6 +57,10 @@ class Game {
         if (this.isMobile) {
             this.setupMobileControls();
         }
+        
+        // Initialize high scores display
+        this.updateHighScoresDisplay();
+        
         this.gameLoop();
     }
     
@@ -312,6 +317,18 @@ class Game {
         
         document.getElementById('muteBtn').addEventListener('click', () => {
             this.toggleSound();
+        });
+        
+        // High score submission
+        document.getElementById('submit-score-btn').addEventListener('click', () => {
+            this.submitHighScore();
+        });
+        
+        // Allow Enter key to submit high score
+        document.getElementById('player-name-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.submitHighScore();
+            }
         });
     }
     
@@ -655,7 +672,16 @@ class Game {
     gameOver() {
         this.gameState = 'gameOver';
         document.getElementById('final-score').textContent = this.score;
-        document.getElementById('game-over').style.display = 'block';
+        
+        // Check for new high score
+        const isNewHighScore = this.highScoreManager.isNewHighScore(this.score, this.wave);
+        
+        if (isNewHighScore) {
+            this.showNewHighScorePrompt();
+        } else {
+            document.getElementById('game-over').style.display = 'block';
+        }
+        
         document.getElementById('pauseBtn').style.display = 'none';
         
         // Google Analytics event tracking
@@ -667,6 +693,110 @@ class Game {
                 'value': this.score
             });
         }
+    }
+    
+    showNewHighScorePrompt() {
+        // Hide normal game over screen
+        document.getElementById('game-over').style.display = 'none';
+        
+        // Show high score entry screen
+        const highScoreScreen = document.getElementById('high-score-entry');
+        if (highScoreScreen) {
+            highScoreScreen.style.display = 'block';
+            
+            // Update the score display in the high score screen
+            const hsScoreElement = document.getElementById('hs-final-score');
+            if (hsScoreElement) {
+                hsScoreElement.textContent = this.score;
+            }
+            
+            // Focus on name input
+            const nameInput = document.getElementById('player-name-input');
+            if (nameInput) {
+                nameInput.value = ''; // Clear any previous input
+                nameInput.focus();
+                nameInput.select();
+            }
+            
+            // Show celebration animation
+            this.showHighScoreCelebration();
+        }
+    }
+    
+    showHighScoreCelebration() {
+        // Create celebration effect
+        const celebration = document.createElement('div');
+        celebration.className = 'high-score-celebration';
+        celebration.innerHTML = `
+            <div class="celebration-text">NEW HIGH SCORE!</div>
+            <div class="celebration-score">Score: ${this.score}</div>
+            <div class="celebration-wave">Wave: ${this.wave}</div>
+        `;
+        document.body.appendChild(celebration);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (document.body.contains(celebration)) {
+                document.body.removeChild(celebration);
+            }
+        }, 3000);
+        
+        // Play celebration sound
+        this.soundManager.playSound('high_score_celebration');
+    }
+    
+    submitHighScore() {
+        const nameInput = document.getElementById('player-name-input');
+        const playerName = nameInput ? nameInput.value.trim() || 'Anonymous' : 'Anonymous';
+        
+        // Add the score
+        const rank = this.highScoreManager.addScore(playerName, this.score, this.wave);
+        
+        // Hide high score entry screen
+        const highScoreScreen = document.getElementById('high-score-entry');
+        if (highScoreScreen) {
+            highScoreScreen.style.display = 'none';
+        }
+        
+        // Show normal game over screen with rank info
+        document.getElementById('game-over').style.display = 'block';
+        
+        // Update game over message to show rank
+        const rankMessage = document.getElementById('high-score-rank');
+        if (rankMessage) {
+            rankMessage.textContent = `#${rank} on the leaderboard!`;
+            rankMessage.style.display = 'block';
+        }
+        
+        // Update high scores display
+        this.updateHighScoresDisplay();
+    }
+    
+    updateHighScoresDisplay() {
+        const highScoresList = document.getElementById('high-scores-list');
+        if (!highScoresList) return;
+        
+        const scores = this.highScoreManager.getTopScores();
+        
+        if (scores.length === 0) {
+            highScoresList.innerHTML = '<div class="no-scores">No high scores yet!</div>';
+            return;
+        }
+        
+        let html = '';
+        scores.forEach((score, index) => {
+            const rank = index + 1;
+            html += `
+                <div class="score-entry ${rank === 1 ? 'first-place' : ''}">
+                    <span class="rank">#${rank}</span>
+                    <span class="name">${score.playerName}</span>
+                    <span class="wave">Wave ${score.wave}</span>
+                    <span class="score">${score.score.toLocaleString()}</span>
+                </div>
+            `;
+        });
+        
+        highScoresList.innerHTML = html;
     }
     
     updateUI() {
@@ -1781,6 +1911,98 @@ class SpiritBlast extends LightOrb {
     }
 }
 
+// High Score Manager Class
+class HighScoreManager {
+    constructor() {
+        this.storageKey = 'phoenixLightWarrior_highScores';
+        this.maxScores = 5;
+        this.scores = this.loadScores();
+    }
+    
+    loadScores() {
+        try {
+            const stored = localStorage.getItem(this.storageKey);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Ensure we have valid score objects
+                return parsed.filter(score => 
+                    score && 
+                    typeof score.score === 'number' && 
+                    typeof score.wave === 'number' && 
+                    typeof score.playerName === 'string'
+                );
+            }
+        } catch (error) {
+            console.warn('Error loading high scores:', error);
+        }
+        return [];
+    }
+    
+    saveScores() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.scores));
+        } catch (error) {
+            console.warn('Error saving high scores:', error);
+        }
+    }
+    
+    isNewHighScore(score, wave) {
+        // Check if this score would make it into the top 5
+        if (this.scores.length < this.maxScores) {
+            return true;
+        }
+        
+        // Check if score is higher than lowest high score
+        const lowestScore = this.scores[this.scores.length - 1];
+        return score > lowestScore.score || (score === lowestScore.score && wave > lowestScore.wave);
+    }
+    
+    addScore(playerName, score, wave) {
+        const newScore = {
+            playerName: playerName || 'Anonymous',
+            score: score,
+            wave: wave,
+            date: new Date().toLocaleDateString(),
+            timestamp: Date.now()
+        };
+        
+        this.scores.push(newScore);
+        
+        // Sort by score descending, then by wave descending
+        this.scores.sort((a, b) => {
+            if (b.score !== a.score) {
+                return b.score - a.score;
+            }
+            return b.wave - a.wave;
+        });
+        
+        // Keep only top scores
+        this.scores = this.scores.slice(0, this.maxScores);
+        
+        this.saveScores();
+        
+        // Return the rank (1-based)
+        return this.scores.findIndex(s => s.timestamp === newScore.timestamp) + 1;
+    }
+    
+    getTopScores() {
+        return [...this.scores]; // Return copy to prevent external modifications
+    }
+    
+    getHighestScore() {
+        return this.scores.length > 0 ? this.scores[0].score : 0;
+    }
+    
+    getHighestWave() {
+        return this.scores.length > 0 ? Math.max(...this.scores.map(s => s.wave)) : 1;
+    }
+    
+    clearScores() {
+        this.scores = [];
+        this.saveScores();
+    }
+}
+
 // Sound Manager Class
 class SoundManager {
     constructor() {
@@ -1861,6 +2083,15 @@ class SoundManager {
             duration: 0.05,
             volume: 0.3,
             decay: 0.02
+        });
+        
+        this.createSoundEffect('high_score_celebration', {
+            frequency: 800,
+            type: 'triangle',
+            duration: 1.5,
+            volume: 0.6,
+            decay: 0.4,
+            chord: [800, 1000, 1200, 1600]
         });
         
         // Create background music

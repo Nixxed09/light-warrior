@@ -39,12 +39,30 @@
                 <p>Click to attack with light magic</p>
                 <p>Defend the sacred ground from shadow demons!</p>
             </div>
+            
+            <div id="high-scores-section">
+                <h3>High Scores</h3>
+                <div id="high-scores-list">
+                    <div class="no-scores">No high scores yet!</div>
+                </div>
+            </div>
         </div>
         
         <div id="game-over" style="display:none;">
             <h2>Game Over</h2>
             <p>Final Score: <span id="final-score">0</span></p>
+            <div id="high-score-rank" style="display:none;"></div>
             <button id="restartBtn">Try Again</button>
+        </div>
+        
+        <div id="high-score-entry" style="display:none;">
+            <h2>NEW HIGH SCORE!</h2>
+            <p>Final Score: <span id="hs-final-score">0</span></p>
+            <div class="name-entry">
+                <label for="player-name-input">Enter Your Name:</label>
+                <input type="text" id="player-name-input" maxlength="20" placeholder="Enter name..." />
+            </div>
+            <button id="submit-score-btn">Submit Score</button>
         </div>
     </div>
     

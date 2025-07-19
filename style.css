@@ -486,6 +486,288 @@ button:active {
     }
 }
 
+/* High Score System Styling */
+#high-scores-section {
+    background: linear-gradient(135deg, #3498DB, #2980B9);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 15px;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+#high-scores-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.3em;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    color: #FFD700;
+}
+
+#high-scores-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.score-entry {
+    display: grid;
+    grid-template-columns: 30px 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    border-left: 3px solid rgba(255, 215, 0, 0.3);
+}
+
+.score-entry.first-place {
+    background: linear-gradient(45deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.2));
+    border-left-color: #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+}
+
+.score-entry .rank {
+    font-weight: bold;
+    color: #FFD700;
+    font-size: 0.85em;
+}
+
+.score-entry .name {
+    font-weight: bold;
+    text-align: left;
+}
+
+.score-entry .wave {
+    color: #FFA500;
+    font-size: 0.85em;
+}
+
+.score-entry .score {
+    font-weight: bold;
+    color: #4CAF50;
+    text-align: right;
+}
+
+.no-scores {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    padding: 20px;
+}
+
+/* High Score Entry Screen */
+#high-score-entry {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border: 3px solid #FFD700;
+    z-index: 1000;
+    min-width: 300px;
+}
+
+#high-score-entry h2 {
+    font-size: 2.2em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #FFD700;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px #FFD700; }
+    to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px #FFD700, 0 0 30px #FFD700; }
+}
+
+#high-score-entry p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.name-entry {
+    margin: 20px 0;
+}
+
+.name-entry label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+#player-name-input {
+    width: 200px;
+    padding: 10px;
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+    font-size: 1.1em;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+#player-name-input:focus {
+    outline: none;
+    border-color: #FFA500;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+#submit-score-btn {
+    background: linear-gradient(45deg, #2ECC71, #27AE60);
+    padding: 12px 30px;
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+#submit-score-btn:hover {
+    background: linear-gradient(45deg, #27AE60, #229954);
+}
+
+/* High Score Rank Display */
+#high-score-rank {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #2C3E50;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 15px 0;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    animation: rankPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes rankPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* High Score Celebration Animation */
+.high-score-celebration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(255, 215, 0, 0.8),
+        rgba(255, 165, 0, 0.8),
+        rgba(255, 215, 0, 0.8)
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: celebrationFade 3s ease-in-out forwards;
+}
+
+.celebration-text {
+    font-size: 4em;
+    font-weight: bold;
+    color: #2C3E50;
+    text-shadow: 3px 3px 0px #FFD700, 6px 6px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: celebrationBounce 1s ease-in-out infinite;
+}
+
+.celebration-score,
+.celebration-wave {
+    font-size: 2em;
+    font-weight: bold;
+    color: #E74C3C;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin: 5px 0;
+}
+
+@keyframes celebrationFade {
+    0% { opacity: 0; transform: scale(0.5); }
+    20% { opacity: 1; transform: scale(1.1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes celebrationBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+/* Mobile Responsive High Scores */
+@media (max-width: 768px) {
+    #high-scores-section {
+        padding: 10px;
+        margin-top: 10px;
+    }
+    
+    #high-scores-section h3 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+    
+    .score-entry {
+        padding: 6px 8px;
+        font-size: 0.8em;
+        gap: 6px;
+        grid-template-columns: 25px 1fr auto auto;
+    }
+    
+    #high-score-entry {
+        padding: 20px;
+        min-width: 280px;
+    }
+    
+    #high-score-entry h2 {
+        font-size: 1.8em;
+    }
+    
+    .celebration-text {
+        font-size: 2.5em;
+    }
+    
+    .celebration-score,
+    .celebration-wave {
+        font-size: 1.5em;
+    }
+    
+    #player-name-input {
+        width: 180px;
+        padding: 8px;
+        font-size: 1em;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .score-entry {
+        font-size: 0.75em;
+        grid-template-columns: 20px 1fr auto auto;
+        gap: 4px;
+    }
+    
+    #high-score-entry {
+        padding: 15px;
+        min-width: 250px;
+    }
+    
+    .celebration-text {
+        font-size: 2em;
+    }
+    
+    .celebration-score,
+    .celebration-wave {
+        font-size: 1.2em;
+    }
+}
+
 /* Landscape orientation adjustments */
 @media (max-width: 768px) and (orientation: landscape) {
     #game-container {
