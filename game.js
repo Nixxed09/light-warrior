@@ -2208,7 +2208,7 @@ class WeaponShrine {
     
     pickupWeapon() {
         this.isActive = false;
-        return new this.getWeaponClass()(this.weaponType);
+        return new (this.getWeaponClass())();
     }
     
     getWeaponClass() {
