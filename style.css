@@ -1,0 +1,229 @@
+/* Phoenix: Light Warrior - Bright Heroic Theme */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FF6B35);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    color: #2C3E50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+#game-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border: 3px solid #FFD700;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #E74C3C;
+    text-shadow: 3px 3px 0px #FFD700, 6px 6px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#ui {
+    display: flex;
+    justify-content: space-around;
+    background: linear-gradient(45deg, #3498DB, #2980B9);
+    padding: 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.stat {
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#gameCanvas {
+    border: 4px solid #E74C3C;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    margin: 20px 0;
+}
+
+#game-ui {
+    margin: 20px 0;
+}
+
+button {
+    background: linear-gradient(45deg, #E74C3C, #C0392B);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 0 10px;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #C0392B, #A93226);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(231, 76, 60, 0.4);
+}
+
+#instructions {
+    background: linear-gradient(135deg, #F39C12, #E67E22);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 15px;
+    font-size: 1em;
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+#instructions p {
+    margin: 5px 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #9B59B6, #8E44AD);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border: 3px solid #FFD700;
+    z-index: 1000;
+}
+
+#game-over h2 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#game-over p {
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Light magic effects */
+.light-burst {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FFD700, #FFA500);
+    box-shadow: 0 0 20px #FFD700, 0 0 40px #FFA500;
+    animation: lightBurst 0.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes lightBurst {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+    }
+    100% {
+        width: 60px;
+        height: 60px;
+        opacity: 0;
+    }
+}
+
+/* Health bar styling */
+.health-low {
+    color: #E74C3C !important;
+    animation: healthPulse 1s ease-in-out infinite;
+}
+
+@keyframes healthPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Wave transition effect */
+.wave-transition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #3498DB, #2980B9);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: waveTransition 2s ease-in-out forwards;
+}
+
+@keyframes waveTransition {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #game-container {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    #gameCanvas {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        max-height: 300px;
+    }
+    
+    #ui {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

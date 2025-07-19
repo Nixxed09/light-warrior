@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix: Light Warrior</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>Phoenix: Light Warrior</h1>
+            <div id="ui">
+                <div class="stat">Health: <span id="health">100</span></div>
+                <div class="stat">Light Energy: <span id="light-energy">100</span></div>
+                <div class="stat">Wave: <span id="wave">1</span></div>
+                <div class="stat">Score: <span id="score">0</span></div>
+            </div>
+        </header>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="game-ui">
+            <button id="startBtn">Start Game</button>
+            <button id="pauseBtn" style="display:none;">Pause</button>
+            <div id="instructions">
+                <p>Use WASD or Arrow Keys to move</p>
+                <p>Click to attack with light magic</p>
+                <p>Defend the sacred ground from shadow demons!</p>
+            </div>
+        </div>
+        
+        <div id="game-over" style="display:none;">
+            <h2>Game Over</h2>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <button id="restartBtn">Try Again</button>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
