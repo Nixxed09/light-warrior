@@ -70,7 +70,7 @@ class Game {
         this.enemiesSpawned = 0;
         this.baseEnemyCount = 8; // Start with 8 enemies in wave 1
         this.waveEnemyCount = this.baseEnemyCount;
-        this.enemySpawnDelay = 30; // Frames between enemy spawns
+        this.enemySpawnDelay = 15; // Reduced by 50% - more aggressive spawning
         this.lastSpawnTime = 0;
         
         this.setupWeaponShrines();
@@ -470,7 +470,7 @@ class Game {
         this.intermissionTimer = 0;
         this.enemiesSpawned = 0;
         this.waveEnemyCount = this.baseEnemyCount;
-        this.enemySpawnDelay = 30;
+        this.enemySpawnDelay = 15;
         this.lastSpawnTime = 0;
         
         // Reset weapon system
@@ -616,7 +616,7 @@ class Game {
         // Spawn diverse enemy types based on wave progression
         let x, y;
         const side = Math.floor(Math.random() * 4);
-        const margin = 50; // Distance outside screen
+        const margin = 25; // Closer to screen edge - more aggressive spawning
         
         switch(side) {
             case 0: // top
@@ -760,7 +760,7 @@ class Game {
         
         // Increase difficulty - Wave 1: 8, Wave 2: 12, Wave 3: 16, etc.
         this.waveEnemyCount = this.baseEnemyCount + (this.wave - 1) * 4; // +4 enemies per wave
-        this.enemySpawnDelay = Math.max(15, this.enemySpawnDelay - 2); // Spawn faster (min 15 frames)
+        this.enemySpawnDelay = Math.max(8, this.enemySpawnDelay - 1); // Much faster spawn rate (min 8 frames)
         
         this.showWaveTransition();
     }
@@ -827,23 +827,32 @@ class Game {
                         enemyDefeated = true;
                     }
                     
+                    // Add screen shake on every projectile hit
+                    this.addScreenShake(3, 8);
+                    
                     // Remove projectile regardless of enemy defeat
                     this.projectiles.splice(i, 1);
                     
                     if (enemyDefeated) {
+                        // Add combat momentum to player
+                        this.player.addCombatMomentum();
                         // Create sparkle effect when enemy is defeated
                         this.createSparkleEffect(this.enemies[j].x, this.enemies[j].y);
                         
                         // Play enemy defeat sound
                         this.soundManager.playSound('enemy_defeat', true);
                         
-                        // Create explosion particles
+                        // Create explosion particles that drop toward player
+                        const toPlayerAngle = Math.atan2(this.player.y - this.enemies[j].y, this.player.x - this.enemies[j].x);
                         for (let k = 0; k < 8; k++) {
-                            this.particles.push(new Particle(
-                                this.enemies[j].x, 
-                                this.enemies[j].y, 
-                                'explosion'
-                            ));
+                            const angleVariation = (Math.random() - 0.5) * 1.5; // ±0.75 radians variation
+                            const particleAngle = toPlayerAngle + angleVariation;
+                            const speed = 2 + Math.random() * 3;
+                            
+                            const particle = new Particle(this.enemies[j].x, this.enemies[j].y, 'explosion');
+                            particle.vx = Math.cos(particleAngle) * speed;
+                            particle.vy = Math.sin(particleAngle) * speed;
+                            this.particles.push(particle);
                         }
                         
                         // Award points based on enemy type
@@ -1282,9 +1291,10 @@ class Player {
         this.x = x;
         this.y = y;
         this.radius = 15;
-        this.maxSpeed = 4;
-        this.acceleration = 0.3;
-        this.friction = 0.85;
+        this.maxSpeed = 12; // Tripled from 4 to 12
+        this.baseAcceleration = 0.4; // Slightly increased base acceleration
+        this.maxAcceleration = 0.8; // Higher acceleration at peak
+        this.friction = 0.82; // Slightly less friction for momentum
         this.color = '#FFD700';
         this.attackCooldown = 0;
         this.health = 100;
@@ -1296,6 +1306,22 @@ class Player {
         this.vx = 0;
         this.vy = 0;
         
+        // Momentum-based movement variables
+        this.currentSpeed = 0;
+        this.accelerationCurve = 0; // Build up over time
+        
+        // Dash mechanics
+        this.dashCooldown = 0;
+        this.dashDuration = 8; // Frames the dash lasts
+        this.dashSpeed = 36; // 3x max speed
+        this.isDashing = false;
+        this.dashFramesLeft = 0;
+        
+        // Combat momentum system
+        this.combatMomentum = 0; // Frames of momentum left
+        this.combatMomentumDuration = 120; // 2 seconds at 60fps
+        this.combatSpeedBonus = 0.2; // 20% speed bonus
+        
         // Collision box (circular)
         this.collisionRadius = this.radius;
         
@@ -1305,9 +1331,18 @@ class Player {
     }
     
     update(keys, canvasWidth, canvasHeight, virtualJoystick = null) {
+        // Handle dash cooldown
+        if (this.dashCooldown > 0) this.dashCooldown--;
+        if (this.dashFramesLeft > 0) this.dashFramesLeft--;
+        if (this.dashFramesLeft <= 0) this.isDashing = false;
+        
+        // Handle combat momentum decay
+        if (this.combatMomentum > 0) this.combatMomentum--;
+        
         // Handle input and apply acceleration
         let inputX = 0;
         let inputY = 0;
+        let dashRequested = false;
         
         // Handle mobile virtual joystick input
         if (virtualJoystick && virtualJoystick.active) {
@@ -1319,6 +1354,11 @@ class Player {
             if (keys['KeyS'] || keys['ArrowDown']) inputY = 1;
             if (keys['KeyA'] || keys['ArrowLeft']) inputX = -1;
             if (keys['KeyD'] || keys['ArrowRight']) inputX = 1;
+            
+            // Check for dash input (SHIFT key)
+            if ((keys['ShiftLeft'] || keys['ShiftRight']) && this.dashCooldown <= 0 && (inputX !== 0 || inputY !== 0)) {
+                dashRequested = true;
+            }
         }
         
         // Normalize diagonal movement
@@ -1327,19 +1367,61 @@ class Player {
             inputY *= 0.707;
         }
         
-        // Apply acceleration based on input
-        this.vx += inputX * this.acceleration;
-        this.vy += inputY * this.acceleration;
+        // Calculate current movement speed
+        this.currentSpeed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         
-        // Apply friction when no input
-        if (inputX === 0) this.vx *= this.friction;
-        if (inputY === 0) this.vy *= this.friction;
+        // Handle dash mechanics
+        if (dashRequested && !this.isDashing) {
+            this.isDashing = true;
+            this.dashFramesLeft = this.dashDuration;
+            this.dashCooldown = 20; // 20 frame cooldown
+            
+            // Set dash velocity
+            if (inputX !== 0 || inputY !== 0) {
+                this.vx = inputX * this.dashSpeed;
+                this.vy = inputY * this.dashSpeed;
+            }
+        }
         
-        // Limit maximum speed
-        const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-        if (speed > this.maxSpeed) {
-            this.vx = (this.vx / speed) * this.maxSpeed;
-            this.vy = (this.vy / speed) * this.maxSpeed;
+        // Apply movement (different logic for dashing vs normal)
+        if (this.isDashing) {
+            // During dash, maintain velocity with slight decay
+            this.vx *= 0.95;
+            this.vy *= 0.95;
+        } else {
+            // Momentum-based acceleration curves
+            if (inputX !== 0 || inputY !== 0) {
+                // Build acceleration curve over time
+                this.accelerationCurve = Math.min(this.accelerationCurve + 0.05, 1.0);
+            } else {
+                // Reset acceleration curve when not moving
+                this.accelerationCurve *= 0.9;
+            }
+            
+            // Calculate dynamic acceleration (slow start, fast sprint)
+            const dynamicAcceleration = this.baseAcceleration + 
+                (this.maxAcceleration - this.baseAcceleration) * this.accelerationCurve;
+            
+            // Apply acceleration based on input
+            this.vx += inputX * dynamicAcceleration;
+            this.vy += inputY * dynamicAcceleration;
+            
+            // Apply friction when no input
+            if (inputX === 0) this.vx *= this.friction;
+            if (inputY === 0) this.vy *= this.friction;
+            
+            // Calculate effective max speed (with combat momentum bonus)
+            let effectiveMaxSpeed = this.maxSpeed;
+            if (this.combatMomentum > 0) {
+                effectiveMaxSpeed *= (1 + this.combatSpeedBonus);
+            }
+            
+            // Limit maximum speed
+            const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            if (speed > effectiveMaxSpeed) {
+                this.vx = (this.vx / speed) * effectiveMaxSpeed;
+                this.vy = (this.vy / speed) * effectiveMaxSpeed;
+            }
         }
         
         // Update position
@@ -1349,22 +1431,22 @@ class Player {
         // Keep player within bounds with proper collision
         if (this.x - this.collisionRadius < 0) {
             this.x = this.collisionRadius;
-            this.vx = 0;
+            this.vx = Math.abs(this.vx) * 0.5; // Bounce with energy loss
         }
         if (this.x + this.collisionRadius > canvasWidth) {
             this.x = canvasWidth - this.collisionRadius;
-            this.vx = 0;
+            this.vx = -Math.abs(this.vx) * 0.5;
         }
         if (this.y - this.collisionRadius < 0) {
             this.y = this.collisionRadius;
-            this.vy = 0;
+            this.vy = Math.abs(this.vy) * 0.5;
         }
         if (this.y + this.collisionRadius > canvasHeight) {
             this.y = canvasHeight - this.collisionRadius;
-            this.vy = 0;
+            this.vy = -Math.abs(this.vy) * 0.5;
         }
         
-        // Update attack cooldown
+        // Update attack cooldown (reduced to 6 frames from 12)
         if (this.attackCooldown > 0) this.attackCooldown--;
         
         // Regenerate light energy over time
@@ -1374,6 +1456,11 @@ class Player {
         
         // Update visual effects
         this.lightPulse += 0.15;
+    }
+    
+    // Add combat momentum when player gets a kill
+    addCombatMomentum() {
+        this.combatMomentum = this.combatMomentumDuration;
     }
     
     // Collision detection method
@@ -1424,9 +1511,9 @@ class Player {
         
         const angle = Math.atan2(targetY - this.y, targetX - this.x);
         
-        // Create improved light orb projectile
+        // Create improved light orb projectile with increased speed
         projectiles.push(new LightOrb(this.x, this.y, angle));
-        this.attackCooldown = 12; // Slightly faster attack rate
+        this.attackCooldown = 6; // Reduced from 12 to 6 for faster attacks
     }
     
     render(ctx) {
@@ -1517,7 +1604,7 @@ class ShadowDemon {
         this.x = x;
         this.y = y;
         this.radius = 12 + Math.min(wave - 1, 8); // Grow with waves (max +8)
-        this.speed = 0.7 + (wave - 1) * 0.08; // Increase speed with waves
+        this.speed = 1.4 + (wave - 1) * 0.16; // Doubled speed - aggressive movement
         this.color = '#4A0E4E';
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
@@ -1526,11 +1613,10 @@ class ShadowDemon {
     }
     
     update(playerX, playerY) {
-        // Move towards player with slight variation
+        // Move directly towards player - aggressive, no wandering
         const angle = Math.atan2(playerY - this.y, playerX - this.x);
-        const wobble = Math.sin(this.shadowPulse) * 0.1;
-        this.x += Math.cos(angle + wobble) * this.speed;
-        this.y += Math.sin(angle + wobble) * this.speed;
+        this.x += Math.cos(angle) * this.speed;
+        this.y += Math.sin(angle) * this.speed;
         
         // Update shadow pulse for visual effect
         this.shadowPulse += 0.1;
@@ -1606,7 +1692,7 @@ class ShadowCrawler {
         this.x = x;
         this.y = y;
         this.radius = 8 + Math.min(wave - 1, 4); // Smaller than ShadowDemons
-        this.speed = 1.2 + (wave - 1) * 0.1; // Fast movement
+        this.speed = 2.4 + (wave - 1) * 0.2; // Doubled speed - very fast aggressive movement
         this.color = '#2E1A47';
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
@@ -1690,7 +1776,7 @@ class StoneDemon {
         this.x = x;
         this.y = y;
         this.radius = 18 + Math.min(wave - 3, 6); // Larger than others
-        this.speed = 0.4 + (wave - 3) * 0.05; // Very slow
+        this.speed = 0.8 + (wave - 3) * 0.1; // Doubled speed - still slow but more aggressive
         this.color = '#8B4513';
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
@@ -1791,7 +1877,7 @@ class FlyingWraith {
         this.y = y;
         this.startY = y;
         this.radius = 10 + Math.min(wave - 6, 4);
-        this.speed = 0.8 + (wave - 6) * 0.08;
+        this.speed = 1.6 + (wave - 6) * 0.16; // Doubled speed - fast ethereal movement
         this.color = '#9370DB';
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
@@ -1885,7 +1971,7 @@ class ShadowGiant {
         this.x = x;
         this.y = y;
         this.radius = 35 + Math.min(wave - 9, 8); // Much larger
-        this.speed = 0.3 + (wave - 9) * 0.03; // Very slow but intimidating
+        this.speed = 0.6 + (wave - 9) * 0.06; // Doubled speed - slow but relentless boss
         this.color = '#2E0A33';
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
@@ -2045,7 +2131,7 @@ class LightOrb {
         this.x = x;
         this.y = y;
         this.radius = 6;
-        this.speed = 10;
+        this.speed = 20; // Doubled from 10 to 20
         this.angle = angle;
         this.vx = Math.cos(angle) * this.speed;
         this.vy = Math.sin(angle) * this.speed;
