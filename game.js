@@ -320,6 +320,15 @@ class Game {
         document.getElementById('startBtn').style.display = 'none';
         document.getElementById('pauseBtn').style.display = 'inline-block';
         
+        // Google Analytics event tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'game_play', { 
+                'game_name': 'Phoenix Light Warrior',
+                'event_category': 'game_interaction',
+                'event_label': 'start_game'
+            });
+        }
+        
         // Start background music when game starts
         this.soundManager.startBackgroundMusic();
     }
@@ -354,6 +363,15 @@ class Game {
         this.enemies = [];
         this.projectiles = [];
         this.particles = [];
+        
+        // Google Analytics event tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'game_play', { 
+                'game_name': 'Phoenix Light Warrior',
+                'event_category': 'game_interaction',
+                'event_label': 'restart_game'
+            });
+        }
         
         // Reset wave system
         this.waveState = 'spawning';
@@ -502,6 +520,16 @@ class Game {
         this.lastSpawnTime = 0;
         this.enemiesSpawned = 0;
         
+        // Google Analytics event tracking for wave progression
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'level_up', { 
+                'game_name': 'Phoenix Light Warrior',
+                'event_category': 'game_progression',
+                'event_label': 'wave_complete',
+                'value': this.wave
+            });
+        }
+        
         // Reset weapon system for new wave
         this.activeWeapon = null;
         this.weaponShrines.forEach(shrine => shrine.reset());
@@ -629,6 +657,16 @@ class Game {
         document.getElementById('final-score').textContent = this.score;
         document.getElementById('game-over').style.display = 'block';
         document.getElementById('pauseBtn').style.display = 'none';
+        
+        // Google Analytics event tracking
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'game_over', { 
+                'game_name': 'Phoenix Light Warrior',
+                'event_category': 'game_interaction',
+                'event_label': 'game_over',
+                'value': this.score
+            });
+        }
     }
     
     updateUI() {
