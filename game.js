@@ -21,6 +21,26 @@ class Game {
         this.soundManager = new SoundManager();
         this.highScoreManager = new HighScoreManager();
         
+        // Epic Arena Elements
+        this.healingPillar = {
+            x: this.width / 2,
+            y: this.height / 2,
+            radius: 40,
+            isActive: false,
+            cooldown: 0,
+            pulseTimer: 0
+        };
+        this.stoneBridges = [];
+        this.arenaDecorations = [];
+        
+        // Screen shake system
+        this.screenShake = {
+            x: 0,
+            y: 0,
+            intensity: 0,
+            duration: 0
+        };
+        
         this.keys = {};
         this.mouse = { x: 0, y: 0, clicked: false };
         
@@ -52,6 +72,7 @@ class Game {
         this.lastSpawnTime = 0;
         
         this.setupWeaponShrines();
+        this.setupArenaElements();
         this.setupCanvas();
         this.setupEventListeners();
         if (this.isMobile) {
@@ -111,18 +132,53 @@ class Game {
     }
     
     setupWeaponShrines() {
-        // Create 4 weapon shrines at corners of the map
-        const margin = 60; // Distance from edges
+        // Create 4 weapon shrines at temple ruins in corners
+        const margin = 80; // Distance from edges for temple placement
         const weaponTypes = ['thunder_hammer', 'phoenix_bow', 'shield_of_light', 'spirit_cannon'];
         
-        // Top-left
+        // Top-left temple ruins
         this.weaponShrines.push(new WeaponShrine(margin, margin, weaponTypes[0]));
-        // Top-right  
+        // Top-right temple ruins
         this.weaponShrines.push(new WeaponShrine(this.width - margin, margin, weaponTypes[1]));
-        // Bottom-left
+        // Bottom-left temple ruins
         this.weaponShrines.push(new WeaponShrine(margin, this.height - margin, weaponTypes[2]));
-        // Bottom-right
+        // Bottom-right temple ruins
         this.weaponShrines.push(new WeaponShrine(this.width - margin, this.height - margin, weaponTypes[3]));
+    }
+    
+    setupArenaElements() {
+        // Create stone bridges connecting corners to center
+        const centerX = this.width / 2;
+        const centerY = this.height / 2;
+        const bridgeLength = 120;
+        const bridgeWidth = 20;
+        
+        // Four stone bridges from corners toward center
+        this.stoneBridges = [
+            // Top-left to center
+            { x: centerX - 60, y: centerY - 60, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false },
+            // Top-right to center  
+            { x: centerX + 60, y: centerY - 60, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
+            // Bottom-left to center
+            { x: centerX - 60, y: centerY + 60, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
+            // Bottom-right to center
+            { x: centerX + 60, y: centerY + 60, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false }
+        ];
+        
+        // Arena decorations (temple ruins)
+        this.arenaDecorations = [
+            // Ancient pillars around the arena
+            { type: 'pillar', x: 120, y: 120, width: 25, height: 60 },
+            { type: 'pillar', x: this.width - 120, y: 120, width: 25, height: 60 },
+            { type: 'pillar', x: 120, y: this.height - 120, width: 25, height: 60 },
+            { type: 'pillar', x: this.width - 120, y: this.height - 120, width: 25, height: 60 },
+            
+            // Broken walls
+            { type: 'wall', x: 200, y: 50, width: 80, height: 20 },
+            { type: 'wall', x: this.width - 280, y: 50, width: 80, height: 20 },
+            { type: 'wall', x: 50, y: 200, width: 20, height: 80 },
+            { type: 'wall', x: this.width - 70, y: 200, width: 20, height: 80 }
+        ];
     }
     
     setupMobileControls() {
@@ -252,7 +308,7 @@ class Game {
             const centerY = this.height / 2;
             
             if (this.activeWeapon) {
-                this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles);
+                this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles, this);
             } else {
                 this.player.attack(centerX, centerY, this.projectiles);
                 this.createLightBurst(centerX, centerY);
@@ -266,7 +322,7 @@ class Game {
             // Use weapon special ability if available
             const centerX = this.width / 2;
             const centerY = this.height / 2;
-            this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles);
+            this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles, this);
         }
     }
     
@@ -293,7 +349,7 @@ class Game {
                 
                 // Use weapon if player has one, otherwise default light orb
                 if (this.activeWeapon) {
-                    this.activeWeapon.attack(this.player, this.mouse.x, this.mouse.y, this.projectiles, this.particles);
+                    this.activeWeapon.attack(this.player, this.mouse.x, this.mouse.y, this.projectiles, this.particles, this);
                 } else {
                     this.player.attack(this.mouse.x, this.mouse.y, this.projectiles);
                     this.createLightBurst(this.mouse.x, this.mouse.y);
@@ -457,7 +513,7 @@ class Game {
     }
     
     spawnEnemyFromEdge() {
-        // Spawn a single enemy from a random edge of the screen
+        // Spawn diverse enemy types based on wave progression
         let x, y;
         const side = Math.floor(Math.random() * 4);
         const margin = 50; // Distance outside screen
@@ -481,7 +537,58 @@ class Game {
                 break;
         }
         
-        this.enemies.push(new ShadowDemon(x, y, this.wave));
+        // Determine enemy type based on wave progression
+        let enemyToSpawn;
+        
+        if (this.wave <= 2) {
+            // Wave 1-2: 8-12 Shadow Crawlers (fast, weak)
+            enemyToSpawn = new ShadowCrawler(x, y, this.wave);
+        } else if (this.wave <= 5) {
+            // Wave 3-5: Mix of Shadow Crawlers and Stone Demons (slow, tanky, 3 hits)
+            const enemyTypes = ['crawler', 'stone'];
+            const weights = this.wave === 3 ? [0.7, 0.3] : this.wave === 4 ? [0.5, 0.5] : [0.3, 0.7];
+            const randomValue = Math.random();
+            
+            if (randomValue < weights[0]) {
+                enemyToSpawn = new ShadowCrawler(x, y, this.wave);
+            } else {
+                enemyToSpawn = new StoneDemon(x, y, this.wave);
+            }
+        } else if (this.wave <= 8) {
+            // Wave 6-8: Mix of all types, add Flying Wraiths (sine wave movement)
+            const enemyTypes = ['crawler', 'stone', 'wraith'];
+            const weights = this.wave === 6 ? [0.4, 0.4, 0.2] : this.wave === 7 ? [0.3, 0.4, 0.3] : [0.2, 0.3, 0.5];
+            const randomValue = Math.random();
+            
+            if (randomValue < weights[0]) {
+                enemyToSpawn = new ShadowCrawler(x, y, this.wave);
+            } else if (randomValue < weights[0] + weights[1]) {
+                enemyToSpawn = new StoneDemon(x, y, this.wave);
+            } else {
+                enemyToSpawn = new FlyingWraith(x, y, this.wave);
+            }
+        } else {
+            // Wave 9-10: Shadow Giant boss + swarms - spawn Shadow Giant first
+            if (this.wave >= 9 && this.enemiesSpawned === 0) {
+                // First spawn in wave 9+ is always the Shadow Giant
+                enemyToSpawn = new ShadowGiant(x, y, this.wave);
+            } else {
+                // Mix of support enemies for the boss fight
+                const enemyTypes = ['crawler', 'stone', 'wraith'];
+                const weights = [0.5, 0.25, 0.25]; // More crawlers to create swarm feel
+                const randomValue = Math.random();
+                
+                if (randomValue < weights[0]) {
+                    enemyToSpawn = new ShadowCrawler(x, y, this.wave);
+                } else if (randomValue < weights[0] + weights[1]) {
+                    enemyToSpawn = new StoneDemon(x, y, this.wave);
+                } else {
+                    enemyToSpawn = new FlyingWraith(x, y, this.wave);
+                }
+            }
+        }
+        
+        this.enemies.push(enemyToSpawn);
         this.enemiesSpawned++;
     }
     
@@ -609,25 +716,63 @@ class Game {
                 if (this.projectiles[i] && this.enemies[j] && 
                     this.checkCircleCollision(this.projectiles[i], this.enemies[j])) {
                     
-                    // Create sparkle effect when enemy is defeated
-                    this.createSparkleEffect(this.enemies[j].x, this.enemies[j].y);
+                    let enemyDefeated = false;
                     
-                    // Play enemy defeat sound
-                    this.soundManager.playSound('enemy_defeat', true);
-                    
-                    // Create explosion particles
-                    for (let k = 0; k < 6; k++) {
-                        this.particles.push(new Particle(
-                            this.enemies[j].x, 
-                            this.enemies[j].y, 
-                            'explosion'
-                        ));
+                    // Handle different enemy damage systems
+                    if (this.enemies[j].takeDamage) {
+                        // Enemy has takeDamage method (Stone Demon, Shadow Giant)
+                        enemyDefeated = this.enemies[j].takeDamage();
+                    } else {
+                        // Standard enemy (Shadow Crawler, Flying Wraith, old Shadow Demon)
+                        enemyDefeated = true;
                     }
                     
-                    // Remove enemy and projectile
-                    this.enemies.splice(j, 1);
+                    // Remove projectile regardless of enemy defeat
                     this.projectiles.splice(i, 1);
-                    this.score += 10 * this.wave;
+                    
+                    if (enemyDefeated) {
+                        // Create sparkle effect when enemy is defeated
+                        this.createSparkleEffect(this.enemies[j].x, this.enemies[j].y);
+                        
+                        // Play enemy defeat sound
+                        this.soundManager.playSound('enemy_defeat', true);
+                        
+                        // Create explosion particles
+                        for (let k = 0; k < 8; k++) {
+                            this.particles.push(new Particle(
+                                this.enemies[j].x, 
+                                this.enemies[j].y, 
+                                'explosion'
+                            ));
+                        }
+                        
+                        // Award points based on enemy type
+                        let points = 10 * this.wave;
+                        if (this.enemies[j].type === 'stone_demon') {
+                            points *= 3; // Bonus for tanky enemies
+                        } else if (this.enemies[j].type === 'shadow_giant') {
+                            points *= 5; // Big bonus for boss
+                        }
+                        this.score += points;
+                        
+                        // Remove defeated enemy
+                        this.enemies.splice(j, 1);
+                        
+                        // Add screen shake for boss defeats
+                        if (this.enemies[j]?.type === 'shadow_giant') {
+                            this.addScreenShake(15, 30);
+                        }
+                    } else {
+                        // Enemy took damage but wasn't defeated - add hit particles
+                        for (let k = 0; k < 3; k++) {
+                            this.particles.push(new Particle(
+                                this.enemies[j].x + (Math.random() - 0.5) * 20, 
+                                this.enemies[j].y + (Math.random() - 0.5) * 20, 
+                                'light'
+                            ));
+                        }
+                    }
+                    
                     break;
                 }
             }
@@ -772,6 +917,60 @@ class Game {
         this.updateHighScoresDisplay();
     }
     
+    addScreenShake(intensity, duration) {
+        this.screenShake.intensity = Math.max(this.screenShake.intensity, intensity);
+        this.screenShake.duration = Math.max(this.screenShake.duration, duration);
+    }
+    
+    updateScreenShake() {
+        if (this.screenShake.duration > 0) {
+            this.screenShake.duration--;
+            const shakeAmount = this.screenShake.intensity * (this.screenShake.duration / 30);
+            this.screenShake.x = (Math.random() - 0.5) * shakeAmount;
+            this.screenShake.y = (Math.random() - 0.5) * shakeAmount;
+        } else {
+            this.screenShake.x = 0;
+            this.screenShake.y = 0;
+        }
+    }
+    
+    updateHealingPillar() {
+        this.healingPillar.pulseTimer += 0.1;
+        
+        // Activate healing pillar during wave intermissions
+        if (this.waveState === 'intermission') {
+            this.healingPillar.isActive = true;
+            this.healingPillar.cooldown = 0;
+            
+            // Check if player is near pillar for healing
+            const dx = this.player.x - this.healingPillar.x;
+            const dy = this.player.y - this.healingPillar.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < this.healingPillar.radius + this.player.radius && this.healingPillar.cooldown <= 0) {
+                // Heal the player
+                const healAmount = 2; // Heal per frame while near pillar
+                this.player.heal(healAmount);
+                this.healingPillar.cooldown = 5; // Small cooldown between heals
+                
+                // Create healing particles
+                if (Math.random() < 0.3) {
+                    this.particles.push(new Particle(
+                        this.healingPillar.x + (Math.random() - 0.5) * 60,
+                        this.healingPillar.y + (Math.random() - 0.5) * 60,
+                        'healing'
+                    ));
+                }
+            }
+        } else {
+            this.healingPillar.isActive = false;
+        }
+        
+        if (this.healingPillar.cooldown > 0) {
+            this.healingPillar.cooldown--;
+        }
+    }
+    
     updateHighScoresDisplay() {
         const highScoresList = document.getElementById('high-scores-list');
         if (!highScoresList) return;
@@ -854,7 +1053,12 @@ class Game {
         
         // Update enemies
         this.enemies.forEach(enemy => {
-            enemy.update(this.player.x, this.player.y);
+            // Shadow Giants need game instance for swarm spawning
+            if (enemy.type === 'shadow_giant') {
+                enemy.update(this.player.x, this.player.y, this);
+            } else {
+                enemy.update(this.player.x, this.player.y);
+            }
         });
         
         // Update projectiles
@@ -1218,6 +1422,7 @@ class ShadowDemon {
         this.wave = wave;
         this.shadowPulse = Math.random() * Math.PI * 2;
         this.health = 1; // Basic shadow demons have 1 health
+        this.type = 'shadow_demon';
     }
     
     update(playerX, playerY) {
@@ -1292,6 +1497,439 @@ class ShadowDemon {
                 ctx.stroke();
             }
         }
+    }
+}
+
+// Shadow Crawler - Fast, weak enemies for waves 1-2
+class ShadowCrawler {
+    constructor(x, y, wave) {
+        this.x = x;
+        this.y = y;
+        this.radius = 8 + Math.min(wave - 1, 4); // Smaller than ShadowDemons
+        this.speed = 1.2 + (wave - 1) * 0.1; // Fast movement
+        this.color = '#2E1A47';
+        this.wave = wave;
+        this.shadowPulse = Math.random() * Math.PI * 2;
+        this.health = 1;
+        this.type = 'shadow_crawler';
+        this.scrambleTimer = Math.random() * 60; // Erratic movement timer
+    }
+    
+    update(playerX, playerY) {
+        this.scrambleTimer++;
+        
+        // Erratic, scrambling movement toward player
+        const baseAngle = Math.atan2(playerY - this.y, playerX - this.x);
+        const scramble = Math.sin(this.scrambleTimer * 0.3) * 0.8; // More erratic than wobble
+        const finalAngle = baseAngle + scramble;
+        
+        this.x += Math.cos(finalAngle) * this.speed;
+        this.y += Math.sin(finalAngle) * this.speed;
+        
+        this.shadowPulse += 0.15; // Faster pulse than ShadowDemon
+    }
+    
+    render(ctx) {
+        const pulseIntensity = 0.5 + Math.sin(this.shadowPulse) * 0.4;
+        const shadowRadius = this.radius * (1.8 + pulseIntensity * 0.3);
+        
+        // Lighter shadow aura (crawlers are weaker)
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, shadowRadius);
+        gradient.addColorStop(0, `rgba(46, 26, 71, ${0.6 + pulseIntensity * 0.2})`);
+        gradient.addColorStop(1, 'rgba(46, 26, 71, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, shadowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw crawler body (more insect-like)
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = '#1A0F2A';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Draw smaller, more numerous eyes (spider-like)
+        const eyeSize = Math.max(1, this.radius / 8);
+        ctx.fillStyle = '#FF4444';
+        for (let i = 0; i < 6; i++) {
+            const eyeAngle = (Math.PI * 2 / 6) * i;
+            const eyeX = this.x + Math.cos(eyeAngle) * this.radius * 0.5;
+            const eyeY = this.y + Math.sin(eyeAngle) * this.radius * 0.5;
+            ctx.beginPath();
+            ctx.arc(eyeX, eyeY, eyeSize, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Draw scuttle legs
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        for (let i = 0; i < 8; i++) {
+            const legAngle = (Math.PI * 2 / 8) * i + this.shadowPulse * 0.3;
+            const legLength = this.radius * 0.8;
+            const startX = this.x + Math.cos(legAngle) * this.radius * 0.7;
+            const startY = this.y + Math.sin(legAngle) * this.radius * 0.7;
+            const endX = startX + Math.cos(legAngle) * legLength;
+            const endY = startY + Math.sin(legAngle) * legLength;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+        }
+    }
+}
+
+// Stone Demon - Slow, tanky enemies for waves 3-5
+class StoneDemon {
+    constructor(x, y, wave) {
+        this.x = x;
+        this.y = y;
+        this.radius = 18 + Math.min(wave - 3, 6); // Larger than others
+        this.speed = 0.4 + (wave - 3) * 0.05; // Very slow
+        this.color = '#8B4513';
+        this.wave = wave;
+        this.shadowPulse = Math.random() * Math.PI * 2;
+        this.health = 3; // Takes 3 hits to destroy
+        this.maxHealth = 3;
+        this.type = 'stone_demon';
+        this.crackPattern = Math.random();
+    }
+    
+    update(playerX, playerY) {
+        // Slow, methodical movement toward player
+        const angle = Math.atan2(playerY - this.y, playerX - this.x);
+        this.x += Math.cos(angle) * this.speed;
+        this.y += Math.sin(angle) * this.speed;
+        
+        this.shadowPulse += 0.05; // Very slow pulse
+    }
+    
+    takeDamage() {
+        this.health--;
+        return this.health <= 0;
+    }
+    
+    render(ctx) {
+        const pulseIntensity = 0.2 + Math.sin(this.shadowPulse) * 0.1;
+        const shadowRadius = this.radius * (1.5 + pulseIntensity * 0.2);
+        
+        // Stone-like shadow aura
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, shadowRadius);
+        gradient.addColorStop(0, `rgba(139, 69, 19, ${0.4 + pulseIntensity * 0.1})`);
+        gradient.addColorStop(1, 'rgba(139, 69, 19, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, shadowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw stone body with health-based cracking
+        const healthRatio = this.health / this.maxHealth;
+        const stoneColor = healthRatio > 0.6 ? '#8B4513' : healthRatio > 0.3 ? '#A0522D' : '#CD853F';
+        
+        ctx.fillStyle = stoneColor;
+        ctx.strokeStyle = '#654321';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Draw cracks based on damage taken
+        if (this.health < this.maxHealth) {
+            ctx.strokeStyle = '#2F1B14';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            
+            const cracksToShow = this.maxHealth - this.health;
+            for (let i = 0; i < cracksToShow; i++) {
+                const crackAngle = (this.crackPattern + i) * Math.PI * 2 / 3;
+                const crackLength = this.radius * 0.8;
+                const startX = this.x + Math.cos(crackAngle) * this.radius * 0.3;
+                const startY = this.y + Math.sin(crackAngle) * this.radius * 0.3;
+                const endX = startX + Math.cos(crackAngle) * crackLength;
+                const endY = startY + Math.sin(crackAngle) * crackLength;
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+            }
+        }
+        
+        // Draw glowing stone eyes
+        const eyeSize = Math.max(3, this.radius / 5);
+        ctx.fillStyle = '#FF6600';
+        ctx.beginPath();
+        ctx.arc(this.x - this.radius * 0.35, this.y - this.radius * 0.25, eyeSize, 0, Math.PI * 2);
+        ctx.arc(this.x + this.radius * 0.35, this.y - this.radius * 0.25, eyeSize, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw stone runes
+        ctx.strokeStyle = '#FF6600';
+        ctx.lineWidth = 1.5;
+        ctx.lineCap = 'round';
+        const runeSize = this.radius * 0.3;
+        ctx.beginPath();
+        ctx.moveTo(this.x - runeSize/2, this.y + this.radius * 0.3);
+        ctx.lineTo(this.x + runeSize/2, this.y + this.radius * 0.3);
+        ctx.moveTo(this.x, this.y + this.radius * 0.1);
+        ctx.lineTo(this.x, this.y + this.radius * 0.5);
+        ctx.stroke();
+    }
+}
+
+// Flying Wraith - Sine wave movement for waves 6-8
+class FlyingWraith {
+    constructor(x, y, wave) {
+        this.x = x;
+        this.y = y;
+        this.startY = y;
+        this.radius = 10 + Math.min(wave - 6, 4);
+        this.speed = 0.8 + (wave - 6) * 0.08;
+        this.color = '#9370DB';
+        this.wave = wave;
+        this.shadowPulse = Math.random() * Math.PI * 2;
+        this.health = 1;
+        this.type = 'flying_wraith';
+        this.sineTimer = Math.random() * Math.PI * 2;
+        this.sineAmplitude = 60 + wave * 5;
+        this.baseAngle = 0;
+        this.floatOffset = Math.random() * Math.PI * 2;
+    }
+    
+    update(playerX, playerY) {
+        // Calculate base movement toward player
+        this.baseAngle = Math.atan2(playerY - this.y, playerX - this.x);
+        
+        // Move toward player with sine wave pattern
+        const baseX = this.x + Math.cos(this.baseAngle) * this.speed;
+        const baseY = this.y + Math.sin(this.baseAngle) * this.speed;
+        
+        // Add sine wave movement perpendicular to base direction
+        this.sineTimer += 0.12;
+        const perpAngle = this.baseAngle + Math.PI / 2;
+        const sineOffset = Math.sin(this.sineTimer) * this.sineAmplitude * 0.02;
+        
+        this.x = baseX + Math.cos(perpAngle) * sineOffset;
+        this.y = baseY + Math.sin(perpAngle) * sineOffset;
+        
+        // Add floating effect
+        this.floatOffset += 0.08;
+        this.y += Math.sin(this.floatOffset) * 0.5;
+        
+        this.shadowPulse += 0.12;
+    }
+    
+    render(ctx) {
+        const pulseIntensity = 0.6 + Math.sin(this.shadowPulse) * 0.4;
+        const shadowRadius = this.radius * (2.5 + pulseIntensity * 0.5);
+        
+        // Ethereal wraith aura
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, shadowRadius);
+        gradient.addColorStop(0, `rgba(147, 112, 219, ${0.7 + pulseIntensity * 0.3})`);
+        gradient.addColorStop(0.5, `rgba(147, 112, 219, ${0.3 + pulseIntensity * 0.2})`);
+        gradient.addColorStop(1, 'rgba(147, 112, 219, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, shadowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw wraith body (semi-transparent)
+        ctx.fillStyle = `rgba(147, 112, 219, ${0.8 + pulseIntensity * 0.2})`;
+        ctx.strokeStyle = `rgba(75, 0, 130, ${0.9})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Draw ethereal eyes
+        const eyeSize = Math.max(2, this.radius / 4);
+        ctx.fillStyle = '#E6E6FA';
+        ctx.beginPath();
+        ctx.arc(this.x - this.radius * 0.3, this.y - this.radius * 0.2, eyeSize, 0, Math.PI * 2);
+        ctx.arc(this.x + this.radius * 0.3, this.y - this.radius * 0.2, eyeSize, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw wispy trails
+        ctx.strokeStyle = `rgba(147, 112, 219, ${0.6 + pulseIntensity * 0.2})`;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        
+        for (let i = 0; i < 6; i++) {
+            const trailAngle = (Math.PI * 2 / 6) * i + this.shadowPulse * 0.5;
+            const trailLength = this.radius * (1.2 + Math.sin(this.shadowPulse + i) * 0.3);
+            const startX = this.x + Math.cos(trailAngle) * this.radius * 0.8;
+            const startY = this.y + Math.sin(trailAngle) * this.radius * 0.8;
+            const endX = startX + Math.cos(trailAngle) * trailLength;
+            const endY = startY + Math.sin(trailAngle) * trailLength;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+        }
+    }
+}
+
+// Shadow Giant Boss - Appears on waves 9-10 with swarms
+class ShadowGiant {
+    constructor(x, y, wave) {
+        this.x = x;
+        this.y = y;
+        this.radius = 35 + Math.min(wave - 9, 8); // Much larger
+        this.speed = 0.3 + (wave - 9) * 0.03; // Very slow but intimidating
+        this.color = '#2E0A33';
+        this.wave = wave;
+        this.shadowPulse = Math.random() * Math.PI * 2;
+        this.health = 8 + (wave - 9) * 2; // Very tanky boss
+        this.maxHealth = this.health;
+        this.type = 'shadow_giant';
+        this.swarmSpawnTimer = 0;
+        this.swarmSpawnCooldown = 300; // 5 seconds at 60fps
+        this.tentacles = [];
+        
+        // Initialize tentacles
+        for (let i = 0; i < 8; i++) {
+            this.tentacles.push({
+                angle: (Math.PI * 2 / 8) * i,
+                length: this.radius * 1.5,
+                wave: Math.random() * Math.PI * 2
+            });
+        }
+    }
+    
+    update(playerX, playerY, game) {
+        // Slow movement toward player
+        const angle = Math.atan2(playerY - this.y, playerX - this.x);
+        this.x += Math.cos(angle) * this.speed;
+        this.y += Math.sin(angle) * this.speed;
+        
+        this.shadowPulse += 0.03;
+        
+        // Update tentacles
+        this.tentacles.forEach(tentacle => {
+            tentacle.wave += 0.1;
+            tentacle.length = this.radius * (1.5 + Math.sin(tentacle.wave) * 0.3);
+        });
+        
+        // Spawn shadow crawlers periodically
+        this.swarmSpawnTimer++;
+        if (this.swarmSpawnTimer >= this.swarmSpawnCooldown && game) {
+            this.spawnSwarm(game);
+            this.swarmSpawnTimer = 0;
+        }
+    }
+    
+    spawnSwarm(game) {
+        // Spawn 3-4 shadow crawlers around the giant
+        const spawnCount = 3 + Math.floor(Math.random() * 2);
+        for (let i = 0; i < spawnCount; i++) {
+            const spawnAngle = (Math.PI * 2 / spawnCount) * i;
+            const spawnDistance = this.radius * 2;
+            const spawnX = this.x + Math.cos(spawnAngle) * spawnDistance;
+            const spawnY = this.y + Math.sin(spawnAngle) * spawnDistance;
+            
+            // Keep spawns within bounds
+            const clampedX = Math.max(20, Math.min(game.width - 20, spawnX));
+            const clampedY = Math.max(20, Math.min(game.height - 20, spawnY));
+            
+            game.enemies.push(new ShadowCrawler(clampedX, clampedY, this.wave));
+        }
+        
+        // Add screen shake when spawning swarm
+        game.addScreenShake(8, 20);
+    }
+    
+    takeDamage() {
+        this.health--;
+        return this.health <= 0;
+    }
+    
+    render(ctx) {
+        const pulseIntensity = 0.3 + Math.sin(this.shadowPulse) * 0.2;
+        const shadowRadius = this.radius * (3 + pulseIntensity * 0.8);
+        
+        // Massive shadow aura
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, shadowRadius);
+        gradient.addColorStop(0, `rgba(46, 10, 51, ${0.9 + pulseIntensity * 0.1})`);
+        gradient.addColorStop(0.5, `rgba(46, 10, 51, ${0.5 + pulseIntensity * 0.2})`);
+        gradient.addColorStop(1, 'rgba(46, 10, 51, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, shadowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw writhing tentacles
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        
+        this.tentacles.forEach(tentacle => {
+            const startX = this.x + Math.cos(tentacle.angle) * this.radius;
+            const startY = this.y + Math.sin(tentacle.angle) * this.radius;
+            const endX = startX + Math.cos(tentacle.angle) * tentacle.length;
+            const endY = startY + Math.sin(tentacle.angle) * tentacle.length;
+            
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.quadraticCurveTo(
+                startX + Math.cos(tentacle.angle + Math.PI/2) * Math.sin(tentacle.wave) * 20,
+                startY + Math.sin(tentacle.angle + Math.PI/2) * Math.sin(tentacle.wave) * 20,
+                endX, endY
+            );
+            ctx.stroke();
+        });
+        
+        // Draw giant body with health-based intensity
+        const healthRatio = this.health / this.maxHealth;
+        const bodyAlpha = 0.8 + healthRatio * 0.2;
+        
+        ctx.fillStyle = `rgba(46, 10, 51, ${bodyAlpha})`;
+        ctx.strokeStyle = '#1A051F';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Draw massive glowing eyes
+        const eyeSize = Math.max(6, this.radius / 4);
+        ctx.fillStyle = '#FF0066';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#FF0066';
+        ctx.beginPath();
+        ctx.arc(this.x - this.radius * 0.3, this.y - this.radius * 0.3, eyeSize, 0, Math.PI * 2);
+        ctx.arc(this.x + this.radius * 0.3, this.y - this.radius * 0.3, eyeSize, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Draw health bar above boss
+        const barWidth = this.radius * 2;
+        const barHeight = 8;
+        const barX = this.x - barWidth / 2;
+        const barY = this.y - this.radius - 20;
+        
+        // Background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(barX - 2, barY - 2, barWidth + 4, barHeight + 4);
+        
+        // Health bar
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(barX, barY, barWidth * (this.health / this.maxHealth), barHeight);
+        
+        // Border
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(barX - 2, barY - 2, barWidth + 4, barHeight + 4);
     }
 }
 
@@ -1471,6 +2109,20 @@ class Particle {
                 this.color = '#00BFFF';
                 this.life = 60;
                 this.maxLife = 60;
+                break;
+            case 'fire':
+                this.vx = (Math.random() - 0.5) * 5;
+                this.vy = (Math.random() - 0.5) * 5 - 1; // Slight upward bias
+                this.color = '#FF6500';
+                this.life = 25;
+                this.maxLife = 25;
+                break;
+            case 'spirit':
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+                this.color = '#9932CC';
+                this.life = 35;
+                this.maxLife = 35;
                 break;
         }
     }
@@ -1702,31 +2354,76 @@ class ThunderHammer extends Weapon {
         this.damage = 50;
     }
     
-    attack(player, targetX, targetY, projectiles, particles) {
+    attack(player, targetX, targetY, projectiles, particles, game) {
         if (!this.canAttack()) return;
+        if (!player.useLightEnergy(25)) return; // Higher energy cost for AOE
         
         this.attackCooldown = this.cooldownTime;
         
+        // Add powerful screen shake for thunder hammer
+        if (game && game.addScreenShake) {
+            game.addScreenShake(12, 25);
+        }
+        
         // Play thunder hammer sound
-        game.soundManager.playSound('thunder_hammer');
+        if (game && game.soundManager) {
+            game.soundManager.playSound('thunder_hammer');
+        }
+        
+        // Create massive lightning AOE effect around player
+        for (let i = 0; i < 16; i++) {
+            const angle = (Math.PI * 2 / 16) * i;
+            const distance = this.range * (0.8 + Math.random() * 0.4);
+            particles.push(new Particle(
+                player.x + Math.cos(angle) * distance,
+                player.y + Math.sin(angle) * distance,
+                'lightning'
+            ));
+        }
+        
+        // Create central explosion effect
+        for (let i = 0; i < 12; i++) {
+            particles.push(new Particle(
+                player.x + (Math.random() - 0.5) * 40,
+                player.y + (Math.random() - 0.5) * 40,
+                'explosion'
+            ));
+        }
         
         // Create AOE damage around player
-        const enemies = game.enemies; // Access game enemies
-        
-        for (let i = enemies.length - 1; i >= 0; i--) {
-            const enemy = enemies[i];
-            const dx = enemy.x - player.x;
-            const dy = enemy.y - player.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+        if (game && game.enemies) {
+            const enemies = game.enemies;
             
-            if (distance <= this.range) {
-                // Create thunder effect
-                for (let j = 0; j < 8; j++) {
-                    particles.push(new Particle(enemy.x, enemy.y, 'explosion'));
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const enemy = enemies[i];
+                const dx = enemy.x - player.x;
+                const dy = enemy.y - player.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance <= this.range) {
+                    // Create lightning strike effect to enemy
+                    for (let j = 0; j < 3; j++) {
+                        particles.push(new Particle(
+                            enemy.x + (Math.random() - 0.5) * 20,
+                            enemy.y + (Math.random() - 0.5) * 20,
+                            'lightning'
+                        ));
+                    }
+                    
+                    // Create explosion particles
+                    for (let j = 0; j < 8; j++) {
+                        particles.push(new Particle(enemy.x, enemy.y, 'explosion'));
+                    }
+                    
+                    // Create sparkle effects
+                    if (game.createSparkleEffect) {
+                        game.createSparkleEffect(enemy.x, enemy.y);
+                    }
+                    
+                    // Remove enemy and award points
+                    enemies.splice(i, 1);
+                    game.score += 15 * game.wave; // Bonus points for AOE weapon
                 }
-                game.createSparkleEffect(enemy.x, enemy.y);
-                enemies.splice(i, 1);
-                game.score += 15 * game.wave; // Bonus points for AOE weapon
             }
         }
         
@@ -1748,26 +2445,46 @@ class PhoenixBow extends Weapon {
         this.arrowCount = 3;
     }
     
-    attack(player, targetX, targetY, projectiles, particles) {
+    attack(player, targetX, targetY, projectiles, particles, game) {
         if (!this.canAttack()) return;
         if (!player.useLightEnergy(15)) return; // Higher energy cost
         
         this.attackCooldown = this.cooldownTime;
         
+        // Add moderate screen shake for phoenix bow
+        if (game && game.addScreenShake) {
+            game.addScreenShake(6, 15);
+        }
+        
         // Play phoenix bow sound
-        game.soundManager.playSound('phoenix_bow');
+        if (game && game.soundManager) {
+            game.soundManager.playSound('phoenix_bow');
+        }
         
         const centerAngle = Math.atan2(targetY - player.y, targetX - player.x);
         const spread = Math.PI / 6; // 30 degree spread
         
-        // Fire 3 arrows in a spread
+        // Fire 3 arrows in a spread with enhanced fire trails
         for (let i = 0; i < this.arrowCount; i++) {
             const angle = centerAngle + (i - 1) * spread / 2;
-            projectiles.push(new PhoenixArrow(player.x, player.y, angle));
+            const arrow = new PhoenixArrow(player.x, player.y, angle);
+            arrow.hasFireTrails = true; // Enable fire trails
+            projectiles.push(arrow);
         }
         
-        // Create bow effect particles
-        for (let i = 0; i < 6; i++) {
+        // Create phoenix fire burst effect at launch
+        for (let i = 0; i < 12; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 30;
+            particles.push(new Particle(
+                player.x + Math.cos(angle) * distance,
+                player.y + Math.sin(angle) * distance,
+                'fire'
+            ));
+        }
+        
+        // Create muzzle flash effect
+        for (let i = 0; i < 8; i++) {
             particles.push(new Particle(player.x, player.y, 'light'));
         }
     }
@@ -1792,7 +2509,7 @@ class ShieldOfLight extends Weapon {
         }
     }
     
-    attack(player, targetX, targetY, projectiles, particles) {
+    attack(player, targetX, targetY, projectiles, particles, game) {
         if (!this.canAttack()) return;
         if (!player.useLightEnergy(20)) return;
         
@@ -1800,12 +2517,32 @@ class ShieldOfLight extends Weapon {
         this.isActive = true;
         this.shieldTimer = this.shieldDuration;
         
-        // Create shield particles
-        for (let i = 0; i < 12; i++) {
+        // Add light screen shake for shield activation
+        if (game && game.addScreenShake) {
+            game.addScreenShake(4, 10);
+        }
+        
+        // Play shield sound
+        if (game && game.soundManager) {
+            game.soundManager.playSound('shield_activate');
+        }
+        
+        // Create shield activation burst
+        for (let i = 0; i < 16; i++) {
+            const angle = (Math.PI * 2 / 16) * i;
             particles.push(new Particle(
-                player.x + Math.cos(i * Math.PI / 6) * 30,
-                player.y + Math.sin(i * Math.PI / 6) * 30,
+                player.x + Math.cos(angle) * 35,
+                player.y + Math.sin(angle) * 35,
                 'shield'
+            ));
+        }
+        
+        // Create inner light burst
+        for (let i = 0; i < 8; i++) {
+            particles.push(new Particle(
+                player.x + (Math.random() - 0.5) * 20,
+                player.y + (Math.random() - 0.5) * 20,
+                'light'
             ));
         }
     }
@@ -1813,17 +2550,60 @@ class ShieldOfLight extends Weapon {
     render(ctx, player) {
         if (!this.isActive) return;
         
-        // Draw protective shield around player
+        // Draw visible bubble shield around player
         const alpha = this.shieldTimer / this.shieldDuration;
-        const radius = 35 + Math.sin(Date.now() * 0.01) * 5;
+        const pulseRadius = 35 + Math.sin(Date.now() * 0.005) * 8;
+        const shimmer = Math.sin(Date.now() * 0.01) * 0.3 + 0.7;
         
         ctx.save();
-        ctx.globalAlpha = alpha * 0.3;
-        ctx.strokeStyle = '#00BFFF';
-        ctx.lineWidth = 4;
+        
+        // Draw outer shield glow
+        const outerGradient = ctx.createRadialGradient(
+            player.x, player.y, pulseRadius * 0.8,
+            player.x, player.y, pulseRadius * 1.2
+        );
+        outerGradient.addColorStop(0, `rgba(0, 191, 255, ${alpha * 0.1})`);
+        outerGradient.addColorStop(0.7, `rgba(135, 206, 235, ${alpha * 0.3})`);
+        outerGradient.addColorStop(1, `rgba(255, 255, 255, ${alpha * 0.5})`);
+        
+        ctx.fillStyle = outerGradient;
         ctx.beginPath();
-        ctx.arc(player.x, player.y, radius, 0, Math.PI * 2);
+        ctx.arc(player.x, player.y, pulseRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw main shield bubble
+        const shieldGradient = ctx.createRadialGradient(
+            player.x - pulseRadius * 0.3, player.y - pulseRadius * 0.3, 0,
+            player.x, player.y, pulseRadius
+        );
+        shieldGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha * 0.4 * shimmer})`);
+        shieldGradient.addColorStop(0.3, `rgba(135, 206, 235, ${alpha * 0.3})`);
+        shieldGradient.addColorStop(0.8, `rgba(0, 191, 255, ${alpha * 0.2})`);
+        shieldGradient.addColorStop(1, `rgba(0, 100, 200, ${alpha * 0.1})`);
+        
+        ctx.fillStyle = shieldGradient;
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, pulseRadius * 0.95, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw shield border with energy crackling effect
+        ctx.globalAlpha = alpha * 0.8;
+        ctx.strokeStyle = `rgba(255, 255, 255, ${shimmer})`;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([5, 3]);
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, pulseRadius, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Draw inner energy ring
+        ctx.globalAlpha = alpha * 0.6;
+        ctx.strokeStyle = '#00BFFF';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, pulseRadius * 0.7, 0, Math.PI * 2);
+        ctx.stroke();
+        
         ctx.restore();
     }
 }
@@ -1837,15 +2617,22 @@ class SpiritCannon extends Weapon {
         this.burstCooldown = 60; // Cooldown between bursts
     }
     
-    attack(player, targetX, targetY, projectiles, particles) {
+    attack(player, targetX, targetY, projectiles, particles, game) {
         if (!this.canAttack()) return;
         if (!player.useLightEnergy(3)) return; // Low energy per shot
         
         this.attackCooldown = this.cooldownTime;
         this.burstCount++;
         
+        // Add subtle screen shake for rapid fire
+        if (game && game.addScreenShake) {
+            game.addScreenShake(2, 5);
+        }
+        
         // Play spirit cannon sound
-        game.soundManager.playSound('spirit_cannon');
+        if (game && game.soundManager) {
+            game.soundManager.playSound('spirit_cannon');
+        }
         
         const angle = Math.atan2(targetY - player.y, targetX - player.x);
         projectiles.push(new SpiritBlast(player.x, player.y, angle));
@@ -1855,8 +2642,30 @@ class SpiritCannon extends Weapon {
             this.attackCooldown = this.burstCooldown;
         }
         
-        // Create muzzle flash
-        particles.push(new Particle(player.x, player.y, 'light'));
+        // Create enhanced muzzle flash in direction of shot
+        const muzzleDistance = 20;
+        const muzzleX = player.x + Math.cos(angle) * muzzleDistance;
+        const muzzleY = player.y + Math.sin(angle) * muzzleDistance;
+        
+        // Main muzzle flash
+        for (let i = 0; i < 5; i++) {
+            const flashAngle = angle + (Math.random() - 0.5) * 0.8;
+            const flashDistance = Math.random() * 15 + 10;
+            particles.push(new Particle(
+                muzzleX + Math.cos(flashAngle) * flashDistance,
+                muzzleY + Math.sin(flashAngle) * flashDistance,
+                'spirit'
+            ));
+        }
+        
+        // Barrel smoke effect
+        for (let i = 0; i < 3; i++) {
+            particles.push(new Particle(
+                muzzleX + (Math.random() - 0.5) * 8,
+                muzzleY + (Math.random() - 0.5) * 8,
+                'light'
+            ));
+        }
     }
 }
 
@@ -1869,18 +2678,88 @@ class PhoenixArrow extends LightOrb {
         this.vy = Math.sin(angle) * this.speed;
         this.color = '#FF4500';
         this.radius = 4;
+        this.angle = angle;
+        this.hasFireTrails = false;
+        this.trailParticles = [];
+        this.trailTimer = 0;
+    }
+    
+    update() {
+        super.update();
+        
+        // Create fire trail particles if enabled
+        if (this.hasFireTrails) {
+            this.trailTimer++;
+            if (this.trailTimer % 3 === 0) { // Create trail every 3 frames
+                this.trailParticles.push({
+                    x: this.x + (Math.random() - 0.5) * 8,
+                    y: this.y + (Math.random() - 0.5) * 8,
+                    life: 20,
+                    maxLife: 20,
+                    size: Math.random() * 3 + 2
+                });
+                
+                // Limit trail length
+                if (this.trailParticles.length > 8) {
+                    this.trailParticles.shift();
+                }
+            }
+            
+            // Update trail particles
+            for (let i = this.trailParticles.length - 1; i >= 0; i--) {
+                this.trailParticles[i].life--;
+                if (this.trailParticles[i].life <= 0) {
+                    this.trailParticles.splice(i, 1);
+                }
+            }
+        }
     }
     
     render(ctx) {
-        // Draw arrow shape
+        // Draw fire trail first (behind arrow)
+        if (this.hasFireTrails) {
+            this.trailParticles.forEach(particle => {
+                const alpha = particle.life / particle.maxLife;
+                const colors = ['#FF6500', '#FF4500', '#FF8C00', '#FFD700'];
+                const colorIndex = Math.floor((1 - alpha) * colors.length);
+                
+                ctx.fillStyle = `rgba(255, ${69 + colorIndex * 30}, 0, ${alpha * 0.8})`;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size * alpha, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+        
+        // Draw phoenix arrow with enhanced fire effect
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
-        gradient.addColorStop(0, '#FFF');
-        gradient.addColorStop(0.5, '#FF4500');
-        gradient.addColorStop(1, '#FF6500');
+        gradient.addColorStop(0, '#FFFFFF');
+        gradient.addColorStop(0.3, '#FFFF00');
+        gradient.addColorStop(0.6, '#FF6500');
+        gradient.addColorStop(1, '#FF4500');
+        
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Add outer glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#FF4500';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Draw arrowhead pointing in direction of movement
+        ctx.fillStyle = '#FFD700';
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.beginPath();
+        ctx.moveTo(this.radius, 0);
+        ctx.lineTo(-this.radius * 0.5, -this.radius * 0.5);
+        ctx.lineTo(-this.radius * 0.5, this.radius * 0.5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
     }
 }
 
