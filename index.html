@@ -12,14 +12,27 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix: Light Warrior</title>
+    <title>Phoenix: Light Warrior | NIX GAMES</title>
+    <meta name="description" content="Defend sacred ground against shadow demons in this intense wave-based survival game by NIX GAMES">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <header>
-            <h1>Phoenix: Light Warrior</h1>
-            <div id="ui">
+        <!-- NIX GAMES Branding -->
+        <div class="nix-games-header">
+            <div class="brand-logo">NIX GAMES</div>
+            <div class="brand-tagline">Built by Kids. Played by Legends.</div>
+        </div>
+        
+        <header class="game-header">
+            <h1 class="game-title">
+                <span class="phoenix-glow">Phoenix:</span> Light Warrior
+            </h1>
+            <div id="ui" class="game-stats">
                 <div class="stat">Health: <span id="health">100</span></div>
                 <div class="stat">Light Energy: <span id="light-energy">100</span></div>
                 <div class="stat">Wave: <span id="wave">1</span></div>
@@ -28,42 +41,49 @@
             </div>
         </header>
         
-        <canvas id="gameCanvas" width="1200" height="800"></canvas>
+        <canvas id="gameCanvas" width="1600" height="1000"></canvas>
         
-        <div id="game-ui">
-            <button id="startBtn">Start Game</button>
-            <button id="pauseBtn" style="display:none;">Pause</button>
-            <button id="muteBtn" class="sound-btn">🔊</button>
-            <div id="instructions">
+        <div id="game-ui" class="phoenix-ui">
+            <div class="button-row">
+                <button id="startBtn" class="phoenix-btn primary">Start Game</button>
+                <button id="pauseBtn" class="phoenix-btn secondary" style="display:none;">Pause</button>
+                <button id="muteBtn" class="sound-btn phoenix-btn">🔊</button>
+            </div>
+            
+            <div id="instructions" class="phoenix-instructions">
                 <p id="control-text">Use WASD or Arrow Keys to move</p>
                 <p>Click to attack with light magic, SHIFT to dash!</p>
                 <p>Collect weapons from corner shrines - use 1-4 keys to switch!</p>
-                <p>Defend the sacred ground from shadow demons!</p>
+                <p class="phoenix-highlight">Defend the sacred ground from shadow demons!</p>
             </div>
             
-            <div id="high-scores-section">
-                <h3>High Scores</h3>
+            <div id="high-scores-section" class="phoenix-scores">
+                <h3>🏆 Top Warriors</h3>
                 <div id="high-scores-list">
                     <div class="no-scores">No high scores yet!</div>
                 </div>
             </div>
         </div>
         
-        <div id="game-over" style="display:none;">
-            <h2>Game Over</h2>
-            <p>Final Score: <span id="final-score">0</span></p>
-            <div id="high-score-rank" style="display:none;"></div>
-            <button id="restartBtn">Try Again</button>
+        <div id="game-over" class="phoenix-modal" style="display:none;">
+            <div class="modal-content">
+                <h2 class="game-over-title">Warrior Fallen</h2>
+                <p class="final-stats">Final Score: <span id="final-score">0</span></p>
+                <div id="high-score-rank" style="display:none;"></div>
+                <button id="restartBtn" class="phoenix-btn primary">Rise Again</button>
+            </div>
         </div>
         
-        <div id="high-score-entry" style="display:none;">
-            <h2>NEW HIGH SCORE!</h2>
-            <p>Final Score: <span id="hs-final-score">0</span></p>
-            <div class="name-entry">
-                <label for="player-name-input">Enter Your Name:</label>
-                <input type="text" id="player-name-input" maxlength="20" placeholder="Enter name..." />
+        <div id="high-score-entry" class="phoenix-modal" style="display:none;">
+            <div class="modal-content">
+                <h2 class="new-record-title">🔥 NEW HIGH SCORE! 🔥</h2>
+                <p class="final-stats">Final Score: <span id="hs-final-score">0</span></p>
+                <div class="name-entry">
+                    <label for="player-name-input">Enter Your Name:</label>
+                    <input type="text" id="player-name-input" class="phoenix-input" maxlength="20" placeholder="Enter name..." />
+                </div>
+                <button id="submit-score-btn" class="phoenix-btn primary">Submit Score</button>
             </div>
-            <button id="submit-score-btn">Submit Score</button>
         </div>
     </div>
     
@@ -73,8 +93,8 @@
             <div id="joystick-knob"></div>
         </div>
         <div id="mobile-buttons">
-            <button class="mobile-btn" id="weapon-btn">⚡</button>
-            <button class="mobile-btn" id="fire-btn">🔥</button>
+            <button class="mobile-btn phoenix-mobile" id="weapon-btn">⚡</button>
+            <button class="mobile-btn phoenix-mobile" id="fire-btn">🔥</button>
         </div>
     </div>
     

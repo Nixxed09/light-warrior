@@ -46,6 +46,10 @@ class Game {
         this.keys = {};
         this.mouse = { x: 0, y: 0, clicked: false };
         
+        // Debug: Store last target position for visual feedback
+        this.lastTargetX = this.width / 2;
+        this.lastTargetY = this.height / 2;
+        
         // Mobile controls
         this.isMobile = this.detectMobile();
         this.virtualJoystick = {
@@ -61,6 +65,9 @@ class Game {
             fire: false,
             weapon: false
         };
+        // Mobile touch aiming
+        this.lastTouchX = this.width / 2;
+        this.lastTouchY = this.height / 2;
         
         // Wave system variables
         this.waveState = 'spawning'; // 'spawning', 'active', 'complete', 'intermission'
@@ -134,18 +141,31 @@ class Game {
     }
     
     setupWeaponShrines() {
-        // Create 4 weapon shrines at temple ruins in corners
-        const margin = 80; // Distance from edges for temple placement
-        const weaponTypes = ['thunder_hammer', 'phoenix_bow', 'shield_of_light', 'spirit_cannon'];
+        // Create 6 weapon shrines at randomized temple ruins locations
+        const margin = 100; // Distance from edges for temple placement
+        const weaponTypes = ['thunder_hammer', 'phoenix_bow', 'shield_of_light', 'spirit_cannon', 'void_ripper', 'flame_sword'];
         
-        // Top-left temple ruins
-        this.weaponShrines.push(new WeaponShrine(margin, margin, weaponTypes[0]));
-        // Top-right temple ruins
-        this.weaponShrines.push(new WeaponShrine(this.width - margin, margin, weaponTypes[1]));
-        // Bottom-left temple ruins
-        this.weaponShrines.push(new WeaponShrine(margin, this.height - margin, weaponTypes[2]));
-        // Bottom-right temple ruins
-        this.weaponShrines.push(new WeaponShrine(this.width - margin, this.height - margin, weaponTypes[3]));
+        // Randomize weapon types
+        const shuffledWeapons = weaponTypes.sort(() => Math.random() - 0.5);
+        
+        // Create potential shrine locations with some randomization
+        const shrineLocations = [
+            { x: margin + Math.random() * 100, y: margin + Math.random() * 100 }, // Top-left area
+            { x: this.width - margin - Math.random() * 100, y: margin + Math.random() * 100 }, // Top-right area
+            { x: margin + Math.random() * 100, y: this.height - margin - Math.random() * 100 }, // Bottom-left area
+            { x: this.width - margin - Math.random() * 100, y: this.height - margin - Math.random() * 100 }, // Bottom-right area
+            { x: this.width / 2 + (Math.random() - 0.5) * 200, y: margin + Math.random() * 80 }, // Top-center area
+            { x: this.width / 2 + (Math.random() - 0.5) * 200, y: this.height - margin - Math.random() * 80 } // Bottom-center area
+        ];
+        
+        // Create shrines at randomized locations
+        for (let i = 0; i < 6; i++) {
+            this.weaponShrines.push(new WeaponShrine(
+                shrineLocations[i].x, 
+                shrineLocations[i].y, 
+                shuffledWeapons[i]
+            ));
+        }
     }
     
     setupArenaElements() {
@@ -305,15 +325,15 @@ class Game {
     
     handleMobileAttack() {
         if (this.gameState === 'playing') {
-            // Attack towards center of screen or last touch position
-            const centerX = this.width / 2;
-            const centerY = this.height / 2;
+            // Attack towards last touch position
+            const targetX = this.lastTouchX;
+            const targetY = this.lastTouchY;
             
             if (this.activeWeapon) {
-                this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles, this);
+                this.activeWeapon.attack(this.player, targetX, targetY, this.projectiles, this.particles, this);
             } else {
-                this.player.attack(centerX, centerY, this.projectiles);
-                this.createLightBurst(centerX, centerY);
+                this.player.attack(targetX, targetY, this.projectiles);
+                this.createLightBurst(targetX, targetY);
                 this.soundManager.playSound('shoot', true);
             }
         }
@@ -321,10 +341,10 @@ class Game {
     
     handleWeaponAbility() {
         if (this.gameState === 'playing' && this.activeWeapon) {
-            // Use weapon special ability if available
-            const centerX = this.width / 2;
-            const centerY = this.height / 2;
-            this.activeWeapon.attack(this.player, centerX, centerY, this.projectiles, this.particles, this);
+            // Use weapon special ability towards last touch position (mobile) or center (desktop)
+            const targetX = this.isMobile ? this.lastTouchX : this.width / 2;
+            const targetY = this.isMobile ? this.lastTouchY : this.height / 2;
+            this.activeWeapon.attack(this.player, targetX, targetY, this.projectiles, this.particles, this);
         }
     }
     
@@ -357,22 +377,66 @@ class Game {
         // Mouse events
         this.canvas.addEventListener('mousemove', (e) => {
             const rect = this.canvas.getBoundingClientRect();
-            this.mouse.x = e.clientX - rect.left;
-            this.mouse.y = e.clientY - rect.top;
+            // Scale mouse coordinates to match canvas internal dimensions
+            this.mouse.x = (e.clientX - rect.left) * (this.width / rect.width);
+            this.mouse.y = (e.clientY - rect.top) * (this.height / rect.height);
         });
         
         this.canvas.addEventListener('mousedown', (e) => {
             if (this.gameState === 'playing') {
+                const rect = this.canvas.getBoundingClientRect();
+                // Scale mouse coordinates to match canvas internal dimensions  
+                const mouseX = (e.clientX - rect.left) * (this.width / rect.width);
+                const mouseY = (e.clientY - rect.top) * (this.height / rect.height);
+                
+                // Debug: Log mouse coordinates
+                console.log(`Mouse click: Raw(${e.clientX}, ${e.clientY}) Canvas bounds(${rect.left}, ${rect.top}, ${rect.width}, ${rect.height}) Scaled(${mouseX.toFixed(1)}, ${mouseY.toFixed(1)}) Scale factors(${this.width / rect.width}, ${this.height / rect.height})`);
+                
                 this.mouse.clicked = true;
+                
+                // Store the exact target position for debugging/visualization
+                this.lastTargetX = mouseX;
+                this.lastTargetY = mouseY;
                 
                 // Use weapon if player has one, otherwise default light orb
                 if (this.activeWeapon) {
-                    this.activeWeapon.attack(this.player, this.mouse.x, this.mouse.y, this.projectiles, this.particles, this);
+                    this.activeWeapon.attack(this.player, mouseX, mouseY, this.projectiles, this.particles, this);
                 } else {
-                    this.player.attack(this.mouse.x, this.mouse.y, this.projectiles);
-                    this.createLightBurst(this.mouse.x, this.mouse.y);
+                    this.player.attack(mouseX, mouseY, this.projectiles);
+                    this.createLightBurst(mouseX, mouseY);
                     this.soundManager.playSound('shoot', true);
                 }
+            }
+        });
+        
+        // Mobile touch events for aiming
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (this.gameState === 'playing') {
+                const rect = this.canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                // Scale touch coordinates to match canvas internal dimensions
+                this.lastTouchX = (touch.clientX - rect.left) * (this.width / rect.width);
+                this.lastTouchY = (touch.clientY - rect.top) * (this.height / rect.height);
+                
+                // Store for visual debugging
+                this.lastTargetX = this.lastTouchX;
+                this.lastTargetY = this.lastTouchY;
+            }
+        });
+        
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (this.gameState === 'playing') {
+                const rect = this.canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                // Scale touch coordinates to match canvas internal dimensions
+                this.lastTouchX = (touch.clientX - rect.left) * (this.width / rect.width);
+                this.lastTouchY = (touch.clientY - rect.top) * (this.height / rect.height);
+                
+                // Store for visual debugging
+                this.lastTargetX = this.lastTouchX;
+                this.lastTargetY = this.lastTouchY;
             }
         });
         
@@ -608,6 +672,8 @@ class Game {
             case 'phoenix_bow': return 'Phoenix Bow';
             case 'shield_of_light': return 'Shield of Light';
             case 'spirit_cannon': return 'Spirit Cannon';
+            case 'void_ripper': return 'Void Ripper';
+            case 'flame_sword': return 'Flame Sword';
             default: return 'Unknown Weapon';
         }
     }
@@ -1145,6 +1211,8 @@ class Game {
             case 'phoenix_bow': return 'Phoenix Bow';
             case 'shield_of_light': return 'Shield of Light';
             case 'spirit_cannon': return 'Spirit Cannon';
+            case 'void_ripper': return 'Void Ripper';
+            case 'flame_sword': return 'Flame Sword';
             default: return 'Unknown Weapon';
         }
     }
@@ -1229,6 +1297,18 @@ class Game {
             
             this.enemies.forEach(enemy => enemy.render(this.ctx));
             this.projectiles.forEach(projectile => projectile.render(this.ctx));
+            
+            // Debug: Draw crosshair at last target position
+            this.ctx.strokeStyle = '#FF0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            // Horizontal line
+            this.ctx.moveTo(this.lastTargetX - 10, this.lastTargetY);
+            this.ctx.lineTo(this.lastTargetX + 10, this.lastTargetY);
+            // Vertical line  
+            this.ctx.moveTo(this.lastTargetX, this.lastTargetY - 10);
+            this.ctx.lineTo(this.lastTargetX, this.lastTargetY + 10);
+            this.ctx.stroke();
         }
         
         // Draw pause overlay
@@ -1510,6 +1590,9 @@ class Player {
         if (!this.useLightEnergy(energyCost)) return;
         
         const angle = Math.atan2(targetY - this.y, targetX - this.x);
+        
+        // Debug: Log the attack parameters for troubleshooting
+        console.log(`Player attack: Player(${this.x.toFixed(1)}, ${this.y.toFixed(1)}) -> Target(${targetX.toFixed(1)}, ${targetY.toFixed(1)}) Angle: ${(angle * 180 / Math.PI).toFixed(1)}°`);
         
         // Create improved light orb projectile with increased speed
         projectiles.push(new LightOrb(this.x, this.y, angle));
@@ -2140,6 +2223,9 @@ class LightOrb {
         this.maxLife = 120;
         this.pulseTimer = 0;
         this.trailParticles = [];
+        
+        // Debug: Log projectile velocity
+        console.log(`LightOrb created: Angle=${(angle * 180 / Math.PI).toFixed(1)}° Velocity=(${this.vx.toFixed(1)}, ${this.vy.toFixed(1)})`);
     }
     
     update() {
@@ -2403,6 +2489,8 @@ class WeaponShrine {
             case 'phoenix_bow': return PhoenixBow;
             case 'shield_of_light': return ShieldOfLight;
             case 'spirit_cannon': return SpiritCannon;
+            case 'void_ripper': return VoidRipper;
+            case 'flame_sword': return FlameSword;
             default: return ThunderHammer;
         }
     }
@@ -2413,6 +2501,8 @@ class WeaponShrine {
             case 'phoenix_bow': return 'Phoenix Bow';
             case 'shield_of_light': return 'Shield of Light';
             case 'spirit_cannon': return 'Spirit Cannon';
+            case 'void_ripper': return 'Void Ripper';
+            case 'flame_sword': return 'Flame Sword';
             default: return 'Unknown Weapon';
         }
     }
@@ -2423,6 +2513,8 @@ class WeaponShrine {
             case 'phoenix_bow': return '#FF4500'; // Red-orange
             case 'shield_of_light': return '#00BFFF'; // Sky blue
             case 'spirit_cannon': return '#9932CC'; // Purple
+            case 'void_ripper': return '#8B0000'; // Dark red
+            case 'flame_sword': return '#FF1493'; // Hot pink flame
             default: return '#FFD700';
         }
     }
@@ -2535,9 +2627,11 @@ class Weapon {
 class ThunderHammer extends Weapon {
     constructor() {
         super('thunder_hammer');
-        this.cooldownTime = 45; // Slower attack rate for AOE
-        this.range = 80;
-        this.damage = 50;
+        this.cooldownTime = 35; // Faster for more action
+        this.range = 120; // Larger range
+        this.damage = 75; // Higher damage
+        this.chainLightning = true; // Chain between enemies
+        this.stunDuration = 60; // Stun enemies for 1 second
     }
     
     attack(player, targetX, targetY, projectiles, particles, game) {
@@ -2557,13 +2651,22 @@ class ThunderHammer extends Weapon {
         }
         
         // Create massive lightning AOE effect around player
-        for (let i = 0; i < 16; i++) {
-            const angle = (Math.PI * 2 / 16) * i;
-            const distance = this.range * (0.8 + Math.random() * 0.4);
+        for (let i = 0; i < 24; i++) {
+            const angle = (Math.PI * 2 / 24) * i;
+            const distance = this.range * (0.6 + Math.random() * 0.6);
             particles.push(new Particle(
                 player.x + Math.cos(angle) * distance,
                 player.y + Math.sin(angle) * distance,
                 'lightning'
+            ));
+        }
+        
+        // Add electric field effect
+        for (let i = 0; i < 32; i++) {
+            particles.push(new Particle(
+                player.x + (Math.random() - 0.5) * this.range * 1.5,
+                player.y + (Math.random() - 0.5) * this.range * 1.5,
+                'light', 12, '#00FFFF'
             ));
         }
         
@@ -2627,8 +2730,10 @@ class ThunderHammer extends Weapon {
 class PhoenixBow extends Weapon {
     constructor() {
         super('phoenix_bow');
-        this.cooldownTime = 20;
-        this.arrowCount = 3;
+        this.cooldownTime = 15; // Faster firing
+        this.arrowCount = 5; // More arrows
+        this.piercing = true; // Arrows pierce through enemies
+        this.fireDamageRadius = 40; // Fire explosion on impact
     }
     
     attack(player, targetX, targetY, projectiles, particles, game) {
@@ -2973,6 +3078,162 @@ class SpiritBlast extends LightOrb {
         ctx.shadowBlur = 5;
         ctx.fill();
         ctx.shadowBlur = 0;
+    }
+}
+
+// New Enhanced Weapon Classes
+
+class VoidRipper extends Weapon {
+    constructor() {
+        super('void_ripper');
+        this.cooldownTime = 25; // Medium cooldown
+        this.piercing = true; // Pierces through all enemies
+        this.voidDamage = 100; // High damage
+    }
+    
+    attack(player, targetX, targetY, projectiles, particles, game) {
+        if (!this.canAttack()) return;
+        if (!player.useLightEnergy(15)) return;
+        
+        this.attackCooldown = this.cooldownTime;
+        
+        // Add screen shake
+        if (game && game.addScreenShake) {
+            game.addScreenShake(8, 20);
+        }
+        
+        // Play void ripper sound
+        if (game && game.soundManager) {
+            game.soundManager.playSound('void_ripper');
+        }
+        
+        const angle = Math.atan2(targetY - player.y, targetX - player.x);
+        
+        // Create void beam that pierces through enemies
+        projectiles.push(new VoidBeam(player.x, player.y, angle));
+        
+        // Create void portal effect at target location
+        for (let i = 0; i < 16; i++) {
+            const portalAngle = (Math.PI * 2 / 16) * i;
+            particles.push(new Particle(
+                targetX + Math.cos(portalAngle) * 30,
+                targetY + Math.sin(portalAngle) * 30,
+                'light', 20, '#8B0000'
+            ));
+        }
+    }
+}
+
+class FlameSword extends Weapon {
+    constructor() {
+        super('flame_sword');
+        this.cooldownTime = 8; // Very fast melee
+        this.range = 60; // Melee range
+        this.flameDamage = 50;
+        this.burnDuration = 180; // 3 seconds of burn
+    }
+    
+    attack(player, targetX, targetY, projectiles, particles, game) {
+        if (!this.canAttack()) return;
+        if (!player.useLightEnergy(8)) return;
+        
+        this.attackCooldown = this.cooldownTime;
+        
+        // Add screen shake
+        if (game && game.addScreenShake) {
+            game.addScreenShake(6, 15);
+        }
+        
+        // Play flame sword sound
+        if (game && game.soundManager) {
+            game.soundManager.playSound('flame_sword');
+        }
+        
+        const angle = Math.atan2(targetY - player.y, targetX - player.x);
+        
+        // Create flame slash effect in an arc
+        for (let i = -Math.PI/4; i <= Math.PI/4; i += Math.PI/16) {
+            const slashAngle = angle + i;
+            const distance = this.range * (0.8 + Math.random() * 0.4);
+            particles.push(new Particle(
+                player.x + Math.cos(slashAngle) * distance,
+                player.y + Math.sin(slashAngle) * distance,
+                'light', 15, '#FF1493'
+            ));
+        }
+        
+        // Damage enemies in melee range
+        if (game && game.enemies) {
+            game.enemies.forEach((enemy, index) => {
+                const dx = enemy.x - player.x;
+                const dy = enemy.y - player.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const enemyAngle = Math.atan2(dy, dx);
+                const angleDiff = Math.abs(enemyAngle - angle);
+                
+                if (distance <= this.range && (angleDiff <= Math.PI/3 || angleDiff >= 5*Math.PI/3)) {
+                    // Create flame explosion
+                    for (let p = 0; p < 12; p++) {
+                        particles.push(new Particle(
+                            enemy.x + (Math.random() - 0.5) * 20,
+                            enemy.y + (Math.random() - 0.5) * 20,
+                            'light', 18, '#FF4500'
+                        ));
+                    }
+                    
+                    // Remove enemy and award points
+                    if (enemy.takeDamage && enemy.takeDamage()) {
+                        game.enemies.splice(index, 1);
+                        game.score += 30 * game.wave;
+                        game.player.addCombatMomentum();
+                    }
+                }
+            });
+        }
+    }
+}
+
+class VoidBeam extends LightOrb {
+    constructor(x, y, angle) {
+        super(x, y, angle);
+        this.speed = 25; // Very fast
+        this.vx = Math.cos(angle) * this.speed;
+        this.vy = Math.sin(angle) * this.speed;
+        this.color = '#8B0000';
+        this.radius = 4;
+        this.life = 150; // Longer range
+        this.maxLife = 150;
+        this.piercing = true;
+        this.damage = 100;
+    }
+    
+    render(ctx) {
+        // Draw void beam with dark energy effect
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
+        gradient.addColorStop(0, '#8B0000');
+        gradient.addColorStop(0.5, '#4B0000');
+        gradient.addColorStop(1, 'rgba(139, 0, 0, 0)');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Inner core
+        ctx.fillStyle = '#FF0000';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Add void trail
+        for (let i = 0; i < this.trailParticles.length; i++) {
+            const particle = this.trailParticles[i];
+            const alpha = particle.life / particle.maxLife;
+            ctx.fillStyle = `rgba(139, 0, 0, ${alpha * 0.5})`;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 }
 
