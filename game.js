@@ -17,7 +17,9 @@ class Game {
         this.projectiles = [];
         this.particles = [];
         this.weaponShrines = [];
-        this.activeWeapon = null;
+        this.collectedWeapons = []; // Array to store all collected weapons
+        this.currentWeaponIndex = 0; // Index of currently active weapon
+        this.activeWeapon = null; // Current active weapon (for compatibility)
         this.soundManager = new SoundManager();
         this.highScoreManager = new HighScoreManager();
         
@@ -25,7 +27,7 @@ class Game {
         this.healingPillar = {
             x: this.width / 2,
             y: this.height / 2,
-            radius: 40,
+            radius: 50, // Larger for bigger map
             isActive: false,
             cooldown: 0,
             pulseTimer: 0
@@ -147,36 +149,36 @@ class Game {
     }
     
     setupArenaElements() {
-        // Create stone bridges connecting corners to center
+        // Create stone bridges connecting corners to center (scaled for larger map)
         const centerX = this.width / 2;
         const centerY = this.height / 2;
-        const bridgeLength = 120;
-        const bridgeWidth = 20;
+        const bridgeLength = 160; // Increased for larger map
+        const bridgeWidth = 25;
         
         // Four stone bridges from corners toward center
         this.stoneBridges = [
             // Top-left to center
-            { x: centerX - 60, y: centerY - 60, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false },
+            { x: centerX - 80, y: centerY - 80, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false },
             // Top-right to center  
-            { x: centerX + 60, y: centerY - 60, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
+            { x: centerX + 80, y: centerY - 80, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
             // Bottom-left to center
-            { x: centerX - 60, y: centerY + 60, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
+            { x: centerX - 80, y: centerY + 80, width: bridgeLength, height: bridgeWidth, rotation: Math.PI/4, destroyed: false },
             // Bottom-right to center
-            { x: centerX + 60, y: centerY + 60, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false }
+            { x: centerX + 80, y: centerY + 80, width: bridgeLength, height: bridgeWidth, rotation: -Math.PI/4, destroyed: false }
         ];
         
-        // Arena decorations (temple ruins)
+        // Arena decorations (temple ruins) - scaled for larger map
         this.arenaDecorations = [
             // Ancient pillars around the arena
-            { type: 'pillar', x: 120, y: 120, width: 25, height: 60 },
-            { type: 'pillar', x: this.width - 120, y: 120, width: 25, height: 60 },
-            { type: 'pillar', x: 120, y: this.height - 120, width: 25, height: 60 },
-            { type: 'pillar', x: this.width - 120, y: this.height - 120, width: 25, height: 60 },
+            { type: 'pillar', x: 150, y: 150, width: 30, height: 80 },
+            { type: 'pillar', x: this.width - 150, y: 150, width: 30, height: 80 },
+            { type: 'pillar', x: 150, y: this.height - 150, width: 30, height: 80 },
+            { type: 'pillar', x: this.width - 150, y: this.height - 150, width: 30, height: 80 },
             
             // Broken walls
-            { type: 'wall', x: 200, y: 50, width: 80, height: 20 },
-            { type: 'wall', x: this.width - 280, y: 50, width: 80, height: 20 },
-            { type: 'wall', x: 50, y: 200, width: 20, height: 80 },
+            { type: 'wall', x: 300, y: 80, width: 120, height: 25 },
+            { type: 'wall', x: this.width - 420, y: 80, width: 120, height: 25 },
+            { type: 'wall', x: 80, y: 250, width: 25, height: 120 },
             { type: 'wall', x: this.width - 70, y: 200, width: 20, height: 80 }
         ];
     }
@@ -330,6 +332,22 @@ class Game {
         // Keyboard events
         document.addEventListener('keydown', (e) => {
             this.keys[e.code] = true;
+            
+            // Weapon switching with number keys (1-4)
+            if (this.gameState === 'playing' && this.collectedWeapons.length > 0) {
+                const weaponKeys = ['Digit1', 'Digit2', 'Digit3', 'Digit4'];
+                const keyIndex = weaponKeys.indexOf(e.code);
+                
+                if (keyIndex !== -1 && keyIndex < this.collectedWeapons.length) {
+                    this.switchToWeapon(keyIndex);
+                }
+                
+                // Also allow switching with Tab key
+                if (e.code === 'Tab') {
+                    e.preventDefault(); // Prevent default tab behavior
+                    this.switchToNextWeapon();
+                }
+            }
         });
         
         document.addEventListener('keyup', (e) => {
@@ -456,8 +474,11 @@ class Game {
         this.lastSpawnTime = 0;
         
         // Reset weapon system
+        this.collectedWeapons = [];
+        this.currentWeaponIndex = 0;
         this.activeWeapon = null;
         this.weaponShrines.forEach(shrine => shrine.reset());
+        this.updateWeaponDisplay();
         
         // Restart background music
         if (this.soundManager.enabled) {
@@ -493,22 +514,101 @@ class Game {
         // Check if player is near any weapon shrine
         for (let shrine of this.weaponShrines) {
             if (shrine.isActive && this.checkCircleCollision(this.player, shrine)) {
-                // Pick up weapon
-                this.activeWeapon = shrine.pickupWeapon();
+                // Check if this weapon type is already collected
+                const weaponType = shrine.weaponType;
+                const alreadyHave = this.collectedWeapons.some(weapon => weapon.type === weaponType);
                 
-                // Play weapon pickup sound
-                this.soundManager.playSound('weapon_pickup');
-                
-                // Create pickup particles
-                for (let i = 0; i < 15; i++) {
-                    this.particles.push(new Particle(
-                        shrine.x + (Math.random() - 0.5) * 40,
-                        shrine.y + (Math.random() - 0.5) * 40,
-                        'weapon_pickup'
-                    ));
+                if (!alreadyHave) {
+                    // Pick up new weapon and add to collection
+                    const newWeapon = shrine.pickupWeapon();
+                    newWeapon.type = weaponType; // Store weapon type for identification
+                    this.collectedWeapons.push(newWeapon);
+                    
+                    // Set as active weapon if it's the first weapon collected
+                    if (this.collectedWeapons.length === 1) {
+                        this.currentWeaponIndex = 0;
+                        this.activeWeapon = this.collectedWeapons[0];
+                    }
+                    
+                    // Play weapon pickup sound
+                    this.soundManager.playSound('weapon_pickup');
+                    
+                    // Create pickup particles
+                    for (let i = 0; i < 15; i++) {
+                        this.particles.push(new Particle(
+                            shrine.x + (Math.random() - 0.5) * 40,
+                            shrine.y + (Math.random() - 0.5) * 40,
+                            'weapon_pickup'
+                        ));
+                    }
+                    
+                    // Update UI to show collected weapons
+                    this.updateWeaponDisplay();
                 }
                 break;
             }
+        }
+    }
+    
+    // Weapon management methods
+    switchToWeapon(index) {
+        if (index >= 0 && index < this.collectedWeapons.length) {
+            this.currentWeaponIndex = index;
+            this.activeWeapon = this.collectedWeapons[index];
+            this.updateWeaponDisplay();
+            
+            // Play weapon switch sound
+            this.soundManager.playSound('weapon_switch');
+        }
+    }
+    
+    switchToNextWeapon() {
+        if (this.collectedWeapons.length > 1) {
+            this.currentWeaponIndex = (this.currentWeaponIndex + 1) % this.collectedWeapons.length;
+            this.activeWeapon = this.collectedWeapons[this.currentWeaponIndex];
+            this.updateWeaponDisplay();
+            
+            // Play weapon switch sound
+            this.soundManager.playSound('weapon_switch');
+        }
+    }
+    
+    updateWeaponDisplay() {
+        const weaponDisplay = document.getElementById('weapon-display');
+        const activeWeaponSpan = document.getElementById('active-weapon');
+        
+        if (this.collectedWeapons.length > 0) {
+            // Show weapon display
+            weaponDisplay.style.display = 'block';
+            
+            // Create weapon list display
+            let weaponText = '';
+            this.collectedWeapons.forEach((weapon, index) => {
+                const weaponName = this.getWeaponName(weapon.type);
+                const keyNumber = index + 1;
+                const isActive = index === this.currentWeaponIndex;
+                
+                if (isActive) {
+                    weaponText += `[${keyNumber}] ${weaponName} (ACTIVE) `;
+                } else {
+                    weaponText += `[${keyNumber}] ${weaponName} `;
+                }
+            });
+            
+            activeWeaponSpan.textContent = weaponText;
+        } else {
+            // Hide weapon display if no weapons
+            weaponDisplay.style.display = 'none';
+        }
+    }
+    
+    getWeaponName(weaponType) {
+        switch(weaponType) {
+            case 'thunder_hammer': return 'Thunder Hammer';
+            case 'phoenix_bow': return 'Phoenix Bow';
+            case 'shield_of_light': return 'Shield of Light';
+            case 'spirit_cannon': return 'Spirit Cannon';
+            default: return 'Unknown Weapon';
         }
     }
     
@@ -1096,11 +1196,11 @@ class Game {
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.width, this.height);
         
-        // Draw sacred circle in center
+        // Draw sacred circle in center (scaled for larger map)
         this.ctx.strokeStyle = '#FFD700';
-        this.ctx.lineWidth = 3;
+        this.ctx.lineWidth = 4;
         this.ctx.beginPath();
-        this.ctx.arc(this.width / 2, this.height / 2, 100, 0, Math.PI * 2);
+        this.ctx.arc(this.width / 2, this.height / 2, 140, 0, Math.PI * 2);
         this.ctx.stroke();
         
         if (this.gameState === 'playing' || this.gameState === 'paused') {
@@ -2930,6 +3030,15 @@ class SoundManager {
             volume: 0.4,
             decay: 0.1,
             sweep: { start: 1000, end: 1500 }
+        });
+        
+        this.createSoundEffect('weapon_switch', {
+            frequency: 800,
+            type: 'square',
+            duration: 0.15,
+            volume: 0.3,
+            decay: 0.05,
+            sweep: { start: 800, end: 1200 }
         });
         
         this.createSoundEffect('player_hurt', {
