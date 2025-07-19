@@ -15,6 +15,7 @@
                 <div class="stat">Light Energy: <span id="light-energy">100</span></div>
                 <div class="stat">Wave: <span id="wave">1</span></div>
                 <div class="stat">Score: <span id="score">0</span></div>
+                <div class="stat" id="weapon-display" style="display:none;">Weapon: <span id="active-weapon">None</span></div>
             </div>
         </header>
         
@@ -23,8 +24,9 @@
         <div id="game-ui">
             <button id="startBtn">Start Game</button>
             <button id="pauseBtn" style="display:none;">Pause</button>
+            <button id="muteBtn" class="sound-btn">🔊</button>
             <div id="instructions">
-                <p>Use WASD or Arrow Keys to move</p>
+                <p id="control-text">Use WASD or Arrow Keys to move</p>
                 <p>Click to attack with light magic</p>
                 <p>Defend the sacred ground from shadow demons!</p>
             </div>
@@ -34,6 +36,17 @@
             <h2>Game Over</h2>
             <p>Final Score: <span id="final-score">0</span></p>
             <button id="restartBtn">Try Again</button>
+        </div>
+    </div>
+    
+    <!-- Mobile Controls -->
+    <div id="mobile-controls">
+        <div id="virtual-joystick">
+            <div id="joystick-knob"></div>
+        </div>
+        <div id="mobile-buttons">
+            <button class="mobile-btn" id="weapon-btn">⚡</button>
+            <button class="mobile-btn" id="fire-btn">🔥</button>
         </div>
     </div>
     
