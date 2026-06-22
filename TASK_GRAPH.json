@@ -1,0 +1,273 @@
+{
+  "schema_version": "1.0",
+  "game_id": "light-warrior",
+  "tasks": [
+    {
+      "id": "design.lila_systems_progression",
+      "title": "Structure progression, resources, enemies, and weapons around Lila laws",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["GAME_SYSTEMS_LILA_PROGRESSION.md", "LILA_ALIGNMENT.md", "GAME_DESIGN.md", "TECHNICAL_PLAN.md", "GAME_MANIFEST.json"],
+      "acceptance": ["progression is node restoration", "resources have visible cause and effect", "weapon temples each express a law", "enemy families teach counter-laws", "first playable scope stays focused on Light, Courage, Thunder Hammer, Shadow Imp, Berserker Demon, and circle expansion"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "engine.lila_data_scaffold",
+      "title": "Add UE5 data scaffolds for Lila laws and Witness fallback",
+      "phase": "engine",
+      "status": "complete",
+      "note": "C++ data asset classes were added for Lila alignment and Luminous Witness fallback lines. UnrealBuildTool compile passed with UE 5.8 after closing Live Coding and adding the required FOverlapResult include.",
+      "expected_artifacts": ["engine/Source/LightWarrior/Public/LilaAlignmentData.h", "engine/Source/LightWarrior/Public/LuminousWitnessFallbackData.h"],
+      "acceptance": ["ULilaAlignmentData exposes laws and octave bands to Blueprint", "ULuminousWitnessFallbackData exposes authored fallback lines by beat", "runtime AI remains disabled"],
+      "qa": ["engine_health_check"]
+    },
+    {
+      "id": "design.lila_alignment",
+      "title": "Apply Lila laws to Light Warrior",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["LILA_ALIGNMENT.md", "GAME_DESIGN.md", "THEME_ALIGNMENT.md", "TECHNICAL_PLAN.md"],
+      "acceptance": ["Light Warrior declares its Lila plane, laws, octave, and teaching dial", "bravery expanding light is mapped to Resonance and Mirrors", "AI role is bounded as Luminous Witness, not a combat solver"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "ai.luminous_witness_contract",
+      "title": "Define disabled-by-default Luminous Witness AI contract",
+      "phase": "ai",
+      "status": "complete",
+      "expected_artifacts": ["docs/AI_LUMINOUS_WITNESS_CONTRACT.md", "GAME_MANIFEST.json"],
+      "acceptance": ["runtime AI is disabled", "authored fallback ships first", "allowed verbs are bounded", "state inputs are structured", "Lila alignment is declared", "first playable remains complete with AI off"],
+      "qa": ["design_review", "ai_contract_review"]
+    },
+    {
+      "id": "design.world_model",
+      "title": "Apply Old Earth world model to Light Warrior",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["WORLD_MODEL.md", "THEME_ALIGNMENT.md", "TECHNICAL_PLAN.md"],
+      "acceptance": ["world is flat, vast, and too large to see the end", "first arena is a reclaimed Old Earth node", "UE5 horizon rules avoid globe, orbit, space, and visible edge framing", "true maps and restored routes are future expansion hooks"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "design.proven_better_new",
+      "title": "Define proven pattern, better claim, and new hook",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["PROVEN_BETTER_NEW.md"],
+      "acceptance": ["proven references are specific", "better claim is player-visible", "new hook is testable in first session", "explicit hook is 'Bravery expands the light'"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "design.first_five_minutes",
+      "title": "Specify first-time player experience",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["FIRST_FIVE_MINUTES.md"],
+      "acceptance": ["first 10 seconds answer where/what/response", "first 30 seconds includes Thunder Hammer bold beat", "opening sequence proves safety, temptation, risk, power, and light expansion"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "validation.signal_test",
+      "title": "Define signal test and kill criteria",
+      "phase": "validation",
+      "status": "complete",
+      "expected_artifacts": ["SIGNAL_TEST.md"],
+      "acceptance": ["strong and weak signals are observable", "pivot criteria are explicit", "test captures whether players understand bravery expanded the light"],
+      "qa": ["playtest"]
+    },
+    {
+      "id": "design.minimum_viable_idea",
+      "title": "Label current prototype and next production artifact",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["MINIMUM_VIABLE_IDEA.md"],
+      "acceptance": ["browser prototype is labeled disposable", "UE5 first playable artifact is specified"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "design.player_thank_you",
+      "title": "Define player trust and thank-you target",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["PLAYER_THANK_YOU.md"],
+      "acceptance": ["trust breakers are named", "weekly improvement filter is explicit"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "design.distribution_strategy",
+      "title": "Define how the game travels",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["DISTRIBUTION_STRATEGY.md"],
+      "acceptance": ["first 10 players and first 100 players are defined", "traveling asset is specified"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "design.remix_primitives",
+      "title": "Identify reusable GamesOS primitives",
+      "phase": "design",
+      "status": "complete",
+      "expected_artifacts": ["REMIX_PRIMITIVES.md"],
+      "acceptance": ["candidate primitives are named", "UE5 evidence requirement is explicit"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "toolchain.media_repos",
+      "title": "Clone and link image/audio/video engines",
+      "phase": "toolchain",
+      "status": "complete",
+      "expected_artifacts": ["docs/MEDIA_ENGINE_INTEGRATION.md"],
+      "acceptance": ["video-engine exists at D:\\TE-Code\\video-engine", "audio-engine exists at D:\\TE-Code\\audio-engine", "image-engine has been pulled", "Light Warrior docs link each engine explicitly"],
+      "qa": ["toolchain_check"]
+    },
+    {
+      "id": "toolchain.media_services",
+      "title": "Install dependencies and start media services",
+      "phase": "toolchain",
+      "status": "complete",
+      "note": "image-engine, video-engine, audio-engine, and Blender MCP are running. video-engine reports Blender connected and FFmpeg available. Provider credentials, UE5, Whisper, and PrusaSlicer remain separate blockers.",
+      "inputs": ["docs/MEDIA_ENGINE_INTEGRATION.md"],
+      "expected_artifacts": ["captures/media-service-health.json"],
+      "acceptance": ["image-engine responds on port 3100", "video-engine responds on port 8200", "audio-engine responds on port 8300", "Blender MCP responds on port 9876"],
+      "qa": ["toolchain_check"]
+    },
+    {
+      "id": "asset.thunder_hammer_concept",
+      "title": "Generate Thunder Hammer temple concept package",
+      "phase": "asset",
+      "status": "pending",
+      "note": "Concept request package exists, but image-engine generation is blocked until TE_SERVICE_KEY/x-service-key is configured. The built-in image generation fallback did not expose a new saved bitmap.",
+      "inputs": ["STYLE_GUIDE.md", "ASSET_MANIFEST.json", "docs/MEDIA_ENGINE_INTEGRATION.md"],
+      "expected_artifacts": ["assets/generated/concepts/thunder_hammer_temple"],
+      "acceptance": ["concept images follow style guide", "metadata/provenance is saved", "review notes choose a UE5 blockout direction"],
+      "qa": ["style_review"]
+    },
+    {
+      "id": "asset.ue5_temple_fbx_candidate",
+      "title": "Create UE5 FBX candidate for Thunder Hammer temple",
+      "phase": "asset",
+      "status": "complete",
+      "note": "video-engine game_asset job ddc4e1c19fe9 generated UE5 FBX LOD0/LOD1 plus asset_metadata.json. Blender import smoke passed; UE5 import remains blocked until UE5 is installed.",
+      "inputs": ["docs/MEDIA_ENGINE_INTEGRATION.md", "TECHNICAL_PLAN.md"],
+      "expected_artifacts": ["assets/generated/models/thunder_hammer_temple"],
+      "acceptance": ["video-engine game_asset request uses target_engine ue5", "FBX output uses SM name and LOD metadata", "asset_metadata.json is saved", "validation warnings are reviewed", "Blender import smoke passes"],
+      "qa": ["asset_validation"]
+    },
+    {
+      "id": "design.reference_games",
+      "title": "Review reference games and capture evidence",
+      "phase": "design",
+      "status": "pending",
+      "inputs": ["REFERENCE_GAMES.md"],
+      "expected_artifacts": ["captures/reference-notes.md"],
+      "acceptance": ["arena readability references are understood", "sacred circle hook remains central", "reference notes explain how safety, temptation, risk, reward, and territory feedback should read"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "style.lock_style_guide",
+      "title": "Lock style guide for hero, enemies, arena, and temple",
+      "phase": "style",
+      "status": "pending",
+      "inputs": ["STYLE_GUIDE.md", "ASSET_MANIFEST.json"],
+      "expected_artifacts": ["STYLE_GUIDE.md"],
+      "acceptance": ["light/dark readability rules are specific", "VFX constraints protect combat readability", "style rules make bravery expanding light visible without tutorial text"],
+      "qa": ["style_review"]
+    },
+    {
+      "id": "scope.first_playable",
+      "title": "Lock first playable scope",
+      "phase": "design",
+      "status": "complete",
+      "inputs": ["GAME_SPEC.md", "GAME_DESIGN.md"],
+      "expected_artifacts": ["DESIGN_REVIEW.md"],
+      "acceptance": ["only one weapon temple is included", "UE5 vertical slice target is explicit"],
+      "qa": ["design_review"]
+    },
+    {
+      "id": "engine.ue5_shell",
+      "title": "Create Unreal Engine 5 project shell",
+      "phase": "engine",
+      "status": "blocked",
+      "note": "UE5 project shell and first C++ production classes exist under engine/. ALightWarriorGameMode includes a Blueprint-visible run state and 90-second timer. Unreal Editor 5.8 is available at D:\\Games\\UE_5.8 and UnrealBuildTool compile now passes. This remains blocked only on map creation, opening in editor, Play-In-Editor run, and capture evidence.",
+      "inputs": ["TECHNICAL_PLAN.md", "GAME_MANIFEST.json"],
+      "expected_artifacts": ["engine/LightWarrior.uproject", "engine/Source/LightWarrior", "engine/Config"],
+      "acceptance": ["project opens in Unreal", "LightWarrior module compiles", "Content/Maps/L_LightWarrior_Arena.umap exists", "Play-In-Editor can run an empty arena", "run state reaches victory after 90 seconds and failure at zero player health"],
+      "qa": ["engine_health_check", "play_in_editor"]
+    },
+    {
+      "id": "movement.arena_dash",
+      "title": "Implement arena movement and dash",
+      "phase": "gameplay",
+      "status": "pending",
+      "note": "A browser prototype exists, but GamesOS production completion requires UE5 implementation and Play-In-Editor evidence.",
+      "inputs": ["GAME_DESIGN.md"],
+      "expected_artifacts": ["captures/movement-dash.mp4"],
+      "acceptance": ["dash is responsive", "camera keeps player and arena readable"],
+      "qa": ["play_in_editor", "capture_video"]
+    },
+    {
+      "id": "combat.light_strike",
+      "title": "Implement light strike feedback",
+      "phase": "gameplay",
+      "status": "pending",
+      "note": "A browser prototype exists, but GamesOS production completion requires UE5 implementation, VFX/audio feedback, and Play-In-Editor evidence.",
+      "inputs": ["STYLE_GUIDE.md", "ASSET_MANIFEST.json"],
+      "expected_artifacts": ["captures/light-strike.mp4"],
+      "acceptance": ["enemy burst is readable", "hit audio and VFX are present"],
+      "qa": ["play_in_editor", "capture_video"]
+    },
+    {
+      "id": "system.sacred_circle",
+      "title": "Implement sacred circle expansion and shrink",
+      "phase": "gameplay",
+      "status": "pending",
+      "note": "A browser prototype exists, but GamesOS production completion requires a UE5 sacred circle actor and capture evidence.",
+      "inputs": ["GAME_DESIGN.md"],
+      "expected_artifacts": ["captures/sacred-circle.mp4"],
+      "acceptance": ["circle expands from successful brave action", "danger outside circle is clear", "player can tell the circle changed because of their risk"],
+      "qa": ["play_in_editor", "capture_video"]
+    },
+    {
+      "id": "weapon.thunder_hammer",
+      "title": "Implement Thunder Hammer temple",
+      "phase": "gameplay",
+      "status": "pending",
+      "note": "A browser prototype exists, but GamesOS production completion requires a UE5 temple actor, power spike, and capture evidence.",
+      "inputs": ["GAME_DESIGN.md", "STYLE_GUIDE.md"],
+      "expected_artifacts": ["captures/thunder-hammer.mp4"],
+      "acceptance": ["temple risk/reward is readable", "weapon power spike is clear", "temple placement tempts the player outside safety before activation"],
+      "qa": ["play_in_editor", "capture_video"]
+    },
+    {
+      "id": "enemy.first_pair",
+      "title": "Implement shadow imp and berserker enemy behaviors",
+      "phase": "gameplay",
+      "status": "pending",
+      "note": "A browser prototype exists, but GamesOS production completion requires UE5 enemy behavior and readable tell evidence.",
+      "inputs": ["STYLE_GUIDE.md"],
+      "expected_artifacts": ["captures/enemy-pair.mp4"],
+      "acceptance": ["enemy silhouettes differ", "enemy tells are readable"],
+      "qa": ["play_in_editor", "capture_video"]
+    },
+    {
+      "id": "playtest.first_10_seconds",
+      "title": "Capture and review first 10 seconds proof",
+      "phase": "qa",
+      "status": "pending",
+      "inputs": ["PLAYTEST_NOTES.md"],
+      "expected_artifacts": ["captures/first-10-seconds.mp4", "PLAYTEST_NOTES.md"],
+      "acceptance": ["fresh player understands safety, risk, and first action", "fresh player understands or repeats that bravery expanded the light", "evidence is recorded"],
+      "qa": ["playtest", "capture_video"]
+    },
+    {
+      "id": "quality.ue5_vertical_slice",
+      "title": "Build UE5 vertical slice with final-direction camera, VFX, audio, and controller feel",
+      "phase": "quality",
+      "status": "pending",
+      "inputs": ["DESIGN_REVIEW.md", "STYLE_GUIDE.md"],
+      "expected_artifacts": ["captures/vertical-slice.mp4"],
+      "acceptance": ["arena feels final-direction", "menu-to-arena-to-result flow exists", "vertical slice does not pass unless the hook is visible in normal play"],
+      "qa": ["design_review", "style_review", "playtest"]
+    }
+  ]
+}

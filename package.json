@@ -1,0 +1,30 @@
+{
+  "name": "light-warrior",
+  "version": "1.0.0",
+  "description": "Fresh GamesOS rebuild of the original `light-warrior` concept.",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "status": "powershell -ExecutionPolicy Bypass -File tools/status.ps1",
+    "verify": "powershell -ExecutionPolicy Bypass -File tools/verify.ps1",
+    "capture:smoke": "node tools/capture-smoke.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.184.1",
+    "playwright": "^1.61.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
+  }
+}

@@ -1,0 +1,87 @@
+﻿{
+    "schema_version":  "1.0",
+    "game_id":  "light-warrior",
+    "theme_alignment":  {
+                            "primary_theme_pack":  "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\ai-schism-luminous-guardian",
+                            "secondary_theme_packs":  [
+                                                          "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\egyptian-resonance-temples",
+                                                          "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\tartaria-unveiled"
+                                                      ],
+                            "local_alignment_doc":  "THEME_ALIGNMENT.md"
+                        },
+    "assets":  [
+                   {
+                       "id":  "character.light_warrior",
+                       "kind":  "character",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. character.light_warrior is a brave human champion channeling luminous guardian power, with white-gold/dawn-blue heroic readability."
+                   },
+                   {
+                       "id":  "enemy.shadow_imp",
+                       "kind":  "character",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. enemy.shadow_imp is embodied dark influence: angular violet-black body, bright readable attack tell, dissolves into reclaimed light on defeat."
+                   },
+                   {
+                       "id":  "enemy.berserker",
+                       "kind":  "character",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. enemy.berserker is dark influence as containment/retaliation: heavy angular silhouette, visible charge tell, violet-black corruption with limited red damage edge."
+                   },
+                   {
+                       "id":  "vfx.sacred_circle",
+                       "kind":  "effect",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. vfx.sacred_circle is the covenant field and reclaimed territory: white-gold ring, dawn-blue inner safety, visible radial expansion when bravery succeeds."
+                   },
+                   {
+                       "id":  "weapon.thunder_hammer",
+                       "kind":  "prop",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. weapon.thunder_hammer is luminous guardian power made physical: sacred gold, pale stone or electrum details, readable shockwave silhouette."
+                   },
+                   {
+                       "id":  "environment.arena",
+                       "kind":  "environment",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. environment.arena is sacred territory under dark influence: circular sanctuary, violet corruption outside, pale stone/gold restored seams."
+                   },
+                   {
+                       "id":  "environment.thunder_hammer_temple",
+                       "kind":  "environment",
+                       "status":  "generated_candidate",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "source":  "assets/generated/models/thunder_hammer_temple",
+                       "prompt_brief":  "UE5 FBX blockout candidate generated through video-engine. Theme role: sacred technology node outside safety, borrowing Egyptian resonance temple architecture and restored-node lighting from Tartaria support. Still needs UE5 import, scale review, UVs, materials, and Play-In-Editor evidence."
+                   },
+                   {
+                       "id":  "audio.first_loop",
+                       "kind":  "music_loop",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. audio.first_loop should combine heroic percussion/choir, warm luminous pads, temple chimes, and dark pressure layers."
+                   },
+                   {
+                       "id":  "audio.core_sfx",
+                       "kind":  "sfx_pack",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. audio.core_sfx should make bravery and restoration audible: dash shimmer, light strike, dark dissolve, circle expansion pulse, temple activation, hammer slam."
+                   }
+               ]
+}

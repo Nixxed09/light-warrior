@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-06-16T21:38:08.939521+00:00",
+  "asset": {
+    "description": "stylized heroic Thunder Hammer temple pedestal with sacred gold rings, blue lightning core, visible safe circle boundary, violet shadow cracks, UE5 arena landmark",
+    "asset_type": "environment",
+    "style": "stylized heroic fantasy, readable gameplay silhouette, Light Warrior sacred gold versus violet shadow",
+    "target_engine": "ue5"
+  },
+  "export": {
+    "format": "fbx",
+    "files": [
+      "D:\\Phoenix\\nix-code\\games\\light-warrior\\assets\\generated\\models\\thunder_hammer_temple\\SM_stylized_heroic_Thunder_Hammer_temple_pedestal_w_LOD0.fbx",
+      "D:\\Phoenix\\nix-code\\games\\light-warrior\\assets\\generated\\models\\thunder_hammer_temple\\SM_stylized_heroic_Thunder_Hammer_temple_pedestal_w_LOD1.fbx"
+    ],
+    "lod_levels": 2,
+    "collider_added": false
+  },
+  "validation": {
+    "is_valid": true,
+    "poly_count": 0,
+    "vertex_count": 0,
+    "non_manifold_edges": 0,
+    "has_uvs": false,
+    "warnings": [
+      "trimesh load error: file_type 'fbx' not supported",
+      "No UV coordinates detected. Texture mapping will not work."
+    ],
+    "errors": []
+  },
+  "generation": {
+    "method": "blender_procedural",
+    "blender_object_name": "SM_ThunderHammerTemple_Pedestal_LOD0",
+    "source_description": "stylized heroic Thunder Hammer temple pedestal with sacred gold rings, blue lightning core, visible safe circle boundary, violet shadow cracks, UE5 arena landmark",
+    "style": "stylized heroic fantasy, readable gameplay silhouette, Light Warrior sacred gold versus violet shadow"
+  }
+}

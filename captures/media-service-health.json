@@ -1,0 +1,40 @@
+﻿{
+    "image-engine":  {
+                         "status":  "PASS",
+                         "url":  "http://127.0.0.1:3100",
+                         "code":  200,
+                         "note":  "Root responds; /api/health requires auth."
+                     },
+    "video-engine":  {
+                         "status":  "PASS",
+                         "url":  "http://127.0.0.1:8200/api/health",
+                         "code":  200,
+                         "engines":  {
+                                         "blender":  "connected",
+                                         "ffmpeg":  "available",
+                                         "prusaslicer":  "not_found",
+                                         "whisper":  "not_found",
+                                         "image_edit_agent_banana":  "not_configured"
+                                     },
+                         "note":  "Patched local video-engine Blender client to speak the installed ahujasid/blender-mcp protocol."
+                     },
+    "audio-engine":  {
+                         "status":  "PASS",
+                         "url":  "http://127.0.0.1:8300/api/health",
+                         "code":  200,
+                         "providers":  {
+                                           "suno":  false,
+                                           "elevenlabs":  false,
+                                           "stable_audio":  false,
+                                           "camb_ai":  false,
+                                           "gemini_lyria":  false
+                                       }
+                     },
+    "blender-mcp":  {
+                        "status":  "PASS",
+                        "host":  "127.0.0.1",
+                        "port":  9876,
+                        "connected":  true,
+                        "direct_scene_info":  true
+                    }
+}

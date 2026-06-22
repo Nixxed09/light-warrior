@@ -1,103 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZFCBHXE3V4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ZFCBHXE3V4');
-    </script>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix: Light Warrior | NIX GAMES</title>
-    <meta name="description" content="Defend sacred ground against shadow demons in this intense wave-based survival game by NIX GAMES">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="game-container">
-        <!-- NIX GAMES Branding -->
-        <div class="nix-games-header">
-            <div class="brand-logo">NIX GAMES</div>
-            <div class="brand-tagline">Built by Kids. Played by Legends.</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Light Warrior</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+      <div id="hud" class="hud hidden">
+        <div class="brand">Light Warrior <span>Luminous Guardian Field</span></div>
+        <div class="stat">
+          <span>Health</span>
+          <strong id="health">100</strong>
         </div>
-        
-        <header class="game-header">
-            <h1 class="game-title">
-                <span class="phoenix-glow">Phoenix:</span> Light Warrior
-            </h1>
-            <div id="ui" class="game-stats">
-                <div class="stat">Health: <span id="health">100</span></div>
-                <div class="stat">Light Energy: <span id="light-energy">100</span></div>
-                <div class="stat">Wave: <span id="wave">1</span></div>
-                <div class="stat">Score: <span id="score">0</span></div>
-                <div class="stat" id="weapon-display" style="display:none;">Weapon: <span id="active-weapon">None</span></div>
-            </div>
-        </header>
-        
-        <canvas id="gameCanvas" width="1600" height="1000"></canvas>
-        
-        <div id="game-ui" class="phoenix-ui">
-            <div class="button-row">
-                <button id="startBtn" class="phoenix-btn primary">Start Game</button>
-                <button id="pauseBtn" class="phoenix-btn secondary" style="display:none;">Pause</button>
-                <button id="muteBtn" class="sound-btn phoenix-btn">🔊</button>
-            </div>
-            
-            <div id="instructions" class="phoenix-instructions">
-                <p id="control-text">Use WASD or Arrow Keys to move</p>
-                <p>Click to attack with light magic, SHIFT to dash!</p>
-                <p>Collect weapons from corner shrines - use 1-4 keys to switch!</p>
-                <p class="phoenix-highlight">Defend the sacred ground from shadow demons!</p>
-            </div>
-            
-            <div id="high-scores-section" class="phoenix-scores">
-                <h3>🏆 Top Warriors</h3>
-                <div id="high-scores-list">
-                    <div class="no-scores">No high scores yet!</div>
-                </div>
-            </div>
+        <div class="stat">
+          <span>Covenant</span>
+          <strong id="light">24m</strong>
         </div>
-        
-        <div id="game-over" class="phoenix-modal" style="display:none;">
-            <div class="modal-content">
-                <h2 class="game-over-title">Warrior Fallen</h2>
-                <p class="final-stats">Final Score: <span id="final-score">0</span></p>
-                <div id="high-score-rank" style="display:none;"></div>
-                <button id="restartBtn" class="phoenix-btn primary">Rise Again</button>
-            </div>
+        <div class="stat">
+          <span>Restoration</span>
+          <strong id="wave">1</strong>
         </div>
-        
-        <div id="high-score-entry" class="phoenix-modal" style="display:none;">
-            <div class="modal-content">
-                <h2 class="new-record-title">🔥 NEW HIGH SCORE! 🔥</h2>
-                <p class="final-stats">Final Score: <span id="hs-final-score">0</span></p>
-                <div class="name-entry">
-                    <label for="player-name-input">Enter Your Name:</label>
-                    <input type="text" id="player-name-input" class="phoenix-input" maxlength="20" placeholder="Enter name..." />
-                </div>
-                <button id="submit-score-btn" class="phoenix-btn primary">Submit Score</button>
-            </div>
+        <div class="stat">
+          <span>Thunder Temple</span>
+          <strong id="temple">Dormant</strong>
         </div>
+        <div class="stat">
+          <span>Weapon</span>
+          <strong id="weapon">Blade</strong>
+        </div>
+        <div class="stat">
+          <span>Aether</span>
+          <strong id="branches">0</strong>
+        </div>
+        <div class="stat">
+          <span>Dark Pulse</span>
+          <strong id="enemy-timer">60s</strong>
+        </div>
+        <div class="stat">
+          <span>Keepers</span>
+          <strong id="workers">0</strong>
+        </div>
+        <div class="stat">
+          <span>Guardians</span>
+          <strong id="warriors">0</strong>
+        </div>
+      </div>
+      <div id="level-toast" class="level-toast hidden">
+        <strong id="level-title">Level 1</strong>
+        <span id="level-copy">Clear the shadows.</span>
+      </div>
+      <div id="boss-bar" class="boss-bar hidden">
+        <div class="boss-label">
+          <span>Dark Control Core</span>
+          <strong id="boss-health-text">100%</strong>
+        </div>
+        <div class="boss-track">
+          <div id="boss-health-fill" class="boss-fill"></div>
+        </div>
+      </div>
+      <div id="damage-flash" class="damage-flash"></div>
+      <div id="banner" class="banner">
+        <h1>Light Warrior</h1>
+        <p>Bravery expands the light. Leave the covenant field, claim the Thunder Hammer temple, and push back dark influence. Move with WASD, dash with Shift, strike with J/Space/click, swap weapons with 1/2/3 or K. Press R for keepers, T for guardians, and E inside the circle to raise covenant rings.</p>
+        <button id="start">Start Run</button>
+      </div>
+      <div id="result" class="result hidden">
+        <h2 id="result-title">Victory</h2>
+        <p id="result-copy">The covenant field holds.</p>
+        <button id="restart">Restart</button>
+      </div>
     </div>
-    
-    <!-- Mobile Controls -->
-    <div id="mobile-controls">
-        <div id="virtual-joystick">
-            <div id="joystick-knob"></div>
-        </div>
-        <div id="mobile-buttons">
-            <button class="mobile-btn phoenix-mobile" id="weapon-btn">⚡</button>
-            <button class="mobile-btn phoenix-mobile" id="fire-btn">🔥</button>
-        </div>
-    </div>
-    
-    <script src="game.js"></script>
-</body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

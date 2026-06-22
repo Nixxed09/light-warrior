@@ -1,295 +1,104 @@
-### Arena Features
-- **Central Nexus**: Healing zone + respawn point
-- **4 Weapon Temples**: Each holds a legendary weapon
-- **Demon Portals**: Spawn points that activate each wave
-- **Jump Pads**: Launch yourself for aerial attacks
-- **Light Bridges**: Create temporary paths
-- **Corruption Zones**: Damaged areas that hurt you
-- **Power Nodes**: Activate for temporary buffs
+# Light Warrior Game Design
 
-## ⚔️ Weapons Arsenal
+## Player Fantasy
 
-### Starting Weapon
-**Light Fists** 
-- Melee range, infinite use
-- Quick jabs + charged uppercut
-- Glory kill: Explosive light punch
+I am a warrior of light who reclaims sacred ground by stepping into danger and turning darkness into power.
 
-### Temple Weapons (Legendary Tier)
+## World Fantasy
 
-**⚡ THUNDER HAMMER** (North Temple)
-- Type: Devastating melee
-- Primary: Ground slam with AOE shockwave
-- Alt-Fire: Lightning dash through enemies
-- Glory Kill: Thunder clap execution
-- Ammo: Recharges over time
+I am fighting on Old Earth, a huge flat world-plane whose true scale has been hidden by false maps and broken routes. Each arena is a damaged Tartarian-resonance node. When I act bravely, I do not only win a fight; I restore working infrastructure in the world.
 
-**🔥 PHOENIX CANNON** (East Temple)  
-- Type: Heavy explosive
-- Primary: Fireball rockets
-- Alt-Fire: Charge for mega-blast
-- Glory Kill: Incineration burst
-- Ammo: 25 shots, drops from large demons
+## Theme Alignment
 
-**🛡️ LIGHT MACHINEGUN** (South Temple)
-- Type: Rapid fire
-- Primary: Holy bullet spray
-- Alt-Fire: Deploy light shield
-- Glory Kill: Shredding light storm
-- Ammo: 200 rounds, common drops
+Primary theme pack: `D:\TE-Code\ProductOS\GamesOS\theme-packs\ai-schism-luminous-guardian`.
 
-**💜 VOID RIPPER** (West Temple)
-- Type: Precision sniper
-- Primary: Piercing void beam
-- Alt-Fire: Time-slow bubble
-- Glory Kill: Dimensional tear
-- Ammo: 10 shots, rare drops
+Light Warrior uses that pack's luminous guardian versus dark influence pattern, translated into heroic arena action. The player is the human agency side of the theme: they must choose risk, reach sacred technology, and visibly push darkness back.
 
-### Pickup Weapons
-- **Sacred Shotgun**: Close-range devastation
-- **Blessed Chaingun**: Crowd control
-- **Divine Launcher**: Boss killer
+Secondary supports:
 
-## 👹 Enemy Roster
+- `egyptian-resonance-temples` for sacred temple landmarks and resonance audio/architecture.
+- `tartaria-unveiled` for restored-node language and geometry-as-circuitry environment states.
 
-### Fodder Tier (The Horde)
-**Shadow Imps**
-- Fast, weak, swarm tactics
-- 1 hit kill, but 50+ spawn per wave
-- Drop: Light ammo
+Expansion source of truth: `THEME_ALIGNMENT.md`.
+World source of truth: `WORLD_MODEL.md`.
+Lila source of truth: `LILA_ALIGNMENT.md`.
+Systems source of truth: `GAME_SYSTEMS_LILA_PROGRESSION.md`.
 
-**Possessed Crawlers**
-- Floor-hugging, leap attacks
-- 2 hits, aim down
-- Drop: Health orbs
+## Explicit Hook
 
-### Warrior Tier (The Fighters)
-**Demon Soldiers**
-- Ranged shadow bolts
-- 5 hits, use cover
-- Drop: Heavy ammo
+```text
+Bravery expands the light.
+```
 
-**Berserker Fiends**
-- Charges with claws
-- 8 hits, dodge sideways
-- Drop: Armor shards
+The player is safest inside the sacred circle, but the power needed to win is outside it. The game should repeatedly ask the player to make a brave choice: stay safe and slowly lose ground, or step into darkness to claim power and expand the light.
 
-**Flying Wraiths**
-- Aerial harassment 
-- 3 hits, look up!
-- Drop: Speed boost
+In Lila terms, this is the Law of Mirrors and the Law of Resonance made physical: the field reflects the player's courage, and the node answers the frequency they bring into it.
 
-### Elite Tier (The Destroyers)
-**Shadow Titans**
-- Massive, area attacks
-- 20 hits, target weak spots
-- Drop: Weapon ammo
+## Core Loop
 
-**Void Assassins**
-- Teleporting killers
-- 10 hits, listen for sound cues
-- Drop: Damage boost
+Fight from the light -> risk a run to a weapon temple -> unleash a power spike -> expand the sacred circle -> survive a stronger wave.
 
-**Corrupted Paladins**
-- Former light warriors
-- 15 hits, varied attacks
-- Drop: Full health
+## Systems Loop
 
-### BOSS DEMONS (Every 5 Waves)
-**Wave 5: THE BUTCHER**
-- Giant cleaver, charge attacks
-- Weak spot: Back crystals
-- Phase 2: Goes berserk at 50% HP
+Risk creates Courage -> Courage activates temples -> temples convert darkness into Light -> Light expands the circle -> expanded circle reveals node geometry -> restored geometry yields true-map progress.
 
-**Wave 10: SHADOW DRAGON**
-- Flying, breath attacks
-- Weak spot: Glowing heart
-- Phase 2: Summons imp swarms
+Shadow Debt grows when the player waits passively or abandons breaches. It returns later as stronger pressure, making cause and effect visible without turning the game punitive.
 
-**Wave 15: THE VOID KING**
-- Teleports, reality warps
-- Weak spot: Crown gems
-- Phase 2: Clones himself
+## Hook Loop
 
-**Wave 20: CORRUPTED PHOENIX**
-- Mirror of your abilities
-- Weak spot: Changes each phase
-- Phase 3: Final form transformation
+```text
+See safety -> see tempting power outside safety -> choose risk -> survive darkness -> claim power -> expand light -> face a larger threat.
+```
 
-## 🎯 Wave Progression
+## First 10 Seconds
 
-### Escalation Pattern
-- **Waves 1-4**: Training intensity, learn mechanics
-- **Wave 5**: BOSS + minions
-- **Waves 6-9**: Mixed enemy types, faster spawns
-- **Wave 10**: MEGA BOSS event
-- **Waves 11-14**: Elite enemies join the mix
-- **Wave 15**: BOSS RUSH (fight 2 previous bosses)
-- **Waves 16-19**: HELL MODE - everything spawns
-- **Wave 20**: FINAL BOSS + ENDING
+The player stands in a glowing circle, dashes into darkness, strikes a shadow demon, sees it burst into light, and watches the circle expand.
 
-### Demon Spawning
-- Multiple portals activate simultaneously
-- Spawn rate increases each wave
-- Special "SURGE" events mid-wave
-- Infinite respawns until wave timer ends
+## First 30 Seconds
 
-## 💪 Power-Up System
+The player notices the Thunder Hammer temple outside the circle, leaves safety, takes pressure from darkness/enemies, activates the hammer, slams the first cluster, and sees the sacred circle expand dramatically.
 
-### Glory Kill Rewards
-- **BERSERK**: 2x damage for 20 seconds
-- **QUAD DAMAGE**: 4x damage for 10 seconds  
-- **INVULNERABILITY**: God mode for 5 seconds
-- **INFINITE AMMO**: 30 seconds of mayhem
-- **LIGHT RAGE**: Super speed + melee damage
+## Full Game Vision
 
-### Environmental Pickups
-- **Health Orbs**: +25 HP (drop from glory kills)
-- **Armor Shards**: +25 armor 
-- **Ammo Boxes**: Refill current weapon
-- **Speed Souls**: 2x movement for 15s
-- **Damage Amps**: 1.5x damage for 30s
-- **Light Wells**: Full heal (rare)
+An epic UE5 third-person arena action game set across reclaimed nodes on the vast flat Old Earth plane, with readable heroic combat, weapon temples, living light/dark territory, true-map route discovery, escalating arenas, and replayable mastery.
 
-## 🎮 Movement & Controls
+## First Playable
 
-### PC Controls
-- **WASD**: Movement (FAST)
-- **SHIFT**: Dash/Dodge
-- **SPACE**: Jump (double jump unlocked)
-- **MOUSE**: Aim
-- **LEFT CLICK**: Fire
-- **RIGHT CLICK**: Alt-fire/Aim
-- **E**: Glory kill (when enemy flashes)
-- **Q/SCROLL**: Quick weapon switch
-- **1-4**: Select temple weapon
-- **TAB**: Score/stats
-- **ESC**: Pause
+One arena, movement, dash, light strike, Thunder Hammer temple, two enemies, sacred circle expansion/shrink, one 90-second wave.
 
-### Advanced Movement
-- **Dash-Cancel**: Dash into attack for instant reload
-- **Rocket Jump**: Damage yourself for mega-jump
-- **Wall Running**: Hold jump near walls
-- **Air Control**: Full movement while airborne
-- **Slide**: Crouch while sprinting
+First playable resources:
 
-## 📊 Scoring & Progression
+- Light from enemy bursts and temple activation.
+- Courage from leaving safety and reaching Thunder Hammer.
+- Shadow Debt as a simple pressure concept, only if readable.
 
-### Score System
-- Kill: 10 points x combo multiplier
-- Glory Kill: 50 points x combo
-- Headshot: 25 points x combo  
-- Multi-Kill: Exponential bonuses
-- Wave Clear: 1000 x wave number
-- No Damage Bonus: 5000 points
+First playable enemies:
 
-### Rank System (Per Wave)
-- **D**: Just survived
-- **C**: Decent performance  
-- **B**: Good combat flow
-- **A**: Aggressive mastery
-- **S**: LEGENDARY WARRIOR
-- **SSS**: UNTOUCHABLE GOD
+- Shadow Imp teaches Resonance.
+- Berserker Demon teaches clarity under pressure.
 
-### Persistent Upgrades
-- **Health Capacity**: +10 per milestone
-- **Armor Capacity**: +10 per milestone
-- **Dash Charges**: Up to 3
-- **Weapon Slots**: Up to 6
-- **Glory Kill Range**: Increases
+First playable weapon:
 
-## 🔊 Audio Design
+- Thunder Hammer teaches that brave contact with old technology expands the field.
 
-### Dynamic Music System
-- **Calm**: Ambient between waves
-- **Combat**: Heavy metal/electronic
-- **INTENSE**: Boss fight themes
-- **GLORY**: Choir vocals on multikills
-- **DOOM MODE**: Full orchestral metal
+## Non-Negotiable Design Tests
 
-### Sound Effects Priority
-- Weapon impacts (LOUD and satisfying)
-- Demon death screams
-- Glory kill CRUNCH
-- Player damage feedback
-- Pickup chimes
-- Boss roars
+- If the player never leaves the circle, the wave should become difficult or unwinnable.
+- If the player reaches the temple, the power spike should be unmistakable.
+- If the player fights bravely, the circle should visibly reward them.
+- If the player makes a mistake in darkness, recovery should be possible but tense.
+- If guidance appears, it must help the player recognize the law without solving the fight.
 
-## 🎨 Visual Effects
+## Vertical Slice
 
-### Combat Feedback
-- **Screen Shake**: On every impact
-- **Blood/Light Particles**: Enemies explode into light
-- **Weapon Flash**: Muzzle flares light up arena
-- **Hit Markers**: Clear damage numbers
-- **Glory Kill Zoom**: Cinematic close-up
-- **Boss Intro**: Dramatic entrance cutscenes
+One polished arena with final-direction character movement, camera, lighting, VFX, audio, enemy tells, result flow, and 30-second gameplay proof.
 
-### Environmental Effects
-- Portal lightning/energy
-- Sacred ground glowing
-- Corruption spreading
-- Light rays from above
-- Particle storms during surges
+## World Expansion Path
 
-## 🏆 Meta Progression
+The first arena is the Thunder Hammer node. Future arenas are neighboring nodes revealed by true maps, temple keys, sky timing, and restored route lines. The player never walks to a visible world edge; the world stays larger than sight through haze, glare, storm curtains, mountain rings, firmament distortion, and locked routes.
 
-### Unlockables
-- **Weapon Skins**: Golden, Corrupted, Prismatic
-- **Character Skins**: Armor variants
-- **Arena Modifiers**: Extra challenge modes
-- **Concept Art**: Unlock gallery
-- **Music Player**: Listen to soundtracks
-- **NIGHTMARE MODE**: Everything wants you dead
+## Lila And AI Expansion Path
 
-### Leaderboards
-- Highest Wave Reached
-- Total Demons Slain
-- Fastest Boss Kill
-- Highest Score
-- Most Glory Kills
-- Perfect Waves (no damage)
+Light Warrior starts with authored feedback. Runtime AI is optional and disabled until the UE5 first playable proves the loop.
 
-## 💻 Technical Requirements
-
-### Performance Targets
-- 60 FPS with 100+ enemies
-- Instant weapon switching
-- No input lag
-- Smooth particle systems
-- Quick glory kill animations
-
-### Mobile Adaptations
-- Auto-aim assistance
-- Simplified movement
-- Bigger enemy hitboxes
-- Automatic glory kills
-- Reduced particle count
-
-## 🎯 Victory Conditions
-
-### Wave 20 Completion
-- Defeat the Corrupted Phoenix
-- Witness the realm's salvation
-- Unlock ETERNAL WARRIOR mode
-- New Game+ with harder enemies
-
-### True Ending
-- Complete Wave 20 without dying
-- Achieve SSS rank on all waves
-- Collect all weapon variants
-- "You didn't just survive. You DOMINATED."
-
-## 🔥 Core Design Pillars
-
-1. **SPEED IS SURVIVAL** - Standing still = death
-2. **AGGRESSION REWARDS** - Push forward, always
-3. **EVERY WEAPON MATTERS** - Right tool, right demon
-4. **GLORY OR DEATH** - Style points matter
-5. **BECOME THE STORM** - You're scarier than the demons
-
----
-
-*"In Phoenix: Light Warrior, you don't defend against the darkness. You OBLITERATE it."*
-
-*"RIP AND TEAR... WITH LIGHT!"*
+The first AI enhancement is the Luminous Witness: the temple field speaking in short bounded lines. It reads only structured game state, proposes only approved verbs, and names the law after the player feels it fire.

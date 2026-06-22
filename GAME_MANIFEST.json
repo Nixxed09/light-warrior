@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "game_id": "light-warrior",
+  "title": "Light Warrior",
+  "starter_shape": "top_down_adventure",
+  "target_engine": "unreal",
+  "engine_automation": {
+    "primary_adapter": "unreal_mcp",
+    "asset_adapter": "blender_mcp",
+    "screenshot_required": true,
+    "play_in_editor_required": true
+  },
+  "media_engines": {
+    "image_engine": {
+      "path": "D:\\TE-Code\\image-engine",
+      "repo": "https://github.com/Traviseric/image-engine",
+      "port": 3100,
+      "role": "Concept images, style sheets, game asset images, UI/key art exploration"
+    },
+    "video_engine": {
+      "path": "D:\\TE-Code\\video-engine",
+      "repo": "https://github.com/Traviseric/video-engine",
+      "port": 8200,
+      "role": "Blender MCP orchestration, UE5 FBX game asset pipeline, validation, capture/video assembly"
+    },
+    "audio_engine": {
+      "path": "D:\\TE-Code\\audio-engine",
+      "repo": "https://github.com/Traviseric/audio-engine",
+      "port": 8300,
+      "role": "Music, SFX, mastering, audio manifests"
+    },
+    "blender_mcp": {
+      "host": "127.0.0.1",
+      "port": 9876,
+      "role": "3D creation, modification, screenshots, export through video-engine"
+    },
+    "integration_doc": "docs/MEDIA_ENGINE_INTEGRATION.md"
+  },
+  "camera": "arena_3d",
+  "production_stage": "spec",
+  "theme_alignment": {
+    "world_model": {
+      "doc": "WORLD_MODEL.md",
+      "setting": "Old Earth",
+      "shape": "flat_vast_layered_world_plane",
+      "scale_rule": "The world is so large that no traveler can see the end; horizons resolve into haze, glare, storms, mountain rings, firmament distortion, or locked routes.",
+      "game_translation": "Each arena is a reclaimed Tartarian-resonance node on the huge flat world-plane. The sacred circle restores local infrastructure and true maps unlock future routes."
+    },
+    "primary_theme_pack": {
+      "id": "ai-schism-luminous-guardian",
+      "path": "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\ai-schism-luminous-guardian",
+      "role": "Primary mythic alignment: luminous guardian force versus adaptive dark influence.",
+      "translation": "Light Warrior turns the pack's luminous guardian/dark AI conflict into physical arena combat where human bravery expands sacred territory."
+    },
+    "secondary_theme_packs": [
+      {
+        "id": "egyptian-resonance-temples",
+        "path": "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\egyptian-resonance-temples",
+        "role": "Sacred temple architecture, luminous stone, ritual audio, and resonance technology."
+      },
+      {
+        "id": "tartaria-unveiled",
+        "path": "D:\\TE-Code\\ProductOS\\GamesOS\\theme-packs\\tartaria-unveiled",
+        "role": "Restored nodes, geometry as circuitry, dormant structures reactivating, and visible reclaimed infrastructure."
+      }
+    ],
+    "local_alignment_doc": "THEME_ALIGNMENT.md",
+    "theme_rule": "New characters, levels, weapons, enemies, and systems must reinforce light, darkness, bravery, human agency, temple risk, territory restoration, Old Earth node infrastructure, or true-map route discovery."
+  },
+  "lila_alignment": {
+    "doc": "LILA_ALIGNMENT.md",
+    "systems_doc": "GAME_SYSTEMS_LILA_PROGRESSION.md",
+    "planes": ["aetheric", "mental", "source_glimpses"],
+    "teaching_dial": "named_with_wordless_combat",
+    "octave": "asleep_to_brave_to_clear_to_radiant",
+    "laws": [
+      "resonance",
+      "poles",
+      "consent",
+      "mirrors",
+      "arising",
+      "remembering"
+    ],
+    "tight_loop": "The player chooses danger, restores the field, and sees the world answer with expanded light, clearer perception, and working Old Earth infrastructure.",
+    "ai_role": "The Luminous Witness is the temple field speaking through bounded verbs after authored fallback proves the loop."
+  },
+  "progression_systems": {
+    "shape": "node_restoration",
+    "first_playable_resources": ["light", "courage"],
+    "expansion_resources": ["resonance_shards", "true_map_fragments", "shadow_debt", "aether_charge"],
+    "first_playable_weapons": ["thunder_hammer"],
+    "expansion_weapon_temples": ["sun_spear", "bell_shield", "vortex_blade", "mercy_flame", "star_bow"],
+    "first_playable_enemies": ["shadow_imp", "berserker_demon"],
+    "expansion_enemy_families": ["suppressor", "tether_wraith", "mirror_shade", "null_priest", "debt_collector", "gate_eater"],
+    "cause_effect_rule": "Every resource, enemy, weapon, and upgrade must have a visible cause and a visible world effect.",
+    "lesson_rule": "The player feels the law through action first; names and recaps arrive after the effect is understood."
+  },
+  "ai_features": [
+    {
+      "id": "luminous_witness",
+      "pattern": "state_aware_guide",
+      "enabled": false,
+      "runtime_mode": "none",
+      "contract": "docs/AI_LUMINOUS_WITNESS_CONTRACT.md",
+      "player_value": "Help the player recognize that brave action expands the light without solving combat.",
+      "state_inputs": [
+        "current_objective",
+        "player_status",
+        "circle_status",
+        "nearby_entities",
+        "recent_successes",
+        "recent_failures",
+        "progression_state"
+      ],
+      "allowed_actions": [
+        "comment",
+        "hint",
+        "warn",
+        "celebrate",
+        "mark_optional_location"
+      ],
+      "forbidden_actions": [
+        "move_or_attack_for_player",
+        "activate_temple",
+        "invent_canon_or_rewards",
+        "reveal_hidden_routes_before_true_map_gate",
+        "use_personal_player_data"
+      ],
+      "ai_routing": {
+        "default_tier": "local_slm",
+        "escalate_to": "fast_cloud",
+        "frontier_for": [],
+        "voice": "none",
+        "asr": "none",
+        "max_latency_ms": 900,
+        "on_timeout": "authored_fallback"
+      },
+      "ai_memory": {
+        "scope": "per_session",
+        "stores": ["world_knowledge", "run_summary"],
+        "backend": "summary",
+        "retention": "session",
+        "player_can_delete": true,
+        "summarize_after_turns": 8
+      },
+      "ai_determinism": {
+        "authoritative_artifact": "validated_effect",
+        "cache_key_fields": ["current_objective", "player_status", "circle_status", "recent_successes", "recent_failures"],
+        "fallback_tables": "deterministic",
+        "multiplayer": "host_resolves_clients_replay_logged_effect"
+      },
+      "ai_lila": {
+        "laws": ["resonance", "poles", "consent", "mirrors", "arising", "remembering"],
+        "planes": ["aetheric", "mental"],
+        "teaching_dial": "named_after_felt_action",
+        "canon_voice": "inside_world_direct"
+      },
+      "fallback": {
+        "required_first": true,
+        "lines": [
+          "The temple waits beyond safety.",
+          "The dark field is taking ground.",
+          "Bravery widened the circle.",
+          "The hammer node remembers you.",
+          "This node burns again.",
+          "The field is not lost. Rise and reclaim it."
+        ]
+      },
+      "ship_decision": "keep_disabled_until_ue5_first_playable_ab_test"
+    }
+  ],
+  "quality_bar": {
+    "target": "real_game",
+    "primary_reference": "Hades arena readability plus Vampire Survivors pressure",
+    "quality_references": [
+      "Hades for readable arenas and dash-attack rhythm",
+      "Kena: Bridge of Spirits for bright heroic magical combat",
+      "Risk of Rain 2 for escalating survival pressure"
+    ],
+    "obvious_improvement": "Make bravery visible by turning player courage into reclaimed sacred territory.",
+    "new_hook": "Bravery expands the light: weapon temples pull the player out of safety, reward the risk with power, and push the sacred circle outward.",
+    "full_game_vision": "An epic third-person arena action game about reclaiming sacred Old Earth nodes from living darkness with weapon temples, heroic VFX, true-map route discovery, replayable arenas, and controller-first combat.",
+    "staged_expansion_plan": [
+      "First playable: movement, dash, light strike, sacred circle, run timer, result state, and two enemies.",
+      "Vertical slice: one polished Old Earth node arena with Thunder Hammer temple and a 90-second wave.",
+      "Combat expansion: four weapon temples, enemy families, and elite variants.",
+      "Progression: unlockable blessings, arena modifiers, and mastery ranks.",
+      "Campaign structure: multiple corrupted sanctuaries and boss encounters.",
+      "Launch candidate: controller polish, settings, saves, performance, trailer, and Steam page."
+    ],
+    "vertical_slice_target": "One polished UE5 arena with final-direction movement, camera, lighting, VFX, audio, combat, and 30-second gameplay proof.",
+    "true_signal": "A target player voluntarily leaves the safe light circle to reach the temple weapon, then understands that brave action expanded the light."
+  },
+  "pincus_pattern": {
+    "proven": "Hades arena readability plus Vampire Survivors pressure",
+    "better": "The defended sacred circle changes dynamically based on combat",
+    "new": "Weapon temples pull the player out of safety",
+    "signal": "30-second capture proves dash, strike, temple, and light expansion"
+  },
+  "design_foundation": {
+    "build_purpose": {
+      "current": "throwaway_prototype",
+      "current_artifact": "Vite + Three.js sacred-circle mechanic sketch",
+      "question": "Does the sacred-circle temple risk/reward loop read quickly enough to justify UE5 production?",
+      "not_polishing_yet": [
+        "browser production architecture",
+        "full weapon roster",
+        "final art",
+        "final audio",
+        "progression"
+      ],
+      "next": "UE5 first playable"
+    },
+    "proven_sources": [
+      {
+        "game": "Hades",
+        "platform": "PC/console",
+        "borrowed_patterns": [
+          "readable arena combat",
+          "dash/attack rhythm",
+          "clear enemy tells",
+          "fast feedback"
+        ]
+      },
+      {
+        "game": "Vampire Survivors",
+        "platform": "PC",
+        "borrowed_patterns": [
+          "mounting survival pressure",
+          "readable enemy escalation",
+          "short run pressure curve"
+        ]
+      },
+      {
+        "game": "Kena: Bridge of Spirits",
+        "platform": "PC/console",
+        "borrowed_patterns": [
+          "heroic magical tone",
+          "bright light-versus-dark presentation",
+          "approachable fantasy combat readability"
+        ]
+      }
+    ],
+    "better_claims": [
+      {
+        "player_pain": "Arena action games often use the arena as a static backdrop.",
+        "improvement": "The sacred light circle visibly expands and shrinks based on player courage and combat success.",
+        "first_five_minutes_proof": "The first enemy kill expands the circle, and leaving safety creates understandable health pressure."
+      }
+    ],
+    "new_hooks": {
+      "primary": "Weapon temples sit outside the safe circle, forcing brave movement into darkness for temporary power spikes.",
+      "fallbacks": [
+        "Light trails create temporary safe paths after brave routes.",
+        "Enemies corrupt the circle edge and force the player to cleanse breach points."
+      ]
+    },
+    "player_instinct": "The player wants to feel brave by stepping out of safety, striking darkness, and seeing the world brighten because they acted.",
+    "explicit_hook": "Bravery expands the light.",
+    "idea_variants": [
+      "UE5 third-person arena action roguelite",
+      "Godot 4 stylized 2.5D arena brawler",
+      "smaller temple-defense action prototype"
+    ],
+    "minimum_viable_idea_state": {
+      "artifact": "Throwaway Three.js mechanic sketch plus 10-second and 30-second captures.",
+      "question": "Do players understand that bravery expands the light through safety, temple risk, combat success, and visible territory gain?",
+      "maximum_time_to_expand": "Do not add more browser systems before UE5 setup unless they directly inform first-10-second readability."
+    },
+    "first_time_player_experience": {
+      "seconds_to_first_input": 5,
+      "seconds_to_first_success": 20,
+      "first_reward": "A shadow enemy bursts into light and the sacred circle expands.",
+      "bold_beat": "Thunder Hammer slam clears enemies and expands the circle."
+    },
+    "player_trust": {
+      "player_thank_you": "Players will thank the game for making bravery obvious, fair, and rewarding.",
+      "must_not_break": [
+        "light means safety",
+        "darkness means pressure",
+        "temples are worth the risk",
+        "enemy tells stay readable through VFX"
+      ]
+    },
+    "distribution_strategy": {
+      "first_10_players": "Observed local target-player tests.",
+      "first_100_players": "Private itch/Steam playtest after UE5 vertical slice signal.",
+      "traveling_asset": "A 30-second clip showing leaving safety, claiming Thunder Hammer, and expanding the light."
+    },
+    "remix_primitives": [
+      "sacred territory radius system",
+      "temple risk reward actor",
+      "readable arena camera",
+      "shadow enemy tell pattern",
+      "light burst feedback"
+    ],
+    "kill_criteria": {
+      "weak_signal": "Three of five target players do not voluntarily risk the temple after two runs.",
+      "pivot_order": [
+        "camera/readability",
+        "temple reward",
+        "temple placement/risk",
+        "fallback hook",
+        "concept"
+      ]
+    },
+    "documentation": [
+      "PROVEN_BETTER_NEW.md",
+      "FIRST_FIVE_MINUTES.md",
+      "SIGNAL_TEST.md",
+      "MINIMUM_VIABLE_IDEA.md",
+      "PLAYER_THANK_YOU.md",
+      "DISTRIBUTION_STRATEGY.md",
+      "REMIX_PRIMITIVES.md"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+# Prototype dependencies/build output
+node_modules/
+dist/
+
+# Logs and local captures
+*.log
+
+# Unreal generated output
+engine/.vs/
+engine/Binaries/
+engine/Build/
+engine/DerivedDataCache/
+engine/Intermediate/
+engine/Saved/
+engine/.idea/
+engine/.vsconfig
+engine/*.sln
+
+# Unreal user settings
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates

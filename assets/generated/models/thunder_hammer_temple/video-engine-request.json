@@ -1,0 +1,15 @@
+{
+  "service": "video-engine",
+  "endpoint": "http://127.0.0.1:8200/api/pipeline/game_asset",
+  "job_id": "ddc4e1c19fe9",
+  "correlation_id": "2e65a4e6-21dc-4262-ae39-1d4f882cef4d",
+  "request": {
+    "description": "stylized heroic Thunder Hammer temple pedestal with sacred gold rings, blue lightning core, visible safe circle boundary, violet shadow cracks, UE5 arena landmark",
+    "target_engine": "ue5",
+    "asset_type": "environment",
+    "style": "stylized heroic fantasy, readable gameplay silhouette, Light Warrior sacred gold versus violet shadow",
+    "max_poly_count": 50000,
+    "output_dir": "D:/Phoenix/nix-code/games/light-warrior/assets/generated/models/thunder_hammer_temple",
+    "ue5_lod_levels": 2
+  }
+}

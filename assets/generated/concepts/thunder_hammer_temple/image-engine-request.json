@@ -1,0 +1,27 @@
+{
+  "tool": "image-engine.generate_game_asset",
+  "service": {
+    "local_url": "http://127.0.0.1:3100/api/ai-invoke/generate-game-asset",
+    "mcp_tool": "generate_game_asset",
+    "requires": ["TE_SERVICE_KEY or x-service-key header"]
+  },
+  "request": {
+    "prompt": "Thunder Hammer temple outside a sacred safety circle for Light Warrior. Wide third-person/top-down readable fantasy combat arena on pale ancient stone. Warm sacred gold circle boundary in the foreground, violet-black living darkness outside it. Monumental stone weapon temple beyond the safe circle, with a huge heavy war hammer suspended above a pedestal, blue-white lightning core, gold inlays, circular sacred rings, angular shadow cracks, and a strong gameplay-readable landmark silhouette. Heroic light-versus-dark mood. The image must communicate that the player leaves safety to claim the Thunder Hammer and expand the light. No characters, no UI, no text, no watermark, no gore, no muddy realism, no opaque particle wall.",
+    "asset_type": "background",
+    "style": "stylized",
+    "mood": "heroic",
+    "aspectRatio": "ASPECT_16_9",
+    "provider": "auto",
+    "renderingSpeed": "QUALITY"
+  },
+  "project_context": {
+    "game_id": "light-warrior",
+    "hook": "Bravery expands the light.",
+    "style_anchor": "STYLE_GUIDE.md",
+    "media_contract": "docs/MEDIA_ENGINE_INTEGRATION.md"
+  },
+  "blocked_status": {
+    "status": "blocked",
+    "reason": "image-engine game asset generation requires TE_SERVICE_KEY/x-service-key. The unauthenticated root route is healthy, but generation is intentionally protected."
+  }
+}
