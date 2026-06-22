@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "asset_id": "character.light_warrior",
+  "provider_system": "image-engine",
+  "target_engine": "unreal",
+  "positive_prompt": "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. character.light_warrior is a brave human champion channeling luminous guardian power, with white-gold/dawn-blue heroic readability. Style: project style guide. Game: Light Warrior. Core loop: see GAME_DESIGN.md.",
+  "negative_prompt": "generic, muddy, unreadable, over-detailed, off-theme, low gameplay readability",
+  "style_rules": [
+    "Use STYLE_GUIDE.md.",
+    "Use THEME_ALIGNMENT.md.",
+    "Prioritize gameplay camera readability over decorative detail.",
+    "Preserve the project hook and player-facing cause/effect."
+  ],
+  "output_requirements": [
+    "front view",
+    "side view",
+    "back view",
+    "gameplay camera thumbnail",
+    "silhouette/readability test"
+  ]
+}

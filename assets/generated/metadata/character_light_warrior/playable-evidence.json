@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "game_id": "light-warrior",
+  "asset_id": "character.light_warrior",
+  "build": "",
+  "scenario": "character.light_warrior gameplay proof",
+  "captures": [],
+  "observations": [],
+  "result": "pending",
+  "next_decision": "capture in-engine proof before approval"
+}
