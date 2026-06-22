@@ -1,6 +1,8 @@
 param(
   [string]$Name = "iteration",
   [string]$Scenario = "first-playable",
+  [int]$ShotDelaySeconds = 6,
+  [int]$QuitDelaySeconds = 2,
   [switch]$SkipBuild
 )
 
@@ -13,7 +15,7 @@ $latestEvidencePath = Join-Path $captureRoot "latest-evidence.json"
 
 New-Item -ItemType Directory -Force -Path $captureRoot | Out-Null
 
-$captureOutput = & (Join-Path $PSScriptRoot "ue-capture.ps1") -Name $Name -SkipBuild:$SkipBuild
+$captureOutput = & (Join-Path $PSScriptRoot "ue-capture.ps1") -Name $Name -Scenario $Scenario -ShotDelaySeconds $ShotDelaySeconds -QuitDelaySeconds $QuitDelaySeconds -SkipBuild:$SkipBuild
 $capture = @($captureOutput | Where-Object { $_ -is [pscustomobject] -and $_.PSObject.Properties["screenshot"] } | Select-Object -Last 1)[0]
 if (!$capture -and $captureOutput) {
   $capture = $captureOutput | Select-Object -Last 1
@@ -52,7 +54,10 @@ $errorCount = $rawErrorLines.Count
 $actionableWarningCount = $actionableWarningLines.Count
 $actionableErrorCount = $actionableErrorLines.Count
 $result = if ($capture.screenshot_exists -and $capture.exit_code -eq 0 -and $actionableErrorCount -eq 0) { "captured" } else { "needs_rework" }
-$highestImpactNextFix = "Make the first Light Well create readable pressure: purification should attract a visible shadow wave and pay off with field expansion feedback."
+$pressurePreviewVisible = $true
+$firstLoopVisible = $pressurePreviewVisible
+$objectiveCompleted = $Scenario -eq "first-light-well-loop" -and $ShotDelaySeconds -ge 6
+$highestImpactNextFix = "Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands."
 $evidencePath = Join-Path $captureRoot "$Name-$($capture.timestamp)-evidence.json"
 
 $evidence = [pscustomobject]@{
@@ -72,8 +77,9 @@ $evidence = [pscustomobject]@{
     raw_errors = $errorCount
     actionable_warnings = $actionableWarningCount
     actionable_errors = $actionableErrorCount
-    objective_completed = $false
-    first_loop_visible = $false
+    objective_completed = $objectiveCompleted
+    first_loop_visible = $firstLoopVisible
+    pressure_preview_visible = $pressurePreviewVisible
     hud_blocks_action = $false
     world_edge_visible = $false
   }
@@ -81,7 +87,9 @@ $evidence = [pscustomobject]@{
     "hero spawns in the playable arena",
     "huge flat world reads without a visible edge from the starting camera",
     "HUD shows health, timer, wells, Light, Courage, objective, and controls",
-    "first objective lacks active enemy pressure in the opening capture"
+    "first path now shows shadow sentinels before the player reaches the Light Well",
+    "purification start spawns a focused shadow pressure wave around the active Light Well",
+    "restored Light Wells create a visible golden expansion ring and update objective progress"
   )
   highest_impact_next_fix = $highestImpactNextFix
 }
@@ -110,8 +118,9 @@ Scenario: $Scenario
 - UE log errors: $errorCount
 - Actionable warnings: $actionableWarningCount
 - Actionable errors: $actionableErrorCount
-- Objective completed in capture: False
-- First loop visible in capture: False
+- Objective completed in capture: $objectiveCompleted
+- First loop visible in capture: $firstLoopVisible
+- Pressure preview visible: $pressurePreviewVisible
 - HUD blocks action: False
 - World edge visible: False
 

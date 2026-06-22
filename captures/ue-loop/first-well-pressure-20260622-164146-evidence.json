@@ -1,0 +1,30 @@
+{
+    "game_id":  "light-warrior",
+    "scenario":  "first-light-well-loop",
+    "build":  "ue5-development-editor",
+    "result":  "captured",
+    "capture":  {
+                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-well-pressure-20260622-164146.json",
+                    "screenshot_exists":  true,
+                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-well-pressure-20260622-164146.png",
+                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-well-pressure-20260622-164146.log",
+                    "exit_code":  0
+                },
+    "metrics":  {
+                    "raw_errors":  3,
+                    "actionable_warnings":  0,
+                    "first_loop_visible":  false,
+                    "hud_blocks_action":  false,
+                    "world_edge_visible":  false,
+                    "raw_warnings":  23,
+                    "actionable_errors":  0,
+                    "objective_completed":  false
+                },
+    "observations":  [
+                         "hero spawns in the playable arena",
+                         "huge flat world reads without a visible edge from the starting camera",
+                         "HUD shows health, timer, wells, Light, Courage, objective, and controls",
+                         "first objective lacks active enemy pressure in the opening capture"
+                     ],
+    "highest_impact_next_fix":  "Make the first Light Well create readable pressure: purification should attract a visible shadow wave and pay off with field expansion feedback."
+}

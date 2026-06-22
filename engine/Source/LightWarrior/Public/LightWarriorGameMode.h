@@ -91,8 +91,14 @@ private:
     UFUNCTION()
     void HandleLightWellPurified(class ALightWell* LightWell);
 
+    UFUNCTION()
+    void HandleLightWellPurificationStarted(class ALightWell* LightWell);
+
     void BootstrapPlayableArenaIfNeeded();
     void BindLightWellObjectives();
+    void SpawnLightWellPressure(class ALightWell* LightWell, int32 EnemyCount, float SpawnRadius, const TCHAR* LabelPrefix);
+    void SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index);
+    void PlaceAutomationPlayerAtFirstLightWell();
     void ConfigureAutomationLoop();
     void CaptureAutomationScreenshot();
     void QuitAfterAutomationCapture();
@@ -101,4 +107,6 @@ private:
     void SetRunState(ELightWarriorRunState NewState);
 
     FString AutomationScreenshotPath;
+    FString AutomationScenario;
+    TSet<TWeakObjectPtr<class ALightWell>> LightWellsWithPressure;
 };

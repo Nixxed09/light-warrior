@@ -170,6 +170,7 @@ void ALightWarriorGameMode::ConfigureAutomationLoop()
     {
         AutomationScreenshotPath = FPaths::Combine(FPaths::ProjectSavedDir(), TEXT("Screenshots"), TEXT("LightWarriorAutomation.png"));
     }
+    FParse::Value(CommandLine, TEXT("LWScenario="), AutomationScenario);
 
     const FString ScreenshotDirectory = FPaths::GetPath(AutomationScreenshotPath);
     if (!ScreenshotDirectory.IsEmpty())
@@ -180,6 +181,17 @@ void ALightWarriorGameMode::ConfigureAutomationLoop()
     if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
     {
         PlayerController->ConsoleCommand(TEXT("DisableAllScreenMessages"), true);
+    }
+
+    if (AutomationScenario.Equals(TEXT("first-light-well-loop"), ESearchCase::IgnoreCase))
+    {
+        FTimerHandle ScenarioTimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            ScenarioTimerHandle,
+            this,
+            &ALightWarriorGameMode::PlaceAutomationPlayerAtFirstLightWell,
+            0.75f,
+            false);
     }
 
     FTimerHandle CaptureTimerHandle;
@@ -321,6 +333,9 @@ void ALightWarriorGameMode::BootstrapPlayableArenaIfNeeded()
         }
     }
 
+    SpawnPressureEnemy(FVector(910.0f, -260.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 1);
+    SpawnPressureEnemy(FVector(1030.0f, 300.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 2);
+
     AThunderHammerTemple* Temple = World->SpawnActor<AThunderHammerTemple>(AThunderHammerTemple::StaticClass(), FVector(0.0f, 2200.0f, 0.0f), FRotator::ZeroRotator, SpawnParams);
     if (Temple)
     {
@@ -365,6 +380,7 @@ void ALightWarriorGameMode::BindLightWellObjectives()
     for (TActorIterator<ALightWell> It(GetWorld()); It; ++It)
     {
         ++DiscoveredLightWells;
+        It->OnPurificationStarted.AddDynamic(this, &ALightWarriorGameMode::HandleLightWellPurificationStarted);
         It->OnPurified.AddDynamic(this, &ALightWarriorGameMode::HandleLightWellPurified);
     }
 
@@ -375,6 +391,45 @@ void ALightWarriorGameMode::BindLightWellObjectives()
 
     RequiredLightWells = FMath::Max(1, RequiredLightWells);
     OnObjectiveProgressChanged.Broadcast(PurifiedLightWells, RequiredLightWells);
+}
+
+void ALightWarriorGameMode::PlaceAutomationPlayerAtFirstLightWell()
+{
+    UWorld* World = GetWorld();
+    ALightWarriorCharacter* Character = Cast<ALightWarriorCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+    if (!World || !Character)
+    {
+        return;
+    }
+
+    ALightWell* FirstWell = nullptr;
+    float BestDistanceSquared = TNumericLimits<float>::Max();
+    for (TActorIterator<ALightWell> It(World); It; ++It)
+    {
+        const float DistanceSquared = It->GetActorLocation().SizeSquared2D();
+        if (DistanceSquared < BestDistanceSquared)
+        {
+            BestDistanceSquared = DistanceSquared;
+            FirstWell = *It;
+        }
+    }
+
+    if (FirstWell)
+    {
+        Character->SetActorLocation(FirstWell->GetActorLocation() + FVector(-120.0f, 0.0f, 140.0f), false, nullptr, ETeleportType::TeleportPhysics);
+        Character->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+    }
+}
+
+void ALightWarriorGameMode::HandleLightWellPurificationStarted(ALightWell* LightWell)
+{
+    if (!LightWell || RunState != ELightWarriorRunState::Running || LightWellsWithPressure.Contains(LightWell))
+    {
+        return;
+    }
+
+    LightWellsWithPressure.Add(LightWell);
+    SpawnLightWellPressure(LightWell, 3, 760.0f, TEXT("LW_LightWellPressure"));
 }
 
 void ALightWarriorGameMode::HandleLightWellPurified(ALightWell* LightWell)
@@ -390,6 +445,42 @@ void ALightWarriorGameMode::HandleLightWellPurified(ALightWell* LightWell)
     if (PurifiedLightWells >= RequiredLightWells)
     {
         CompleteRun(true);
+    }
+}
+
+void ALightWarriorGameMode::SpawnLightWellPressure(ALightWell* LightWell, int32 EnemyCount, float SpawnRadius, const TCHAR* LabelPrefix)
+{
+    if (!LightWell || !GetWorld())
+    {
+        return;
+    }
+
+    const FVector WellLocation = LightWell->GetActorLocation();
+    const FVector TowardOrigin = (-FVector(WellLocation.X, WellLocation.Y, 0.0f)).GetSafeNormal();
+    const FVector Tangent(-TowardOrigin.Y, TowardOrigin.X, 0.0f);
+
+    for (int32 Index = 0; Index < EnemyCount; ++Index)
+    {
+        const float SideOffset = (Index - (EnemyCount - 1) * 0.5f) * 260.0f;
+        const FVector SpawnLocation = WellLocation + TowardOrigin * SpawnRadius + Tangent * SideOffset + FVector(0.0f, 0.0f, 90.0f);
+        SpawnPressureEnemy(SpawnLocation, LabelPrefix, Index + 1);
+    }
+}
+
+void ALightWarriorGameMode::SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index)
+{
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+    AShadowEnemy* Enemy = GetWorld()->SpawnActor<AShadowEnemy>(AShadowEnemy::StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnParams);
+    if (Enemy)
+    {
+        Enemy->SetActorLabel(FString::Printf(TEXT("%s_%02d"), LabelPrefix, Index));
     }
 }
 

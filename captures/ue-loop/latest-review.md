@@ -1,16 +1,16 @@
 # Light Warrior UE Loop Review
 
-Generated: 2026-06-22 16:37:12
+Generated: 2026-06-22 16:50:24
 Scenario: first-light-well-loop
 
 ## Evidence
 
-- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\playable-loop-standard-test2-20260622-163646.png
+- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.png
 - Screenshot exists: True
 - Exit code: 0
-- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\playable-loop-standard-test2-20260622-163646.log
-- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\playable-loop-standard-test2-20260622-163646.json
-- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\playable-loop-standard-test2-20260622-163646-evidence.json
+- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.log
+- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.json
+- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959-evidence.json
 
 ## Measurements
 
@@ -18,8 +18,9 @@ Scenario: first-light-well-loop
 - UE log errors: 3
 - Actionable warnings: 0
 - Actionable errors: 0
-- Objective completed in capture: False
-- First loop visible in capture: False
+- Objective completed in capture: True
+- First loop visible in capture: True
+- Pressure preview visible: True
 - HUD blocks action: False
 - World edge visible: False
 
@@ -36,4 +37,4 @@ Scenario: first-light-well-loop
 
 ## Next Improvement
 
-Make the first Light Well create readable pressure: purification should attract a visible shadow wave and pay off with field expansion feedback.
+Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands.

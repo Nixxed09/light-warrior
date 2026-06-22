@@ -4,6 +4,7 @@ param(
   [int]$QuitDelaySeconds = 2,
   [int]$ResX = 1280,
   [int]$ResY = 720,
+  [string]$Scenario = "first-playable",
   [switch]$SkipBuild
 )
 
@@ -37,7 +38,8 @@ $arguments = @(
   "-LWAutoCapture",
   "-LWShot=`"$shotPath`"",
   "-LWShotDelay=$ShotDelaySeconds",
-  "-LWQuitDelay=$QuitDelaySeconds"
+  "-LWQuitDelay=$QuitDelaySeconds",
+  "-LWScenario=$Scenario"
 )
 
 $process = Start-Process -FilePath $unrealEditor -ArgumentList $arguments -Wait -PassThru -WindowStyle Hidden
@@ -45,6 +47,7 @@ $process = Start-Process -FilePath $unrealEditor -ArgumentList $arguments -Wait 
 $summary = [pscustomobject]@{
   name = $Name
   timestamp = $timestamp
+  scenario = $Scenario
   exit_code = $process.ExitCode
   screenshot = $shotPath
   screenshot_exists = Test-Path $shotPath

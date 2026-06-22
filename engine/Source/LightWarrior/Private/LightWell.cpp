@@ -4,9 +4,46 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Engine/DamageEvents.h"
 #include "EngineUtils.h"
 #include "LightWarriorCharacter.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/MaterialInterface.h"
 #include "SacredCircle.h"
+#include "ShadowEnemy.h"
+
+namespace
+{
+void ApplyLightWellMeshColor(UStaticMeshComponent* MeshComponent, const FLinearColor& Color, bool bEmissive)
+{
+    if (!MeshComponent)
+    {
+        return;
+    }
+
+    const TCHAR* MaterialPath = bEmissive
+        ? TEXT("/Engine/ArtTools/RenderToTexture/Materials/Debug/M_Emissive_Color.M_Emissive_Color")
+        : TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial");
+
+    UMaterialInterface* Material = LoadObject<UMaterialInterface>(nullptr, MaterialPath);
+    if (!Material)
+    {
+        Material = MeshComponent->GetMaterial(0);
+    }
+
+    if (Material)
+    {
+        UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, MeshComponent);
+        if (DynamicMaterial)
+        {
+            DynamicMaterial->SetVectorParameterValue(TEXT("Color"), Color);
+            DynamicMaterial->SetVectorParameterValue(TEXT("BaseColor"), Color);
+            DynamicMaterial->SetVectorParameterValue(TEXT("EmissiveColor"), Color);
+            MeshComponent->SetMaterial(0, DynamicMaterial);
+        }
+    }
+}
+}
 
 ALightWell::ALightWell()
 {
@@ -25,6 +62,19 @@ ALightWell::ALightWell()
     {
         WellMesh->SetStaticMesh(WellMeshAsset.Object);
     }
+    ApplyLightWellMeshColor(WellMesh, FLinearColor(0.34f, 0.95f, 1.0f), true);
+
+    RestorationRingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RestorationRingMesh"));
+    RestorationRingMesh->SetupAttachment(SceneRoot);
+    RestorationRingMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -10.0f));
+    RestorationRingMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.025f));
+    RestorationRingMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RestorationRingMesh->SetHiddenInGame(true);
+    if (WellMeshAsset.Succeeded())
+    {
+        RestorationRingMesh->SetStaticMesh(WellMeshAsset.Object);
+    }
+    ApplyLightWellMeshColor(RestorationRingMesh, FLinearColor(1.0f, 0.86f, 0.22f), true);
 
     PurificationSphere = CreateDefaultSubobject<USphereComponent>(TEXT("PurificationSphere"));
     PurificationSphere->SetupAttachment(SceneRoot);
@@ -43,6 +93,7 @@ ALightWell::ALightWell()
     WellLabel->SetTextRenderColor(FColor(150, 235, 255));
     WellLabel->SetWorldSize(88.0f);
     WellLabel->SetText(FText::FromString(TEXT("LIGHT WELL")));
+    WellLabel->SetHiddenInGame(true);
 }
 
 void ALightWell::BeginPlay()
@@ -109,6 +160,14 @@ void ALightWell::OnPurificationBegin(
 
     PurifyingCharacter = Character;
     SetPlayerInside(true);
+
+    if (!bHasStartedPurification)
+    {
+        bHasStartedPurification = true;
+        OnPurificationStarted.Broadcast(this);
+        WellLabel->SetText(FText::FromString(TEXT("HOLD THE WELL")));
+        WellLabel->SetTextRenderColor(FColor(255, 232, 128));
+    }
 }
 
 void ALightWell::OnPurificationEnd(
@@ -163,13 +222,17 @@ void ALightWell::CompletePurification()
     bPurified = true;
     PurificationProgress = PurificationSeconds;
     WellMesh->SetRelativeScale3D(FVector(1.85f, 1.85f, 0.62f));
+    ApplyLightWellMeshColor(WellMesh, FLinearColor(1.0f, 0.86f, 0.22f), true);
+    RestorationRingMesh->SetHiddenInGame(false);
+    RestorationRingMesh->SetRelativeScale3D(FVector(10.5f, 10.5f, 0.025f));
     WellLight->SetLightColor(FLinearColor(1.0f, 0.92f, 0.45f));
-    WellLight->SetIntensity(14500.0f);
-    WellLight->SetAttenuationRadius(3000.0f);
-    WellLabel->SetText(FText::FromString(TEXT("RESTORED")));
+    WellLight->SetIntensity(24000.0f);
+    WellLight->SetAttenuationRadius(3600.0f);
+    WellLabel->SetText(FText::FromString(TEXT("FIELD EXPANDS")));
     WellLabel->SetTextRenderColor(FColor(245, 245, 180));
 
     ExpandSacredCircle();
+    RepelNearbyShadows();
     OnPurificationChanged.Broadcast(1.0f, false);
     OnPurified.Broadcast(this);
 }
@@ -180,5 +243,34 @@ void ALightWell::ExpandSacredCircle() const
     {
         It->ExpandFromCombat(CircleExpansionOnPurified);
         return;
+    }
+}
+
+void ALightWell::RepelNearbyShadows()
+{
+    UWorld* World = GetWorld();
+    if (!World)
+    {
+        return;
+    }
+
+    const FVector BurstOrigin = GetActorLocation();
+    for (TActorIterator<AShadowEnemy> It(World); It; ++It)
+    {
+        AShadowEnemy* Enemy = *It;
+        if (!Enemy)
+        {
+            continue;
+        }
+
+        const FVector ToEnemy = Enemy->GetActorLocation() - BurstOrigin;
+        if (ToEnemy.SizeSquared2D() > FMath::Square(RestorationBurstRadius))
+        {
+            continue;
+        }
+
+        const FVector PushDirection = FVector(ToEnemy.X, ToEnemy.Y, 0.0f).GetSafeNormal();
+        Enemy->LaunchCharacter(PushDirection * 1250.0f + FVector(0.0f, 0.0f, 260.0f), true, true);
+        Enemy->TakeDamage(RestorationBurstDamage, FDamageEvent(), nullptr, this);
     }
 }

@@ -38,6 +38,7 @@ AShadowEnemy::AShadowEnemy()
     ShadowLabel->SetTextRenderColor(FColor(198, 82, 255));
     ShadowLabel->SetWorldSize(58.0f);
     ShadowLabel->SetText(FText::FromString(TEXT("SHADOW")));
+    ShadowLabel->SetHiddenInGame(true);
 }
 
 void AShadowEnemy::BeginPlay()
