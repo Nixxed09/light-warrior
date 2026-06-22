@@ -45,6 +45,10 @@ Local compatibility note: the installed `ahujasid/blender-mcp` add-on expects ra
 
 ## Light Warrior Production Flow
 
+See `docs/GAMESOS_ASSET_CREATION_FLOW.md` for the full studio-style asset workflow. The short version: use `image-engine` for concept direction, `video-engine` plus Blender for 3D candidates and UE5 FBX packages, `audio-engine` for feedback audio, and UE5 as the final acceptance environment.
+
+The project-specific queue is now in `docs/AI_ASSET_PRODUCTION_QUEUE.md`. Use that file for the next hero, enemy, VFX, environment, and audio requests so every generated item has a gameplay job, prompt package, review gate, and UE5 evidence requirement.
+
 ## Media Engine First Principles
 
 - `image-engine` makes images: concepts, character sheets, UI/key art, sprites, icons, backgrounds.
@@ -201,17 +205,18 @@ Before marking an asset production-ready:
 
 ## Current Blockers
 
-- UE5 is still not installed.
-- API keys/service tokens are not configured for generation providers.
-- PrusaSlicer and Whisper are not installed/configured for video-engine.
+- Provider credentials and service tokens still determine which generation calls can run unattended.
+- PrusaSlicer and Whisper are not required for the first Light Warrior visual pass, but remain optional video-engine capabilities.
 - image-engine `/api/health` requires auth; root route is the current unauthenticated liveness check.
+- Every candidate still needs UE5 import/capture proof before approval.
 
 ## Immediate Next Steps
 
 1. Configure generation provider credentials as needed.
-2. Generate the Thunder Hammer temple concept bitmap through image-engine from `assets/generated/concepts/thunder_hammer_temple/image-engine-request.json`.
-3. Install UE5 and prove the existing FBX candidate imports into Play-In-Editor before marking the asset production-ready.
-4. Replace the procedural blockout with concept-driven geometry, UVs, and materials after the visual direction is approved.
+2. Generate the hero, enemy, and sacred circle concept packages from `docs/AI_ASSET_PRODUCTION_QUEUE.md`.
+3. Generate the core SFX pack through audio-engine once credentials are available.
+4. Replace the procedural blockout with concept-driven geometry, materials, VFX, and SFX after each direction passes review.
+5. Capture a 30-second UE5 proof clip before approving any candidate for the first playable.
 
 ## Current Generated Packages
 

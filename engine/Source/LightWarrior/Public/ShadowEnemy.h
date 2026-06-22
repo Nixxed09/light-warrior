@@ -5,6 +5,9 @@
 #include "ShadowEnemy.generated.h"
 
 class ALightWarriorCharacter;
+class UPointLightComponent;
+class UStaticMeshComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class LIGHTWARRIOR_API AShadowEnemy : public ACharacter
@@ -24,16 +27,25 @@ protected:
     float MaxHealth = 70.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shadow")
-    float ContactDamage = 12.0f;
+    float ContactDamage = 8.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shadow")
     float AttackRange = 150.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shadow")
-    float AttackCooldown = 2.2f;
+    float AttackCooldown = 2.8f;
 
     UPROPERTY(BlueprintReadOnly, Category = "Shadow")
     float Health = 70.0f;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UStaticMeshComponent> ShadowMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UPointLightComponent> ShadowLight;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UTextRenderComponent> ShadowLabel;
 
 private:
     ALightWarriorCharacter* FindPlayer() const;

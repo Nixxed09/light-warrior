@@ -49,12 +49,14 @@ Responsibilities:
 - Dash with cooldown and tuning hooks.
 - Basic light strike with generous melee arc.
 - Health and outside-light damage handling.
+- Fall death when the player drops below the arena kill plane.
 - Controller-first input mapping.
 
 Acceptance:
 
 - Movement and dash feel responsive in Play-In-Editor.
 - Strike hits a nearby shadow enemy with visible feedback.
+- Falling off the arena defeats the player and triggers a run restart.
 
 ### `BP_SacredCircle`
 
@@ -118,11 +120,13 @@ Responsibilities:
 - Track 90-second survival timer.
 - Trigger victory/failure result.
 - Broadcast run state and remaining time to UI.
+- Restart the level after failure when `bRestartAfterFailure` is enabled.
 
 Acceptance:
 
 - Menu-to-arena-to-result loop exists before vertical-slice polish.
 - Victory triggers when the timer ends and failure triggers when the hero reaches zero health.
+- Failure reloads the current level after a short delay so the player starts over cleanly.
 
 ### `BP_OldEarthNodeData`
 
@@ -195,6 +199,33 @@ Acceptance:
 - Every resource has a visible cause and a visible effect.
 - No resource exists only as a menu currency.
 
+Native scaffold:
+
+- `ULightWarriorProgressionComponent`
+- `ELightWarriorResource`
+- `FLightWarriorResourceChanged`
+
+Current wiring:
+
+- Leaving the sacred circle for an excursion records `Courage`.
+- Successful light strikes record `Light`.
+- Thunder Hammer activation records both `Courage` and `Light`.
+
+### `ALightWarriorHUD`
+
+Responsibilities:
+
+- Show run state, objective, timer, purified wells, health, active well progress, Light, Courage, optional Shadow Debt, and active Thunder Hammer time.
+- Keep the objective readable at a glance without covering combat.
+- Keep first-playable controls visible until a proper menu/tutorial pass exists.
+- Use Canvas HUD until UMG art direction is ready.
+
+Acceptance:
+
+- HUD compiles with the UE5 module.
+- The HUD reinforces safety, risk, restoration, and resource cause/effect.
+- The HUD remains sparse enough for combat readability.
+
 ## Data And Tuning
 
 Create Data Assets or Blueprint variables for:
@@ -244,6 +275,7 @@ C:\Program Files\Blender Foundation\Blender 4.5\blender.exe
 ```
 
 Media engine integration is documented in `docs/MEDIA_ENGINE_INTEGRATION.md`.
+The current Light Warrior AI asset queue is documented in `docs/AI_ASSET_PRODUCTION_QUEUE.md`.
 
 Use:
 

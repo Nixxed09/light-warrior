@@ -7,6 +7,7 @@
 class UPointLightComponent;
 class USphereComponent;
 class UStaticMeshComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class LIGHTWARRIOR_API AThunderHammerTemple : public AActor
@@ -30,6 +31,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UPointLightComponent> TempleLight;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UTextRenderComponent> TempleLabel;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Temple")
     float HammerDuration = 14.0f;

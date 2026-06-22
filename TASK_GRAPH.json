@@ -3,6 +3,36 @@
   "game_id": "light-warrior",
   "tasks": [
     {
+      "id": "gameplay.fall_death_restart",
+      "title": "Defeat and restart when player falls off world",
+      "phase": "gameplay",
+      "status": "complete",
+      "note": "ALightWarriorCharacter now dies below FallDeathZ and through FellOutOfWorld. ALightWarriorGameMode schedules a level reload after failure so the run starts over. UnrealBuildTool compile passed with UE 5.8.",
+      "expected_artifacts": ["engine/Source/LightWarrior/Public/LightWarriorCharacter.h", "engine/Source/LightWarrior/Private/LightWarriorCharacter.cpp", "engine/Source/LightWarrior/Public/LightWarriorGameMode.h", "engine/Source/LightWarrior/Private/LightWarriorGameMode.cpp"],
+      "acceptance": ["falling below the arena kill plane sets health to zero", "Unreal FellOutOfWorld path also defeats the player", "failure reloads the current level after a short delay", "UE5 module compiles"],
+      "qa": ["engine_health_check", "play_in_editor"]
+    },
+    {
+      "id": "engine.hud_first_playable",
+      "title": "Improve UE5 first-playable HUD",
+      "phase": "engine",
+      "status": "complete",
+      "note": "Reworked ALightWarriorHUD into a clearer Canvas HUD with run state, objective, timer, wells, health, active well progress, Light/Courage resource pills, optional Shadow Debt, Thunder Hammer time, controls, and center reticle. UnrealBuildTool compile passed with UE 5.8.",
+      "expected_artifacts": ["engine/Source/LightWarrior/Public/LightWarriorHUD.h", "engine/Source/LightWarrior/Private/LightWarriorHUD.cpp"],
+      "acceptance": ["HUD shows objective and run state", "HUD shows health and active well progress", "HUD shows Light and Courage resources", "HUD shows Thunder Hammer active time", "HUD compiles in UE5"],
+      "qa": ["engine_health_check", "play_in_editor"]
+    },
+    {
+      "id": "engine.progression_component",
+      "title": "Add UE5 progression resource component",
+      "phase": "engine",
+      "status": "complete",
+      "note": "Added ULightWarriorProgressionComponent and wired Light/Courage gains into LightWarriorCharacter. UnrealBuildTool compile passed with UE 5.8 after closing Live Coding.",
+      "expected_artifacts": ["engine/Source/LightWarrior/Public/LightWarriorProgressionComponent.h", "engine/Source/LightWarrior/Private/LightWarriorProgressionComponent.cpp"],
+      "acceptance": ["Light and Courage are tracked as Blueprint-readable resources", "resource changes broadcast to UI/VFX", "leaving safety records Courage", "successful restoration records Light", "runtime AI remains disabled"],
+      "qa": ["engine_health_check"]
+    },
+    {
       "id": "design.lila_systems_progression",
       "title": "Structure progression, resources, enemies, and weapons around Lila laws",
       "phase": "design",
@@ -172,6 +202,29 @@
       "expected_artifacts": ["STYLE_GUIDE.md"],
       "acceptance": ["light/dark readability rules are specific", "VFX constraints protect combat readability", "style rules make bravery expanding light visible without tutorial text"],
       "qa": ["style_review"]
+    },
+    {
+      "id": "asset.ai_first_visual_audio_sprint",
+      "title": "Run Light Warrior AI asset sprint for hero, enemies, VFX, and audio",
+      "phase": "asset",
+      "status": "pending",
+      "inputs": ["docs/AI_ASSET_PRODUCTION_QUEUE.md", "STYLE_GUIDE.md", "THEME_ALIGNMENT.md", "ASSET_MANIFEST.json"],
+      "expected_artifacts": [
+        "assets/generated/concepts/character_light_warrior",
+        "assets/generated/concepts/enemy_shadow_imp",
+        "assets/generated/concepts/enemy_berserker",
+        "assets/generated/concepts/vfx_sacred_circle",
+        "assets/generated/audio/audio_core_sfx",
+        "captures/ai-asset-sprint-ue5-proof.mp4"
+      ],
+      "acceptance": [
+        "hero has readable body, face direction, and weapon identity",
+        "shadow imp and berserker silhouettes are distinct from each other and from the hero",
+        "sacred circle expansion is obvious in UE5 gameplay",
+        "at least three core SFX are wired in UE5",
+        "30-second UE5 proof capture exists before approval"
+      ],
+      "qa": ["style_review", "asset_validation", "play_in_editor", "capture_video"]
     },
     {
       "id": "scope.first_playable",

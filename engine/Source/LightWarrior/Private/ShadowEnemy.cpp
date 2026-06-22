@@ -1,5 +1,8 @@
 #include "ShadowEnemy.h"
 
+#include "Components/PointLightComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Engine/DamageEvents.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -8,7 +11,33 @@
 AShadowEnemy::AShadowEnemy()
 {
     PrimaryActorTick.bCanEverTick = true;
-    GetCharacterMovement()->MaxWalkSpeed = 360.0f;
+    GetCharacterMovement()->MaxWalkSpeed = 285.0f;
+
+    ShadowMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ShadowMesh"));
+    ShadowMesh->SetupAttachment(RootComponent);
+    ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -25.0f));
+    ShadowMesh->SetRelativeScale3D(FVector(0.85f, 0.85f, 0.85f));
+    ShadowMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> ShadowMeshAsset(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
+    if (ShadowMeshAsset.Succeeded())
+    {
+        ShadowMesh->SetStaticMesh(ShadowMeshAsset.Object);
+    }
+
+    ShadowLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("ShadowLight"));
+    ShadowLight->SetupAttachment(RootComponent);
+    ShadowLight->SetLightColor(FLinearColor(0.18f, 0.04f, 0.34f));
+    ShadowLight->SetIntensity(1600.0f);
+    ShadowLight->SetAttenuationRadius(520.0f);
+
+    ShadowLabel = CreateDefaultSubobject<UTextRenderComponent>(TEXT("ShadowLabel"));
+    ShadowLabel->SetupAttachment(RootComponent);
+    ShadowLabel->SetRelativeLocation(FVector(0.0f, 0.0f, 130.0f));
+    ShadowLabel->SetHorizontalAlignment(EHTA_Center);
+    ShadowLabel->SetTextRenderColor(FColor(198, 82, 255));
+    ShadowLabel->SetWorldSize(58.0f);
+    ShadowLabel->SetText(FText::FromString(TEXT("SHADOW")));
 }
 
 void AShadowEnemy::BeginPlay()

@@ -192,3 +192,22 @@ For the current UE5 migration, build only:
 - one post-run law naming hook
 
 Everything else is expansion after Play-In-Editor evidence.
+
+## Current UE5 Implementation
+
+Implemented as C++ scaffolding:
+
+- `ULightWarriorProgressionComponent`
+  - Tracks `Light`, `Courage`, `ResonanceShards`, `TrueMapFragments`, `ShadowDebt`, and `AetherCharge`.
+  - Broadcasts resource changes to Blueprint/UI.
+  - Provides authored methods for brave excursions, restoration, and passive pressure.
+- `ALightWarriorCharacter`
+  - Gains `Courage` when the player first leaves the sacred circle on an excursion.
+  - Gains `Light` when a light strike hits darkness.
+  - Gains extra `Courage` and `Light` when Thunder Hammer activates.
+
+Still needed in editor:
+
+- Bind resource changes to UI/VFX.
+- Tune exact values after Play-In-Editor feel testing.
+- Decide whether `ShadowDebt` belongs in first playable or should wait until the second node.

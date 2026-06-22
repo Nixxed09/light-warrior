@@ -11,9 +11,9 @@ Then read the next pending task in `TASK_GRAPH.json`.
 
 ## Current Best Next Task
 
-`engine.ue5_shell`
+`engine.playable_slice`
 
-Reason: production has moved into `engine/LightWarrior.uproject`, but UE5 is not installed/discoverable. The next milestone is opening the project in Unreal, compiling the module, creating the first arena map, and capturing Play-In-Editor evidence.
+Reason: production now has a compiling UE5 module and code-spawned first arena. The next milestone is Play-In-Editor capture evidence, Blueprint polish, authored UI, and a saved arena map.
 
 ## Prototype Evidence Task
 
@@ -56,7 +56,56 @@ Current scaffold exists:
 - `engine/LightWarrior.uproject`
 - `engine/Config/*.ini`
 - `engine/Source/LightWarrior`
-- first C++ classes for character, sacred circle, Thunder Hammer temple, shadow enemy, and game mode
+- first C++ classes for character, sacred circle, Light Wells, Thunder Hammer temple, shadow enemy, and game mode
+
+## Run UE5 Playable Slice
+
+Compile:
+
+```powershell
+.\tools\ue-build.ps1
+```
+
+Open:
+
+```powershell
+& "D:\Games\UE_5.8\Engine\Binaries\Win64\UnrealEditor.exe" "D:\Phoenix\nix-code\games\light-warrior\engine\LightWarrior.uproject"
+```
+
+Press Play. The game mode currently auto-spawns a playable arena if the loaded map has no sacred circle:
+
+- player pawn near the starting circle
+- visible arena floor and directional light
+- sacred circle safe zone
+- three Light Wells
+- Thunder Hammer temple
+- eight shadow enemies
+
+Controls:
+
+- `WASD`: move
+- mouse/gamepad right stick: look
+- `Left Shift` / gamepad face button right: dash
+- `Space` or left mouse / gamepad face button bottom: Light Strike
+
+Win condition: purify the required Light Wells by holding position inside their radius.
+Failure condition: health reaches zero from enemies or staying outside the circle.
+
+## Automated UE Iteration Loop
+
+Use this to build, launch, capture, quit, and create a review note:
+
+```powershell
+.\tools\ue-loop.ps1 -Name first-pass
+```
+
+Faster after a successful compile:
+
+```powershell
+.\tools\ue-loop.ps1 -Name fast-pass -SkipBuild
+```
+
+See `docs\UE_ITERATION_LOOP.md`.
 
 Do this after UE5 is installed:
 

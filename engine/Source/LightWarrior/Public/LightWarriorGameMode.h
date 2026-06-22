@@ -15,6 +15,7 @@ enum class ELightWarriorRunState : uint8
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLightWarriorRunStateChanged, ELightWarriorRunState, NewState);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLightWarriorRunTimeChanged, float, RemainingSeconds);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FLightWarriorObjectiveProgressChanged, int32, PurifiedLightWells, int32, RequiredLightWells);
 
 UCLASS()
 class LIGHTWARRIOR_API ALightWarriorGameMode : public AGameModeBase
@@ -25,6 +26,7 @@ public:
     ALightWarriorGameMode();
 
     virtual void BeginPlay() override;
+    virtual void RestartPlayer(AController* NewPlayer) override;
     virtual void Tick(float DeltaSeconds) override;
 
     UFUNCTION(BlueprintCallable, Category = "Light Warrior|Run")
@@ -39,11 +41,20 @@ public:
     UFUNCTION(BlueprintPure, Category = "Light Warrior|Run")
     float GetRemainingRunSeconds() const { return RemainingRunSeconds; }
 
+    UFUNCTION(BlueprintPure, Category = "Light Warrior|Objectives")
+    int32 GetPurifiedLightWells() const { return PurifiedLightWells; }
+
+    UFUNCTION(BlueprintPure, Category = "Light Warrior|Objectives")
+    int32 GetRequiredLightWells() const { return RequiredLightWells; }
+
     UPROPERTY(BlueprintAssignable, Category = "Light Warrior|Run")
     FLightWarriorRunStateChanged OnRunStateChanged;
 
     UPROPERTY(BlueprintAssignable, Category = "Light Warrior|Run")
     FLightWarriorRunTimeChanged OnRunTimeChanged;
+
+    UPROPERTY(BlueprintAssignable, Category = "Light Warrior|Objectives")
+    FLightWarriorObjectiveProgressChanged OnObjectiveProgressChanged;
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Run")
@@ -52,13 +63,42 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Run")
     bool bAutoStartRun = true;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Run")
+    bool bRestartAfterFailure = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Run")
+    float FailureRestartDelaySeconds = 1.25f;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light Warrior|Run")
     ELightWarriorRunState RunState = ELightWarriorRunState::Waiting;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light Warrior|Run")
     float RemainingRunSeconds = 90.0f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Objectives")
+    int32 RequiredLightWells = 3;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Light Warrior|Objectives")
+    int32 PurifiedLightWells = 0;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Arena")
+    bool bAutoSpawnArenaIfEmpty = true;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Arena")
+    int32 AutoSpawnEnemyCount = 5;
+
 private:
+    UFUNCTION()
+    void HandleLightWellPurified(class ALightWell* LightWell);
+
+    void BootstrapPlayableArenaIfNeeded();
+    void BindLightWellObjectives();
+    void ConfigureAutomationLoop();
+    void CaptureAutomationScreenshot();
+    void QuitAfterAutomationCapture();
     bool IsPlayerDefeated() const;
+    void RestartLevelAfterFailure();
     void SetRunState(ELightWarriorRunState NewState);
+
+    FString AutomationScreenshotPath;
 };

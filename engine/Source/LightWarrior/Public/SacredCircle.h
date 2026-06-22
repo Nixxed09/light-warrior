@@ -37,6 +37,12 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<USceneComponent> SceneRoot;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UStaticMeshComponent> CircleMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UPointLightComponent> CircleLight;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sacred Circle")
     float StartingRadius = 1400.0f;
 
@@ -53,5 +59,6 @@ protected:
     float CurrentRadius = 1400.0f;
 
 private:
+    void RefreshVisuals();
     void SetRadius(float NewRadius);
 };

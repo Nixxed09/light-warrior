@@ -73,6 +73,8 @@ The style must make the hook readable before UI text explains it. The player sho
 - Button/panel treatment: readable, controller-friendly, low clutter.
 - Feedback states: light charge, temple active, danger outside circle.
 - Hook HUD rule: any prompt or meter must support the safety-risk-reward read; do not add UI that makes the circle feel like a generic health aura.
+- Current UE HUD: dark translucent status panel, top-center node objective, Light/Courage resource pills, active well progress, hammer timer, sparse center reticle, and bottom control strip.
+- HUD priority order: objective, health, well progress, run timer, active power, resources. Anything lower waits for UMG polish.
 
 ## Audio Identity
 
