@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "game_id": "light-warrior",
+  "created_at": "2026-06-23",
+  "purpose": "Machine-readable handoff map from concept images to Blender/video-engine outputs and UE5 runtime usage.",
+  "route_types": {
+    "concept_to_blender_to_ue_actor": "Generate image concept, approve direction, create Blender source/FBX through video-engine or Blender MCP, import into UE5 actor/component.",
+    "concept_to_ue_material_or_vfx": "Generate image reference, build material/Niagara/runtime VFX in UE5, validate in gameplay capture.",
+    "concept_to_ue_ui": "Generate icon/card reference, crop/vectorize or redraw into UE UI assets, validate at gameplay HUD size.",
+    "audio_engine_to_ue": "Generate audio through audio-engine, import WAV/MetaSound/SoundCue into UE5, validate against gameplay timing.",
+    "blender_existing_to_ue": "Use existing Blender/FBX package as the candidate source, refine using concept references, then import into UE5."
+  },
+  "assets": [
+    {
+      "asset_id": "character.light_warrior",
+      "route_type": "concept_to_blender_to_ue_actor",
+      "concept_package": "assets/generated/concepts/character_light_warrior",
+      "blender_package": "assets/generated/models/character_light_warrior",
+      "ue_runtime_target": "ALightWarriorCharacter visual mesh and weapon attachment",
+      "current_runtime_fallback": "C++ procedural capsule/mesh readability pulses",
+      "next_system_action": "Generate concept PNG, approve silhouette, create Blender skeletal/static placeholder package, then import into the UE character Blueprint.",
+      "acceptance_gate": "Default camera shows face/body direction, white-gold/dawn-blue identity, and hammer silhouette during movement and combat."
+    },
+    {
+      "asset_id": "enemy.shadow_imp",
+      "route_type": "concept_to_blender_to_ue_actor",
+      "concept_package": "assets/generated/concepts/enemy_shadow_imp",
+      "blender_package": "assets/generated/models/enemy_shadow_imp",
+      "ue_runtime_target": "AShadowEnemy fast variant mesh, attack tell, hit flash, and dissolve feedback",
+      "current_runtime_fallback": "C++ procedural enemy mesh with red-violet tell ring and gold death burst",
+      "next_system_action": "Generate concept PNG, make a simple readable Blender mesh, import it into the ShadowEnemy visual component.",
+      "acceptance_gate": "Distinct from hero at combat distance; attack tell is visible before damage."
+    },
+    {
+      "asset_id": "enemy.berserker",
+      "route_type": "concept_to_blender_to_ue_actor",
+      "concept_package": "assets/generated/concepts/enemy_berserker",
+      "blender_package": "assets/generated/models/enemy_berserker",
+      "ue_runtime_target": "Future heavy enemy actor or AShadowEnemy heavy variant",
+      "current_runtime_fallback": "Not yet implemented as a separate UE actor",
+      "next_system_action": "Generate concept PNG, model heavy silhouette in Blender, add heavy enemy class/variant with charge tell.",
+      "acceptance_gate": "Reads heavier and slower than the imp, with a clear red-violet charge tell."
+    },
+    {
+      "asset_id": "vfx.sacred_circle",
+      "route_type": "concept_to_ue_material_or_vfx",
+      "concept_package": "assets/generated/concepts/vfx_sacred_circle",
+      "blender_package": null,
+      "ue_runtime_target": "ASacredCircle materials, expansion ring, danger boundary, restored territory pulse",
+      "current_runtime_fallback": "C++ procedural ring meshes/material pulses",
+      "next_system_action": "Use generated reference frames to tune UE material colors, opacity, expansion timing, and Niagara/material effects.",
+      "acceptance_gate": "Safety, danger, expansion, and restored territory read without hiding player or enemies."
+    },
+    {
+      "asset_id": "weapon.thunder_hammer",
+      "route_type": "concept_to_blender_to_ue_actor",
+      "concept_package": "assets/generated/concepts/weapon_thunder_hammer",
+      "blender_package": "assets/generated/models/weapon_thunder_hammer",
+      "ue_runtime_target": "ALightWarriorCharacter weapon attachment and Thunder Hammer impact effects",
+      "current_runtime_fallback": "Runtime hammer/ability effect represented by C++ pulses and shockwave rings",
+      "next_system_action": "Generate concept PNG, model a readable hammer in Blender, attach to character hand/socket, and drive impact VFX.",
+      "acceptance_gate": "Hammer head and lightning core read during movement and strike frames."
+    },
+    {
+      "asset_id": "environment.arena",
+      "route_type": "blender_existing_to_ue",
+      "concept_package": "assets/generated/concepts/environment_arena_kit",
+      "blender_package": "assets/generated/models/arena",
+      "ue_runtime_target": "ALightWarriorGameMode bootstrapped floor, lanes, well placements, and restored seams",
+      "current_runtime_fallback": "C++ procedural huge flat world plane, path meshes, wells, and materials",
+      "next_system_action": "Use existing arena Blender package as the first model candidate, refine against concept references, then import pieces into UE5.",
+      "acceptance_gate": "Huge flat-world plane hides the edge, combat lanes remain readable, and restored seams show progress."
+    },
+    {
+      "asset_id": "environment.thunder_hammer_temple",
+      "route_type": "blender_existing_to_ue",
+      "concept_package": "assets/generated/concepts/thunder_hammer_temple",
+      "blender_package": "assets/generated/models/thunder_hammer_temple",
+      "ue_runtime_target": "AThunderHammerTemple landmark mesh, activation core, and collision footprint",
+      "current_runtime_fallback": "C++ procedural temple pedestal/mesh components",
+      "next_system_action": "Import existing FBX candidate, compare to internal image-gen temple reference, tune scale/collision/materials in UE5.",
+      "acceptance_gate": "Temple is the strongest landmark and the approach lane remains playable under pressure."
+    },
+    {
+      "asset_id": "pickup.light_shard",
+      "route_type": "concept_to_blender_to_ue_actor",
+      "concept_package": "assets/generated/concepts/pickup_light_shard",
+      "blender_package": "assets/generated/models/pickup_light_shard",
+      "ue_runtime_target": "Future resource pickup actor for Light/Courage/Resonance rewards",
+      "current_runtime_fallback": "Resource gains are currently driven by combat and well events",
+      "next_system_action": "Generate concept PNG, create simple low-poly shard mesh/material, then spawn it as a pickup reward.",
+      "acceptance_gate": "Ground pickup glow reads without looking like enemy attack/VFX."
+    },
+    {
+      "asset_id": "material.corruption",
+      "route_type": "concept_to_ue_material_or_vfx",
+      "concept_package": "assets/generated/concepts/material_corruption",
+      "blender_package": null,
+      "ue_runtime_target": "Corruption floor material, enemy danger tell accents, boundary pressure",
+      "current_runtime_fallback": "C++ runtime materials on procedural meshes",
+      "next_system_action": "Generate material reference, build UE material instance with violet-black base and restrained red-violet pulse.",
+      "acceptance_gate": "Signals danger without hiding silhouettes or circle boundaries."
+    },
+    {
+      "asset_id": "material.restored_stone",
+      "route_type": "concept_to_ue_material_or_vfx",
+      "concept_package": "assets/generated/concepts/material_restored_stone",
+      "blender_package": null,
+      "ue_runtime_target": "Restored floor, light well, temple, and safe path material instances",
+      "current_runtime_fallback": "C++ runtime materials on procedural meshes",
+      "next_system_action": "Generate material reference, build UE material instance with pale stone, gold seams, and dawn-blue resonance.",
+      "acceptance_gate": "Feels safe/reclaimed while preserving combat readability."
+    },
+    {
+      "asset_id": "ui.hud_icons",
+      "route_type": "concept_to_ue_ui",
+      "concept_package": "assets/generated/concepts/ui_hud_icons",
+      "blender_package": null,
+      "ue_runtime_target": "ALightWarriorHUD iconography and future UMG widgets",
+      "current_runtime_fallback": "Canvas HUD text/bars/reticle",
+      "next_system_action": "Generate icon sheet, select/crop/redraw icons, import UI textures or Slate brushes.",
+      "acceptance_gate": "Icons remain understandable at HUD size without text."
+    },
+    {
+      "asset_id": "ui.upgrade_cards",
+      "route_type": "concept_to_ue_ui",
+      "concept_package": "assets/generated/concepts/ui_upgrade_cards",
+      "blender_package": null,
+      "ue_runtime_target": "Future upgrade selection screen/card visuals",
+      "current_runtime_fallback": "No upgrade card UI yet",
+      "next_system_action": "Generate card visual reference, build UMG upgrade card layout using icon-first visuals.",
+      "acceptance_gate": "Light Strike, Sacred Circle, and Thunder Hammer upgrades are distinct without text dependency."
+    },
+    {
+      "asset_id": "audio.first_loop",
+      "route_type": "audio_engine_to_ue",
+      "concept_package": null,
+      "blender_package": null,
+      "audio_package": "assets/generated/audio/audio_first_loop",
+      "ue_runtime_target": "Combat/survival music loop",
+      "current_runtime_fallback": "No imported music loop",
+      "next_system_action": "Generate loop through audio-engine, import WAV into UE5, validate mix under combat SFX.",
+      "acceptance_gate": "Loops cleanly and does not mask core gameplay cues."
+    },
+    {
+      "asset_id": "audio.core_sfx",
+      "route_type": "audio_engine_to_ue",
+      "concept_package": null,
+      "blender_package": null,
+      "audio_package": "assets/generated/audio/audio_core_sfx",
+      "ue_runtime_target": "Dash, Light Strike, shadow dissolve, circle expansion, temple activation, hammer slam",
+      "current_runtime_fallback": "Visual-only feedback for most actions",
+      "next_system_action": "Generate SFX pack through audio-engine, import WAVs into UE5, attach to gameplay events.",
+      "acceptance_gate": "Strike, danger, defeat, and restoration cues are distinct and timed to gameplay."
+    }
+  ]
+}

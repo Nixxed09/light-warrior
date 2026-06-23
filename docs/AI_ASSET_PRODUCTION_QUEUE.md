@@ -65,6 +65,34 @@ The first full batch covers:
 - `ui.hud_icons`
 - `ui.upgrade_cards`
 
+## Asset Routing
+
+The system-level routing map is:
+
+```text
+assets/generated/asset-routing.json
+```
+
+Validate it with:
+
+```powershell
+npm run assets:validate-routing
+```
+
+Use this file to decide which generator owns each asset:
+
+- Character, enemy, weapon, pickup, arena, and temple visuals use concept art as direction for Blender/video-engine packages, then UE5 import.
+- Sacred circle, corruption, and restored stone use concept art as material/VFX reference and do not need Blender unless a mesh support piece is later added.
+- HUD icons and upgrade cards use concept art as UI reference and go to UE UI/Canvas/UMG, not Blender.
+- Music and SFX use audio-engine and do not use image generation or Blender.
+
+Current generated Blender/model candidates:
+
+- `environment.arena` -> `assets/generated/models/arena`
+- `environment.thunder_hammer_temple` -> `assets/generated/models/thunder_hammer_temple`
+
+Current concept packages are references only until their matching Blender/UE package exists and passes gameplay capture.
+
 Current local blocker:
 
 - The in-chat image tool can create references for review, but it did not expose saved file paths in this shell.

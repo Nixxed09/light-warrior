@@ -1,6 +1,6 @@
-﻿{
+{
     "schema_version":  "1.0",
-    "generated_request_at":  "2026-06-23T01:19:16.4077723Z",
+    "prepared_from_batch_date":  "2026-06-23",
     "provider_system":  "openai.images.generations",
     "model":  "gpt-image-2",
     "asset_id":  "ui.hud_icons",

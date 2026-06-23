@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "ShadowEnemy.h"
 #include "LightWarriorGameMode.generated.h"
 
 UENUM(BlueprintType)
@@ -97,7 +98,7 @@ private:
     void BootstrapPlayableArenaIfNeeded();
     void BindLightWellObjectives();
     void SpawnLightWellPressure(class ALightWell* LightWell, int32 EnemyCount, float SpawnRadius, const TCHAR* LabelPrefix);
-    void SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index);
+    void SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index, EShadowEnemyArchetype Archetype = EShadowEnemyArchetype::ShadowImp);
     void PlaceAutomationPlayerAtFirstLightWell();
     void PlaceAutomationPlayerInCombat();
     void ConfigureAutomationLoop();

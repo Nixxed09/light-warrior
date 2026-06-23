@@ -94,7 +94,44 @@ AShadowEnemy::AShadowEnemy()
 void AShadowEnemy::BeginPlay()
 {
     Super::BeginPlay();
+    ApplyArchetypeVisuals();
     Health = MaxHealth;
+}
+
+void AShadowEnemy::ConfigureArchetype(EShadowEnemyArchetype NewArchetype)
+{
+    Archetype = NewArchetype;
+
+    switch (Archetype)
+    {
+    case EShadowEnemyArchetype::Berserker:
+        MaxHealth = 145.0f;
+        ContactDamage = 18.0f;
+        AttackRange = 245.0f;
+        AttackCooldown = 3.45f;
+        AttackWindupSeconds = 0.95f;
+        GetCharacterMovement()->MaxWalkSpeed = 215.0f;
+        BaseShadowColor = FLinearColor(0.12f, 0.005f, 0.07f);
+        TellColor = FLinearColor(1.0f, 0.08f, 0.12f);
+        BurstColor = FLinearColor(1.0f, 0.50f, 0.18f);
+        break;
+
+    case EShadowEnemyArchetype::ShadowImp:
+    default:
+        MaxHealth = 55.0f;
+        ContactDamage = 7.0f;
+        AttackRange = 165.0f;
+        AttackCooldown = 2.25f;
+        AttackWindupSeconds = 0.48f;
+        GetCharacterMovement()->MaxWalkSpeed = 360.0f;
+        BaseShadowColor = FLinearColor(0.08f, 0.015f, 0.16f);
+        TellColor = FLinearColor(0.82f, 0.10f, 1.0f);
+        BurstColor = FLinearColor(1.0f, 0.82f, 0.24f);
+        break;
+    }
+
+    Health = MaxHealth;
+    ApplyArchetypeVisuals();
 }
 
 void AShadowEnemy::Tick(float DeltaSeconds)
@@ -163,9 +200,10 @@ void AShadowEnemy::StartAttackWindup()
     bAttackWindingUp = true;
     AttackWindupRemaining = AttackWindupSeconds;
     AttackTellMesh->SetHiddenInGame(false);
-    AttackTellMesh->SetRelativeScale3D(FVector(2.1f, 2.1f, 0.025f));
-    ShadowLight->SetLightColor(FLinearColor(1.0f, 0.05f, 0.28f));
-    ShadowLight->SetIntensity(6200.0f);
+    const float StartingTellScale = Archetype == EShadowEnemyArchetype::Berserker ? 3.0f : 1.75f;
+    AttackTellMesh->SetRelativeScale3D(FVector(StartingTellScale, StartingTellScale, 0.025f));
+    ShadowLight->SetLightColor(TellColor);
+    ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 8800.0f : 6200.0f);
 }
 
 void AShadowEnemy::FinishAttack(ALightWarriorCharacter* Player)
@@ -173,12 +211,17 @@ void AShadowEnemy::FinishAttack(ALightWarriorCharacter* Player)
     bAttackWindingUp = false;
     AttackTellMesh->SetHiddenInGame(true);
     AttackCooldownRemaining = AttackCooldown;
-    ShadowLight->SetLightColor(FLinearColor(0.18f, 0.04f, 0.34f));
-    ShadowLight->SetIntensity(1800.0f);
+    ShadowLight->SetLightColor(BaseShadowColor);
+    ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 2400.0f : 1800.0f);
 
     if (Player)
     {
         UGameplayStatics::ApplyDamage(Player, ContactDamage, GetController(), this, UDamageType::StaticClass());
+        if (Archetype == EShadowEnemyArchetype::Berserker)
+        {
+            const FVector LaunchDirection = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal2D();
+            Player->LaunchCharacter(LaunchDirection * 720.0f + FVector(0.0f, 0.0f, 130.0f), true, true);
+        }
     }
 }
 
@@ -192,9 +235,11 @@ void AShadowEnemy::UpdateAttackTell(float DeltaSeconds)
     AttackWindupRemaining = FMath::Max(0.0f, AttackWindupRemaining - DeltaSeconds);
     const float Alpha = 1.0f - AttackWindupRemaining / FMath::Max(0.01f, AttackWindupSeconds);
     const float Pulse = 0.5f + 0.5f * FMath::Sin(GetWorld()->GetTimeSeconds() * 18.0f);
-    const float TellScale = FMath::Lerp(1.25f, 2.65f, Alpha);
+    const float MinTellScale = Archetype == EShadowEnemyArchetype::Berserker ? 2.45f : 1.15f;
+    const float MaxTellScale = Archetype == EShadowEnemyArchetype::Berserker ? 4.65f : 2.65f;
+    const float TellScale = FMath::Lerp(MinTellScale, MaxTellScale, Alpha);
     AttackTellMesh->SetRelativeScale3D(FVector(TellScale, TellScale, 0.025f));
-    ShadowLight->SetIntensity(FMath::Lerp(4200.0f, 9200.0f, FMath::Max(Alpha, Pulse * 0.8f)));
+    ShadowLight->SetIntensity(FMath::Lerp(4200.0f, Archetype == EShadowEnemyArchetype::Berserker ? 13200.0f : 9200.0f, FMath::Max(Alpha, Pulse * 0.8f)));
 }
 
 void AShadowEnemy::UpdateHitFeedback(float DeltaSeconds)
@@ -207,9 +252,9 @@ void AShadowEnemy::UpdateHitFeedback(float DeltaSeconds)
     HitFeedbackRemaining = FMath::Max(0.0f, HitFeedbackRemaining - DeltaSeconds);
     if (HitFeedbackRemaining <= 0.0f && !bAttackWindingUp)
     {
-        ApplyShadowColor(ShadowMesh, FLinearColor(0.08f, 0.015f, 0.16f), true);
-        ShadowLight->SetLightColor(FLinearColor(0.18f, 0.04f, 0.34f));
-        ShadowLight->SetIntensity(1600.0f);
+        ApplyShadowColor(ShadowMesh, BaseShadowColor, true);
+        ShadowLight->SetLightColor(BaseShadowColor);
+        ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 2200.0f : 1600.0f);
     }
 }
 
@@ -226,10 +271,39 @@ void AShadowEnemy::SpawnDeathBurst() const
     APointLight* Burst = World->SpawnActor<APointLight>(GetActorLocation() + FVector(0.0f, 0.0f, 120.0f), FRotator::ZeroRotator, SpawnParams);
     if (Burst && Burst->PointLightComponent)
     {
-        Burst->PointLightComponent->SetLightColor(FLinearColor(1.0f, 0.82f, 0.24f));
-        Burst->PointLightComponent->SetIntensity(22000.0f);
-        Burst->PointLightComponent->SetAttenuationRadius(1500.0f);
-        Burst->SetLifeSpan(0.42f);
-        Burst->SetActorLabel(TEXT("LW_ShadowDeathBurst"));
+        Burst->PointLightComponent->SetLightColor(BurstColor);
+        Burst->PointLightComponent->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 32000.0f : 22000.0f);
+        Burst->PointLightComponent->SetAttenuationRadius(Archetype == EShadowEnemyArchetype::Berserker ? 2100.0f : 1500.0f);
+        Burst->SetLifeSpan(Archetype == EShadowEnemyArchetype::Berserker ? 0.72f : 0.42f);
+        Burst->SetActorLabel(Archetype == EShadowEnemyArchetype::Berserker ? TEXT("LW_BerserkerDeathBurst") : TEXT("LW_ShadowImpDeathBurst"));
     }
+}
+
+void AShadowEnemy::ApplyArchetypeVisuals()
+{
+    if (Archetype == EShadowEnemyArchetype::Berserker)
+    {
+        ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -10.0f));
+        ShadowMesh->SetRelativeScale3D(FVector(1.35f, 1.05f, 1.85f));
+        AttackTellMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.02f));
+        ShadowLight->SetAttenuationRadius(780.0f);
+        ShadowLabel->SetText(FText::FromString(TEXT("BERSERKER")));
+        ShadowLabel->SetTextRenderColor(FColor(255, 90, 130));
+        ShadowLabel->SetWorldSize(68.0f);
+    }
+    else
+    {
+        ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -36.0f));
+        ShadowMesh->SetRelativeScale3D(FVector(0.66f, 0.66f, 0.92f));
+        AttackTellMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.02f));
+        ShadowLight->SetAttenuationRadius(520.0f);
+        ShadowLabel->SetText(FText::FromString(TEXT("IMP")));
+        ShadowLabel->SetTextRenderColor(FColor(206, 92, 255));
+        ShadowLabel->SetWorldSize(58.0f);
+    }
+
+    ApplyShadowColor(ShadowMesh, BaseShadowColor, true);
+    ApplyShadowColor(AttackTellMesh, TellColor, true);
+    ShadowLight->SetLightColor(BaseShadowColor);
+    ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 2200.0f : 1600.0f);
 }

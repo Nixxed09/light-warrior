@@ -53,7 +53,7 @@ foreach ($asset in $assets) {
   $metadataPath = Join-Path $outputDir "internal-image-gen-request.json"
   $requestMetadata = [ordered]@{
     schema_version = "1.0"
-    generated_request_at = (Get-Date).ToUniversalTime().ToString("o")
+    prepared_from_batch_date = $batch.created_at
     provider_system = "openai.images.generations"
     model = $modelToUse
     asset_id = $asset.asset_id

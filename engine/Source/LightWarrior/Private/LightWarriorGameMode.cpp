@@ -343,8 +343,8 @@ void ALightWarriorGameMode::BootstrapPlayableArenaIfNeeded()
         }
     }
 
-    SpawnPressureEnemy(FVector(910.0f, -260.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 1);
-    SpawnPressureEnemy(FVector(1030.0f, 300.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 2);
+    SpawnPressureEnemy(FVector(910.0f, -260.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 1, EShadowEnemyArchetype::ShadowImp);
+    SpawnPressureEnemy(FVector(1030.0f, 300.0f, 90.0f), TEXT("LW_FirstWellSentinel"), 2, EShadowEnemyArchetype::Berserker);
 
     AThunderHammerTemple* Temple = World->SpawnActor<AThunderHammerTemple>(AThunderHammerTemple::StaticClass(), FVector(0.0f, 2200.0f, 0.0f), FRotator::ZeroRotator, SpawnParams);
     if (Temple)
@@ -364,6 +364,7 @@ void ALightWarriorGameMode::BootstrapPlayableArenaIfNeeded()
         AShadowEnemy* Enemy = World->SpawnActor<AShadowEnemy>(AShadowEnemy::StaticClass(), EnemyLocation, FRotator::ZeroRotator, SpawnParams);
         if (Enemy)
         {
+            Enemy->ConfigureArchetype(Index % 3 == 0 ? EShadowEnemyArchetype::Berserker : EShadowEnemyArchetype::ShadowImp);
             Enemy->SetActorLabel(FString::Printf(TEXT("LW_ShadowEnemy_%02d"), Index + 1));
         }
     }
@@ -442,7 +443,8 @@ void ALightWarriorGameMode::PlaceAutomationPlayerInCombat()
     const FVector PlayerLocation(760.0f, -360.0f, 140.0f);
     Character->SetActorLocation(PlayerLocation, false, nullptr, ETeleportType::TeleportPhysics);
     Character->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-    SpawnPressureEnemy(PlayerLocation + FVector(150.0f, 0.0f, -45.0f), TEXT("LW_CombatReadabilityEnemy"), 1);
+    SpawnPressureEnemy(PlayerLocation + FVector(150.0f, 0.0f, -45.0f), TEXT("LW_CombatImp"), 1, EShadowEnemyArchetype::ShadowImp);
+    SpawnPressureEnemy(PlayerLocation + FVector(420.0f, 260.0f, -45.0f), TEXT("LW_CombatBerserker"), 1, EShadowEnemyArchetype::Berserker);
 }
 
 void ALightWarriorGameMode::HandleLightWellPurificationStarted(ALightWell* LightWell)
@@ -487,11 +489,12 @@ void ALightWarriorGameMode::SpawnLightWellPressure(ALightWell* LightWell, int32 
     {
         const float SideOffset = (Index - (EnemyCount - 1) * 0.5f) * 260.0f;
         const FVector SpawnLocation = WellLocation + TowardOrigin * SpawnRadius + Tangent * SideOffset + FVector(0.0f, 0.0f, 90.0f);
-        SpawnPressureEnemy(SpawnLocation, LabelPrefix, Index + 1);
+        const EShadowEnemyArchetype Archetype = Index == EnemyCount - 1 ? EShadowEnemyArchetype::Berserker : EShadowEnemyArchetype::ShadowImp;
+        SpawnPressureEnemy(SpawnLocation, LabelPrefix, Index + 1, Archetype);
     }
 }
 
-void ALightWarriorGameMode::SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index)
+void ALightWarriorGameMode::SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index, EShadowEnemyArchetype Archetype)
 {
     if (!GetWorld())
     {
@@ -504,6 +507,7 @@ void ALightWarriorGameMode::SpawnPressureEnemy(const FVector& SpawnLocation, con
     AShadowEnemy* Enemy = GetWorld()->SpawnActor<AShadowEnemy>(AShadowEnemy::StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnParams);
     if (Enemy)
     {
+        Enemy->ConfigureArchetype(Archetype);
         Enemy->SetActorLabel(FString::Printf(TEXT("%s_%02d"), LabelPrefix, Index));
     }
 }

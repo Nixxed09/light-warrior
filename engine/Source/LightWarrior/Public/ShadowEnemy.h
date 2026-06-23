@@ -9,6 +9,13 @@ class UPointLightComponent;
 class UStaticMeshComponent;
 class UTextRenderComponent;
 
+UENUM(BlueprintType)
+enum class EShadowEnemyArchetype : uint8
+{
+    ShadowImp,
+    Berserker
+};
+
 UCLASS()
 class LIGHTWARRIOR_API AShadowEnemy : public ACharacter
 {
@@ -19,6 +26,9 @@ public:
 
     virtual void Tick(float DeltaSeconds) override;
     virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+    UFUNCTION(BlueprintCallable, Category = "Shadow")
+    void ConfigureArchetype(EShadowEnemyArchetype NewArchetype);
 
 protected:
     virtual void BeginPlay() override;
@@ -41,6 +51,9 @@ protected:
     UPROPERTY(BlueprintReadOnly, Category = "Shadow")
     float Health = 70.0f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shadow")
+    EShadowEnemyArchetype Archetype = EShadowEnemyArchetype::ShadowImp;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UStaticMeshComponent> ShadowMesh;
 
@@ -60,9 +73,13 @@ private:
     void UpdateAttackTell(float DeltaSeconds);
     void UpdateHitFeedback(float DeltaSeconds);
     void SpawnDeathBurst() const;
+    void ApplyArchetypeVisuals();
 
     float AttackCooldownRemaining = 0.0f;
     float AttackWindupRemaining = 0.0f;
     float HitFeedbackRemaining = 0.0f;
+    FLinearColor BaseShadowColor = FLinearColor(0.08f, 0.015f, 0.16f);
+    FLinearColor TellColor = FLinearColor(1.0f, 0.08f, 0.32f);
+    FLinearColor BurstColor = FLinearColor(1.0f, 0.82f, 0.24f);
     bool bAttackWindingUp = false;
 };

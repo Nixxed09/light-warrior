@@ -295,10 +295,10 @@
       "id": "enemy.first_pair",
       "title": "Implement shadow imp and berserker enemy behaviors",
       "phase": "gameplay",
-      "status": "pending",
-      "note": "UE5 shadow enemy pressure, attack tell, hit feedback, and death burst are readable in `ue5-parity-combat1`. Still pending distinct imp/berserker behavior and silhouettes before completion.",
+      "status": "complete",
+      "note": "UE5 now has Shadow Imp and Berserker archetypes with distinct scale, color, health, movement speed, attack range, windup timing, contact damage, attack tell size/color, and death burst intensity. Berserker hits knock the player back. Combat capture `ue5-enemy-archetypes1` shows distinct silhouettes and readable pressure.",
       "inputs": ["STYLE_GUIDE.md"],
-      "expected_artifacts": ["captures/enemy-pair.mp4"],
+      "expected_artifacts": ["captures/ue-loop/ue5-enemy-archetypes1-20260622-192225.png"],
       "acceptance": ["enemy silhouettes differ", "enemy tells are readable"],
       "qa": ["play_in_editor", "capture_video"]
     },

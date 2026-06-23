@@ -73,9 +73,10 @@
                    {
                        "id":  "environment.arena",
                        "kind":  "environment",
-                       "status":  "planned",
+                       "status":  "generated_candidate",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "source":  "assets/generated/models/arena",
                        "gameplay_job":  "Sacred flat-world combat space with readable safe center, huge horizon, corruption pressure, and restored seams.",
                        "readability_requirement":  "Combat lanes, circle boundary, temple landmark, light well, corruption, and restored seams must remain visible from the default UE5 camera.",
                        "target_engine":  "ue5",

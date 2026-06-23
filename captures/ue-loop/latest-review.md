@@ -1,16 +1,16 @@
 # Light Warrior UE Loop Review
 
-Generated: 2026-06-22 19:17:53
-Scenario: first-light-well-loop
+Generated: 2026-06-22 19:24:13
+Scenario: combat-readability
 
 ## Evidence
 
-- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.png
+- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-enemy-archetypes2-20260622-192351.png
 - Screenshot exists: True
 - Exit code: 0
-- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.log
-- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.json
-- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727-evidence.json
+- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-enemy-archetypes2-20260622-192351.log
+- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-enemy-archetypes2-20260622-192351.json
+- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-enemy-archetypes2-20260622-192351-evidence.json
 
 ## Measurements
 
@@ -18,11 +18,11 @@ Scenario: first-light-well-loop
 - UE log errors: 3
 - Actionable warnings: 0
 - Actionable errors: 0
-- Objective completed in capture: True
+- Objective completed in capture: False
 - First loop visible in capture: True
 - Pressure preview visible: True
-- Attack tell visible: False
-- Hit feedback visible: False
+- Attack tell visible: True
+- Hit feedback visible: True
 - HUD blocks action: False
 - World edge visible: False
 
@@ -39,4 +39,4 @@ Scenario: first-light-well-loop
 
 ## Next Improvement
 
-Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands.
+Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable.

@@ -4,10 +4,10 @@
     "build":  "ue5-development-editor",
     "result":  "captured",
     "capture":  {
-                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes2-20260622-192351.json",
+                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes1-20260622-192225.json",
                     "screenshot_exists":  true,
-                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes2-20260622-192351.png",
-                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes2-20260622-192351.log",
+                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes1-20260622-192225.png",
+                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-enemy-archetypes1-20260622-192225.log",
                     "exit_code":  0
                 },
     "metrics":  {
