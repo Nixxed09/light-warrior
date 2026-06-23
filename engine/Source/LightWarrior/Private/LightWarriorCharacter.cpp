@@ -14,6 +14,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "LightWarriorProgressionComponent.h"
+#include "LightWarriorAudio.h"
 #include "SacredCircle.h"
 #include "ShadowEnemy.h"
 
@@ -366,6 +367,7 @@ void ALightWarriorCharacter::StartDash()
     StrikeLight->SetLightColor(FLinearColor(0.55f, 0.92f, 1.0f));
     StrikeLight->SetIntensity(9500.0f);
     StrikeLight->SetAttenuationRadius(950.0f);
+    ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::Dash, GetActorLocation(), 0.85f);
 }
 
 void ALightWarriorCharacter::FinishDash()
@@ -384,6 +386,7 @@ void ALightWarriorCharacter::LightStrike()
     StrikeLabel->SetHiddenInGame(false);
     StrikeLabel->SetText(HasThunderHammer() ? FText::FromString(TEXT("THUNDER STRIKE")) : FText::FromString(TEXT("LIGHT STRIKE")));
     StrikeLabel->SetTextRenderColor(HasThunderHammer() ? FColor(255, 210, 72) : FColor(210, 250, 255));
+    ULightWarriorAudio::PlaySfx(this, HasThunderHammer() ? ELightWarriorSfx::HammerSlam : ELightWarriorSfx::LightStrike, GetActorLocation(), HasThunderHammer() ? 1.05f : 0.8f);
 
     TArray<FOverlapResult> Overlaps;
     FCollisionShape Sphere = FCollisionShape::MakeSphere(Radius);

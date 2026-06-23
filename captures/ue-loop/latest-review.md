@@ -1,16 +1,16 @@
 # Light Warrior UE Loop Review
 
-Generated: 2026-06-22 19:27:24
-Scenario: thunder-hammer
+Generated: 2026-06-22 19:35:51
+Scenario: combat-readability
 
 ## Evidence
 
-- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-thunder-hammer2-20260622-192703.png
+- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.png
 - Screenshot exists: True
 - Exit code: 0
-- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-thunder-hammer2-20260622-192703.log
-- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-thunder-hammer2-20260622-192703.json
-- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-thunder-hammer2-20260622-192703-evidence.json
+- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.log
+- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.json
+- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529-evidence.json
 
 ## Measurements
 
@@ -21,8 +21,8 @@ Scenario: thunder-hammer
 - Objective completed in capture: False
 - First loop visible in capture: True
 - Pressure preview visible: True
-- Attack tell visible: False
-- Hit feedback visible: False
+- Attack tell visible: True
+- Hit feedback visible: True
 - HUD blocks action: False
 - World edge visible: False
 
@@ -39,4 +39,4 @@ Scenario: thunder-hammer
 
 ## Next Improvement
 
-Wire production SFX for temple activation, hammer slam, and field surge so the bold beat is felt as well as seen.
+Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable.

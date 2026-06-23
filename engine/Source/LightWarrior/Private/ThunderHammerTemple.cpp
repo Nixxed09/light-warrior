@@ -7,6 +7,7 @@
 #include "EngineUtils.h"
 #include "Engine/OverlapResult.h"
 #include "LightWarriorCharacter.h"
+#include "LightWarriorAudio.h"
 #include "Kismet/GameplayStatics.h"
 #include "SacredCircle.h"
 #include "ShadowEnemy.h"
@@ -122,6 +123,7 @@ void AThunderHammerTemple::ActivateTemple(ALightWarriorCharacter* Character)
     TempleLabel->SetText(FText::FromString(TEXT("HAMMER AWAKENED")));
     ActivationPulseTimer = ActivationPulseDuration;
     ActivationPulseMesh->SetHiddenInGame(false);
+    ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::TempleActivate, GetActorLocation(), 1.05f);
 
     for (TActorIterator<ASacredCircle> It(GetWorld()); It; ++It)
     {

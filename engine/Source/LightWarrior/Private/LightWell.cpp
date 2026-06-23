@@ -7,6 +7,7 @@
 #include "Engine/DamageEvents.h"
 #include "EngineUtils.h"
 #include "LightWarriorCharacter.h"
+#include "LightWarriorAudio.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "SacredCircle.h"
@@ -230,6 +231,7 @@ void ALightWell::CompletePurification()
     WellLight->SetAttenuationRadius(3600.0f);
     WellLabel->SetText(FText::FromString(TEXT("FIELD EXPANDS")));
     WellLabel->SetTextRenderColor(FColor(245, 245, 180));
+    ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::CircleExpand, GetActorLocation(), 0.92f);
 
     ExpandSacredCircle();
     RepelNearbyShadows();

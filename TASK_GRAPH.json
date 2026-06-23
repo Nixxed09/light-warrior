@@ -208,6 +208,7 @@
       "title": "Run Light Warrior AI asset sprint for hero, enemies, VFX, and audio",
       "phase": "asset",
       "status": "pending",
+      "note": "First-pass procedural UE5 SFX are now wired for dash, light strike, shadow dissolve, sacred circle expansion, Light Well completion, and Thunder Hammer activation. This task remains pending because generated/imported production audio assets, hero/enemy meshes, VFX candidates, and 30-second approval capture are still required.",
       "inputs": ["docs/AI_ASSET_PRODUCTION_QUEUE.md", "STYLE_GUIDE.md", "THEME_ALIGNMENT.md", "ASSET_MANIFEST.json"],
       "expected_artifacts": [
         "assets/generated/concepts/character_light_warrior",

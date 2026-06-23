@@ -31,6 +31,7 @@ $ignoredPatterns = @(
   "LogConsoleManager: Warning: Console variable 'r.MotionVectorSimulation'",
   "UE::UnifiedErrorTest",
   "LogTemp: FError that has been",
+  "LogCore: Warning: UTS: Unreal Trace Server process returned",
   "LogWindows: Failed to load 'aqProf.dll'",
   "LogWindows: Failed to load 'VtuneApi.dll'",
   "LogWindows: Failed to load 'VtuneApi32e.dll'",

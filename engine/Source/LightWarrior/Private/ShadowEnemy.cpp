@@ -7,6 +7,7 @@
 #include "Engine/PointLight.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "LightWarriorAudio.h"
 #include "LightWarriorCharacter.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
@@ -183,6 +184,7 @@ float AShadowEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
     if (Health <= 0.0f)
     {
+        ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::ShadowDissolve, GetActorLocation(), Archetype == EShadowEnemyArchetype::Berserker ? 1.05f : 0.78f);
         SpawnDeathBurst();
         Destroy();
     }

@@ -11,7 +11,8 @@ public class LightWarrior : ModuleRules
             "Core",
             "CoreUObject",
             "Engine",
-            "InputCore"
+            "InputCore",
+            "AudioMixer"
         });
     }
 }

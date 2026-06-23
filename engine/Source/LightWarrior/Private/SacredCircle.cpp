@@ -2,6 +2,7 @@
 
 #include "Components/PointLightComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "LightWarriorAudio.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 
@@ -107,6 +108,7 @@ void ASacredCircle::ExpandFromCombat(float Amount)
         {
             ExpansionPulseMesh->SetHiddenInGame(false);
         }
+        ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::CircleExpand, GetActorLocation(), 0.75f);
     }
 
     SetRadius(CurrentRadius + FMath::Max(0.0f, Amount));
