@@ -17,6 +17,8 @@ class LIGHTWARRIOR_API AThunderHammerTemple : public AActor
 public:
     AThunderHammerTemple();
 
+    virtual void Tick(float DeltaSeconds) override;
+
 protected:
     virtual void BeginPlay() override;
 
@@ -25,6 +27,9 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UStaticMeshComponent> TempleMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UStaticMeshComponent> ActivationPulseMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<USphereComponent> ActivationSphere;
@@ -41,9 +46,17 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Temple")
     float ActivationExpansionAmount = 400.0f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Temple")
+    float ActivationDamageRadius = 1200.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Temple")
+    float ActivationDamage = 120.0f;
+
 private:
     UFUNCTION()
     void OnTempleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
     bool bActivated = false;
+    float ActivationPulseTimer = 0.0f;
+    float ActivationPulseDuration = 1.15f;
 };

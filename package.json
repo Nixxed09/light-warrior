@@ -13,6 +13,8 @@
     "preview": "vite preview --host 127.0.0.1",
     "status": "powershell -ExecutionPolicy Bypass -File tools/status.ps1",
     "verify": "powershell -ExecutionPolicy Bypass -File tools/verify.ps1",
+    "assets:generate": "powershell -ExecutionPolicy Bypass -File tools/generate-openai-image-assets.ps1",
+    "assets:dry-run": "powershell -ExecutionPolicy Bypass -File tools/generate-openai-image-assets.ps1 -DryRun",
     "capture:smoke": "node tools/capture-smoke.mjs"
   },
   "keywords": [],

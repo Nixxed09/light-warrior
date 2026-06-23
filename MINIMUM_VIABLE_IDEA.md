@@ -10,6 +10,8 @@ Current artifact:
 
 This artifact is not the first playable under GamesOS production standards.
 
+Engine transition authority: `docs/ENGINE_TRANSITION_THREEJS_TO_UE5.md`.
+
 ## Question It Answers
 
 Can the player understand this loop quickly?

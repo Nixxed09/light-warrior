@@ -255,6 +255,7 @@ void ALightWarriorCharacter::Tick(float DeltaSeconds)
     HeroLight->SetLightColor(HasThunderHammer() ? FLinearColor(1.0f, 0.78f, 0.24f) : FLinearColor(0.55f, 0.92f, 1.0f));
     HeroLabel->SetText(HasThunderHammer() ? FText::FromString(TEXT("THUNDER HERO")) : FText::FromString(TEXT("HERO")));
     HeroLabel->SetTextRenderColor(HasThunderHammer() ? FColor(255, 222, 96) : FColor(235, 255, 255));
+    UpdateHeroReadability(DeltaSeconds);
     UpdateStrikePulse(DeltaSeconds);
     ApplyCirclePressure(DeltaSeconds);
 }
@@ -301,7 +302,8 @@ void ALightWarriorCharacter::MoveForward(float Value)
         return;
     }
 
-    AddMovementInput(FVector::ForwardVector, Value);
+    const FRotator CameraYaw(0.0f, CameraBoom ? CameraBoom->GetComponentRotation().Yaw : GetActorRotation().Yaw, 0.0f);
+    AddMovementInput(CameraYaw.Vector(), Value);
 }
 
 void ALightWarriorCharacter::MoveRight(float Value)
@@ -311,17 +313,31 @@ void ALightWarriorCharacter::MoveRight(float Value)
         return;
     }
 
-    AddMovementInput(FVector::RightVector, Value);
+    const FRotator CameraYaw(0.0f, CameraBoom ? CameraBoom->GetComponentRotation().Yaw : GetActorRotation().Yaw, 0.0f);
+    AddMovementInput(FRotationMatrix(CameraYaw).GetUnitAxis(EAxis::Y), Value);
 }
 
 void ALightWarriorCharacter::Turn(float Value)
 {
-    AddControllerYawInput(Value);
+    if (FMath::IsNearlyZero(Value) || !CameraBoom)
+    {
+        return;
+    }
+
+    const FRotator CurrentRotation = CameraBoom->GetRelativeRotation();
+    CameraBoom->SetRelativeRotation(FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw + Value * CameraYawSensitivity, 0.0f));
 }
 
 void ALightWarriorCharacter::LookUp(float Value)
 {
-    AddControllerPitchInput(Value);
+    if (FMath::IsNearlyZero(Value) || !CameraBoom)
+    {
+        return;
+    }
+
+    const FRotator CurrentRotation = CameraBoom->GetRelativeRotation();
+    const float NewPitch = FMath::Clamp(CurrentRotation.Pitch + Value * CameraPitchSensitivity, MinCameraPitch, MaxCameraPitch);
+    CameraBoom->SetRelativeRotation(FRotator(NewPitch, CurrentRotation.Yaw, 0.0f));
 }
 
 void ALightWarriorCharacter::StartDash()
@@ -432,6 +448,33 @@ void ALightWarriorCharacter::UpdateStrikePulse(float DeltaSeconds)
     StrikeLight->SetIntensity(HasThunderHammer() ? 26000.0f * Flash : 15000.0f * Flash);
     StrikeLight->SetLightColor(HasThunderHammer() ? FLinearColor(1.0f, 0.74f, 0.18f) : FLinearColor(0.72f, 0.96f, 1.0f));
     StrikeLabel->SetRelativeLocation(FVector(0.0f, 0.0f, 330.0f + Alpha * 95.0f));
+}
+
+void ALightWarriorCharacter::UpdateHeroReadability(float DeltaSeconds)
+{
+    const float SpeedAlpha = FMath::Clamp(GetVelocity().Size2D() / FMath::Max(1.0f, GetCharacterMovement()->MaxWalkSpeed), 0.0f, 1.0f);
+    const float DashAlpha = DashTimeRemaining > 0.0f ? 1.0f : 0.0f;
+    const float ThunderAlpha = HasThunderHammer() ? 1.0f : 0.0f;
+    const float Pulse = 0.5f + 0.5f * FMath::Sin(GetWorld()->GetTimeSeconds() * (HasThunderHammer() ? 13.0f : 7.0f));
+
+    if (HeroAuraMesh)
+    {
+        const float AuraScale = 2.15f + SpeedAlpha * 0.42f + DashAlpha * 1.45f + ThunderAlpha * 0.75f + Pulse * 0.18f;
+        HeroAuraMesh->SetRelativeScale3D(FVector(AuraScale, AuraScale, 0.035f));
+    }
+
+    if (HeroHammerHeadMesh)
+    {
+        const float HammerGlowScale = 1.0f + ThunderAlpha * 0.28f + DashAlpha * 0.12f + Pulse * ThunderAlpha * 0.16f;
+        HeroHammerHeadMesh->SetRelativeScale3D(FVector(0.82f * HammerGlowScale, 0.30f * HammerGlowScale, 0.28f * HammerGlowScale));
+    }
+
+    if (HeroLeftArmMesh && HeroRightArmMesh)
+    {
+        const float ArmSwing = FMath::Sin(GetWorld()->GetTimeSeconds() * 10.0f) * SpeedAlpha * 7.0f;
+        HeroLeftArmMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, -28.0f - ArmSwing));
+        HeroRightArmMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 24.0f + ArmSwing));
+    }
 }
 
 void ALightWarriorCharacter::CheckFallDeath()

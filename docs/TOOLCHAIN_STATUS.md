@@ -2,11 +2,11 @@
 
 ## Last Checked
 
-2026-06-16
+2026-06-22
 
 ## Summary
 
-The Light Warrior prototype environment is usable. The full GamesOS production toolchain is not yet ready.
+UE5 is the active production engine. C++ compiles, the procedural arena is playable, and the automated UE iteration loop produces screenshot evidence. Some asset pipeline services remain blocked.
 
 ## Passing
 
@@ -30,30 +30,27 @@ The Light Warrior prototype environment is usable. The full GamesOS production t
 - video-engine reports Blender `connected`.
 - video-engine reports FFmpeg `available`.
 
-## Blocking Production Engine Work
+## Production Engine
 
-- Unreal Engine 5 is not installed or not discoverable locally.
-- Unreal MCP/editor automation is not configured.
-- `engine\LightWarrior.uproject` does not exist yet.
+- Unreal Editor 5.8 is installed at `D:\Games\UE_5.8`.
+- `engine\LightWarrior.uproject` exists and compiles.
+- Unreal MCP/editor automation is not yet configured.
 
 ## Blocking Full Asset Pipeline
 
 - video-engine health reports PrusaSlicer and Whisper not found.
 - audio-engine health reports generation providers not configured.
-- UE5 import evidence is still unavailable because UE5 is not installed.
+- UE5 asset import evidence for generated FBX files has not been captured yet.
 
 ## Current Valid Work
 
-Until UE5 is installed:
+- Build and iterate in UE5 using `tools/ue-loop.ps1`
+- Capture first 10 seconds from the UE5 playable slice
+- Import generated FBX assets into UE5 and capture evidence
+- Refine docs, task graph, and playtest notes
+- Create Blender blockout assets and import into UE5
 
-- refine docs and task graph
-- capture first 10 seconds from the current prototype
-- run `npm run build`
-- update playtest notes and design review
-- block out UE5 architecture in `TECHNICAL_PLAN.md`
-- create Blender blockout assets locally, but do not mark them production-imported until UE5 import evidence exists
-
-Do not claim UE5 production progress until the UE5 shell opens and Play-In-Editor evidence exists.
+Do not mark gameplay tasks complete without Play-In-Editor screenshot or video evidence.
 
 ## Install Attempt Notes
 

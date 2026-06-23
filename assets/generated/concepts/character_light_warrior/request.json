@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "asset_id": "character.light_warrior",
+  "provider_system": "gamesos.gen_asset.ideogram",
+  "asset_type": "character_concept_sheet",
+  "style_anchor": "STYLE_GUIDE.md",
+  "theme_anchor": "THEME_ALIGNMENT.md",
+  "gameplay_job": "third-person player avatar readable during movement, dash, Light Strike, and Thunder Hammer moments",
+  "positive_prompt": "heroic Light Warrior character concept sheet, readable human face, strong athletic body, white-gold armor, dawn-blue luminous accents, glowing thunder hammer silhouette, brave warm expression, sacred gold light versus violet living shadow, clean UE5 third-person arena readability, front side back views, gameplay camera thumbnail, stylized heroic fantasy, no text",
+  "negative_prompt": "gore, grimdark mud, horror, over-detailed armor noise, tiny face, hidden body, unreadable weapon, photorealistic clutter, text, words, watermark, logo, frame",
+  "output_requirements": [
+    "front view",
+    "side view",
+    "back view",
+    "gameplay camera thumbnail",
+    "hammer silhouette"
+  ],
+  "review_gate": "face, body, hammer, and white-gold/dawn-blue identity must read in a UE5 capture"
+}

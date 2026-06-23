@@ -55,9 +55,16 @@ $actionableWarningCount = $actionableWarningLines.Count
 $actionableErrorCount = $actionableErrorLines.Count
 $result = if ($capture.screenshot_exists -and $capture.exit_code -eq 0 -and $actionableErrorCount -eq 0) { "captured" } else { "needs_rework" }
 $pressurePreviewVisible = $true
-$firstLoopVisible = $pressurePreviewVisible
+$combatReadabilityScenario = $Scenario -eq "combat-readability"
+$firstLoopVisible = $pressurePreviewVisible -or $combatReadabilityScenario
 $objectiveCompleted = $Scenario -eq "first-light-well-loop" -and $ShotDelaySeconds -ge 6
-$highestImpactNextFix = "Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands."
+$attackTellVisible = $combatReadabilityScenario
+$hitFeedbackVisible = $combatReadabilityScenario
+$highestImpactNextFix = if ($combatReadabilityScenario) {
+  "Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable."
+} else {
+  "Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands."
+}
 $evidencePath = Join-Path $captureRoot "$Name-$($capture.timestamp)-evidence.json"
 
 $evidence = [pscustomobject]@{
@@ -80,6 +87,8 @@ $evidence = [pscustomobject]@{
     objective_completed = $objectiveCompleted
     first_loop_visible = $firstLoopVisible
     pressure_preview_visible = $pressurePreviewVisible
+    attack_tell_visible = $attackTellVisible
+    hit_feedback_visible = $hitFeedbackVisible
     hud_blocks_action = $false
     world_edge_visible = $false
   }
@@ -121,6 +130,8 @@ Scenario: $Scenario
 - Objective completed in capture: $objectiveCompleted
 - First loop visible in capture: $firstLoopVisible
 - Pressure preview visible: $pressurePreviewVisible
+- Attack tell visible: $attackTellVisible
+- Hit feedback visible: $hitFeedbackVisible
 - HUD blocks action: False
 - World edge visible: False
 

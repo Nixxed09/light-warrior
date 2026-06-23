@@ -7,8 +7,10 @@ Unreal Engine 5.
 Reason:
 
 - Light Warrior targets third-person 3D action, controller feel, cinematic lighting, strong VFX, and marketplace-compatible asset production.
-- Browser tech is allowed only for the current mechanic sketch.
+- The earlier Vite/Three.js prototype remains as a legacy reference only.
 - Godot 4 is a fallback only if the project is deliberately rescoped to a smaller stylized 2.5D version.
+
+Transition authority: `docs/ENGINE_TRANSITION_THREEJS_TO_UE5.md`.
 
 ## Architecture
 

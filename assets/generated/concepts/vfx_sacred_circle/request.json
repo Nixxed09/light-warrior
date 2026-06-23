@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "asset_id": "vfx.sacred_circle",
+  "provider_system": "gamesos.gen_asset.ideogram",
+  "asset_type": "vfx_reference_frames",
+  "style_anchor": "STYLE_GUIDE.md",
+  "theme_anchor": "THEME_ALIGNMENT.md",
+  "gameplay_job": "make safety, danger, and restored territory readable without text",
+  "positive_prompt": "third-person and top-down VFX reference frames of a sacred golden circle expanding across violet-black corruption, warm round sanctuary, dawn-blue inner safety, gold radial pulse, pale stone arena floor, clean boundary, readable combat space, bravery expands the light, stylized UE5 gameplay VFX reference, no text",
+  "negative_prompt": "opaque smoke, particle wall, messy bloom, unreadable floor, horror gore, excessive sparks covering enemies, text, words, watermark, logo, frame",
+  "output_requirements": [
+    "idle safety frame",
+    "expansion peak frame",
+    "restored territory frame",
+    "darkness pressure frame"
+  ],
+  "review_gate": "expansion must be obvious in one second and must not obscure enemies or player"
+}

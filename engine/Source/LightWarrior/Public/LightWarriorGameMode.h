@@ -99,6 +99,7 @@ private:
     void SpawnLightWellPressure(class ALightWell* LightWell, int32 EnemyCount, float SpawnRadius, const TCHAR* LabelPrefix);
     void SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index);
     void PlaceAutomationPlayerAtFirstLightWell();
+    void PlaceAutomationPlayerInCombat();
     void ConfigureAutomationLoop();
     void CaptureAutomationScreenshot();
     void QuitAfterAutomationCapture();

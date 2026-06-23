@@ -193,6 +193,16 @@ void ALightWarriorGameMode::ConfigureAutomationLoop()
             0.75f,
             false);
     }
+    else if (AutomationScenario.Equals(TEXT("combat-readability"), ESearchCase::IgnoreCase))
+    {
+        FTimerHandle ScenarioTimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            ScenarioTimerHandle,
+            this,
+            &ALightWarriorGameMode::PlaceAutomationPlayerInCombat,
+            0.75f,
+            false);
+    }
 
     FTimerHandle CaptureTimerHandle;
     GetWorld()->GetTimerManager().SetTimer(
@@ -419,6 +429,20 @@ void ALightWarriorGameMode::PlaceAutomationPlayerAtFirstLightWell()
         Character->SetActorLocation(FirstWell->GetActorLocation() + FVector(-120.0f, 0.0f, 140.0f), false, nullptr, ETeleportType::TeleportPhysics);
         Character->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
     }
+}
+
+void ALightWarriorGameMode::PlaceAutomationPlayerInCombat()
+{
+    ALightWarriorCharacter* Character = Cast<ALightWarriorCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+    if (!Character)
+    {
+        return;
+    }
+
+    const FVector PlayerLocation(760.0f, -360.0f, 140.0f);
+    Character->SetActorLocation(PlayerLocation, false, nullptr, ETeleportType::TeleportPhysics);
+    Character->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+    SpawnPressureEnemy(PlayerLocation + FVector(150.0f, 0.0f, -45.0f), TEXT("LW_CombatReadabilityEnemy"), 1);
 }
 
 void ALightWarriorGameMode::HandleLightWellPurificationStarted(ALightWell* LightWell)

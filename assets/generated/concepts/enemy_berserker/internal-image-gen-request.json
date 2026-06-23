@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  "1.0",
+    "generated_request_at":  "2026-06-23T01:19:16.3844503Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "enemy.berserker",
+    "kind":  "enemy_silhouette_sheet",
+    "size":  "1536x1024",
+    "output_path":  "assets/generated/concepts/enemy_berserker/concept_internal_image_gen_01.png",
+    "prompt":  "Game: Light Warrior.\nAsset ID: enemy.berserker.\nLarge heavy berserker enemy concept sheet for a UE5 third-person arena game. Embodied containment and retaliation made of violet-black corruption, broad angular silhouette, cracked shadow armor, slow powerful stance, red-violet charge tell across shoulders and weapon arm, stunned frame, and defeat frame dissolving into warm gold light. Include front view, side view, charge windup, stunned frame, defeat frame, and gameplay camera thumbnail.\nGlobal style rules: No text, logo, watermark, UI labels, or decorative frame inside generated images. Prioritize UE5 third-person gameplay readability over decorative micro-detail. Use the game world\u0027s reality: luminous guardian power, living darkness, sacred technology, resonance, etheric force, Tartaria-inspired restored architecture, and flat huge-world horizon logic. Hero reads as white-gold and dawn-blue. Enemies read as violet-black with red-violet danger tells. Restoration reads as warm gold and dawn-blue. Every output is a candidate until proven in a UE5 gameplay capture.\nAvoid: text, letters, logo, watermark, gore, excessive spikes, muddy silhouette, tiny details, heroic armor, hidden charge tell.",
+    "review_gate":  "Berserker must read larger and slower than the imp, with a clear charge tell while moving."
+}

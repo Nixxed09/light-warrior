@@ -16,6 +16,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Third-person player avatar with readable body, face direction, and glowing hammer silhouette during movement and combat.",
+                       "readability_requirement":  "Face, torso, hammer, and white-gold/dawn-blue team identity must read from the default UE5 camera.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/character_light_warrior",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. character.light_warrior is a brave human champion channeling luminous guardian power, with white-gold/dawn-blue heroic readability."
                    },
                    {
@@ -24,6 +28,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Small fast pressure enemy that teaches the player to read attack tells and answer darkness with Light Strike.",
+                       "readability_requirement":  "Violet-black silhouette, red-violet attack tell, and gold dissolve feedback must read from the default UE5 camera.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/enemy_shadow_imp",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. enemy.shadow_imp is embodied dark influence: angular violet-black body, bright readable attack tell, dissolves into reclaimed light on defeat."
                    },
                    {
@@ -32,6 +40,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Heavy pressure enemy that forces brave movement and teaches charge-tell recognition.",
+                       "readability_requirement":  "Large violet-black silhouette, red-violet charge tell, stun state, and gold defeat dissolve must read from the default UE5 camera.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/enemy_berserker",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. enemy.berserker is dark influence as containment/retaliation: heavy angular silhouette, visible charge tell, violet-black corruption with limited red damage edge."
                    },
                    {
@@ -40,6 +52,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Show safety, danger, and restored territory without text.",
+                       "readability_requirement":  "Warm round safety, visible gold expansion, and clear boundary must not hide enemies or the player.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/vfx_sacred_circle",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. vfx.sacred_circle is the covenant field and reclaimed territory: white-gold ring, dawn-blue inner safety, visible radial expansion when bravery succeeds."
                    },
                    {
@@ -48,6 +64,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Primary player weapon silhouette and impact source for Light Strike and Thunder Hammer moments.",
+                       "readability_requirement":  "Hammer head, grip, lightning core, and shockwave read during motion and attack frames.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/weapon_thunder_hammer",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. weapon.thunder_hammer is luminous guardian power made physical: sacred gold, pale stone or electrum details, readable shockwave silhouette."
                    },
                    {
@@ -56,6 +76,10 @@
                        "status":  "planned",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Sacred flat-world combat space with readable safe center, huge horizon, corruption pressure, and restored seams.",
+                       "readability_requirement":  "Combat lanes, circle boundary, temple landmark, light well, corruption, and restored seams must remain visible from the default UE5 camera.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/environment_arena_kit",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. environment.arena is sacred territory under dark influence: circular sanctuary, violet corruption outside, pale stone/gold restored seams."
                    },
                    {
@@ -65,7 +89,70 @@
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "source":  "assets/generated/models/thunder_hammer_temple",
+                       "concept_output_dir":  "assets/generated/concepts/thunder_hammer_temple",
+                       "gameplay_job":  "Strong landmark and sacred technology objective outside the starting safety circle.",
+                       "readability_requirement":  "Temple silhouette, pedestal, activation core, approach lane, and collision footprint must read during combat.",
                        "prompt_brief":  "UE5 FBX blockout candidate generated through video-engine. Theme role: sacred technology node outside safety, borrowing Egyptian resonance temple architecture and restored-node lighting from Tartaria support. Still needs UE5 import, scale review, UVs, materials, and Play-In-Editor evidence."
+                   },
+                   {
+                       "id":  "pickup.light_shard",
+                       "kind":  "pickup",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Small resource pickup that rewards brave movement outside the circle.",
+                       "readability_requirement":  "Ground glow and collected burst must read without being confused with enemy VFX.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/pickup_light_shard",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. pickup.light_shard is reclaimed light made collectible: warm gold shard with dawn-blue core."
+                   },
+                   {
+                       "id":  "material.corruption",
+                       "kind":  "material",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Danger floor and world pressure material.",
+                       "readability_requirement":  "Corruption must signal danger without hiding enemies, player, or sacred circle boundary.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/material_corruption",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. material.corruption is violet-black living pressure with restrained red-violet danger pulse."
+                   },
+                   {
+                       "id":  "material.restored_stone",
+                       "kind":  "material",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Safe/reclaimed territory material.",
+                       "readability_requirement":  "Restored stone must make safety and progress visible while preserving combat readability.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/material_restored_stone",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. material.restored_stone is pale sacred stone with warm gold inlays and dawn-blue resonance."
+                   },
+                   {
+                       "id":  "ui.hud_icons",
+                       "kind":  "ui",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Icon language for health, courage, abilities, danger, and restoration.",
+                       "readability_requirement":  "Icons must work at HUD size without text.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/ui_hud_icons",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. ui.hud_icons are readable symbolic icons for Light Warrior's core verbs."
+                   },
+                   {
+                       "id":  "ui.upgrade_cards",
+                       "kind":  "ui",
+                       "status":  "planned",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Upgrade selection visuals for Light Strike, Sacred Circle, and Thunder Hammer progress.",
+                       "readability_requirement":  "Cards must separate upgrade identity by icon and color without relying on text.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/concepts/ui_upgrade_cards",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. ui.upgrade_cards are icon-led sacred technology upgrade visuals."
                    },
                    {
                        "id":  "audio.first_loop",

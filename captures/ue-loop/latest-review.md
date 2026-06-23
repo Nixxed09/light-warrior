@@ -1,16 +1,16 @@
 # Light Warrior UE Loop Review
 
-Generated: 2026-06-22 16:50:24
+Generated: 2026-06-22 19:17:53
 Scenario: first-light-well-loop
 
 ## Evidence
 
-- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.png
+- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.png
 - Screenshot exists: True
 - Exit code: 0
-- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.log
-- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959.json
-- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-well-payoff4-20260622-164959-evidence.json
+- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.log
+- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727.json
+- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-parity-well1-20260622-191727-evidence.json
 
 ## Measurements
 
@@ -21,6 +21,8 @@ Scenario: first-light-well-loop
 - Objective completed in capture: True
 - First loop visible in capture: True
 - Pressure preview visible: True
+- Attack tell visible: False
+- Hit feedback visible: False
 - HUD blocks action: False
 - World edge visible: False
 

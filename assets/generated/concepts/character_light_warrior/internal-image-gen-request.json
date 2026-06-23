@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  "1.0",
+    "generated_request_at":  "2026-06-23T01:19:21.5326004Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "character.light_warrior",
+    "kind":  "character_concept_sheet",
+    "size":  "1536x1024",
+    "output_path":  "assets/generated/concepts/character_light_warrior/concept_internal_image_gen_01.png",
+    "prompt":  "Game: Light Warrior.\nAsset ID: character.light_warrior.\nHeroic Light Warrior player character concept sheet for a UE5 third-person arena game. Readable human champion with strong athletic body, visible face direction, white-gold armor, dawn-blue luminous accents, glowing thunder hammer silhouette, brave warm expression, sacred technology details, luminous guardian power made physical. Include front view, side view, back view, action pose, and small gameplay camera thumbnail on a plain neutral background.\nGlobal style rules: No text, logo, watermark, UI labels, or decorative frame inside generated images. Prioritize UE5 third-person gameplay readability over decorative micro-detail. Use the game world\u0027s reality: luminous guardian power, living darkness, sacred technology, resonance, etheric force, Tartaria-inspired restored architecture, and flat huge-world horizon logic. Hero reads as white-gold and dawn-blue. Enemies read as violet-black with red-violet danger tells. Restoration reads as warm gold and dawn-blue. Every output is a candidate until proven in a UE5 gameplay capture.\nAvoid: text, letters, logo, watermark, gore, horror realism, grimdark mud, over-detailed armor noise, tiny face, hidden body, unreadable weapon, photorealistic clutter.",
+    "review_gate":  "Face direction, body, hammer, and white-gold/dawn-blue identity must read from the default UE5 camera."
+}

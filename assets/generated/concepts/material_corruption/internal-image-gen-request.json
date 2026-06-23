@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  "1.0",
+    "generated_request_at":  "2026-06-23T01:19:16.4015491Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "material.corruption",
+    "kind":  "material_reference_sheet",
+    "size":  "1024x1024",
+    "output_path":  "assets/generated/concepts/material_corruption/concept_internal_image_gen_01.png",
+    "prompt":  "Game: Light Warrior.\nAsset ID: material.corruption.\nViolet-black living corruption material reference sheet for UE5. Show tileable floor patch, edge transition into restored pale stone, pulse emissive veins, danger tell variant, and low-noise gameplay camera sample. The material feels like dark influence exerting pressure in the game world\u0027s reality.\nGlobal style rules: No text, logo, watermark, UI labels, or decorative frame inside generated images. Prioritize UE5 third-person gameplay readability over decorative micro-detail. Use the game world\u0027s reality: luminous guardian power, living darkness, sacred technology, resonance, etheric force, Tartaria-inspired restored architecture, and flat huge-world horizon logic. Hero reads as white-gold and dawn-blue. Enemies read as violet-black with red-violet danger tells. Restoration reads as warm gold and dawn-blue. Every output is a candidate until proven in a UE5 gameplay capture.\nAvoid: text, letters, logo, watermark, gore, wet flesh, muddy black flat color, noisy unreadable texture, brown sludge.",
+    "review_gate":  "Corruption must communicate danger without hiding enemy silhouettes or circle boundary."
+}

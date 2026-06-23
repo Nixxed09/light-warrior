@@ -58,6 +58,8 @@ Current scaffold exists:
 - `engine/Source/LightWarrior`
 - first C++ classes for character, sacred circle, Light Wells, Thunder Hammer temple, shadow enemy, and game mode
 
+Read `docs\ENGINE_TRANSITION_THREEJS_TO_UE5.md` before treating browser prototype work as production progress.
+
 ## Run UE5 Playable Slice
 
 Compile:

@@ -53,6 +53,8 @@ Production target: Unreal Engine 5.
 
 World target: one reclaimed combat node on the huge flat Old Earth plane. The first playable should feel like a small local fight inside a much larger Tartarian-resonance grid, with no globe, space framing, or visible world edge.
 
+Engine transition authority: `docs/ENGINE_TRANSITION_THREEJS_TO_UE5.md`.
+
 Next real milestone: UE5 first playable with movement, dash, light strike, sacred circle, one enemy, Thunder Hammer temple, 90-second run state, and Play-In-Editor evidence.
 
 Read these before expanding scope:

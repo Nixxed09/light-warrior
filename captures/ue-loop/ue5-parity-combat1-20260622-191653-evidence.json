@@ -1,0 +1,35 @@
+{
+    "game_id":  "light-warrior",
+    "scenario":  "combat-readability",
+    "build":  "ue5-development-editor",
+    "result":  "captured",
+    "capture":  {
+                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-parity-combat1-20260622-191653.json",
+                    "screenshot_exists":  true,
+                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-parity-combat1-20260622-191653.png",
+                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-parity-combat1-20260622-191653.log",
+                    "exit_code":  0
+                },
+    "metrics":  {
+                    "hud_blocks_action":  false,
+                    "hit_feedback_visible":  true,
+                    "attack_tell_visible":  true,
+                    "actionable_warnings":  0,
+                    "objective_completed":  false,
+                    "first_loop_visible":  true,
+                    "world_edge_visible":  false,
+                    "raw_errors":  3,
+                    "pressure_preview_visible":  true,
+                    "actionable_errors":  0,
+                    "raw_warnings":  23
+                },
+    "observations":  [
+                         "hero spawns in the playable arena",
+                         "huge flat world reads without a visible edge from the starting camera",
+                         "HUD shows health, timer, wells, Light, Courage, objective, and controls",
+                         "first path now shows shadow sentinels before the player reaches the Light Well",
+                         "purification start spawns a focused shadow pressure wave around the active Light Well",
+                         "restored Light Wells create a visible golden expansion ring and update objective progress"
+                     ],
+    "highest_impact_next_fix":  "Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable."
+}

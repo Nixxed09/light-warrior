@@ -41,6 +41,9 @@ protected:
     TObjectPtr<class UStaticMeshComponent> CircleMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UStaticMeshComponent> ExpansionPulseMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<class UPointLightComponent> CircleLight;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sacred Circle")
@@ -61,4 +64,9 @@ protected:
 private:
     void RefreshVisuals();
     void SetRadius(float NewRadius);
+    void UpdateExpansionPulse(float DeltaSeconds);
+
+    float ExpansionPulseTimer = 0.0f;
+    float ExpansionPulseDuration = 0.82f;
+    float PreviousRadius = 1400.0f;
 };

@@ -2,9 +2,10 @@
   "schema_version": "1.0",
   "job_id": "light-warrior.character.light_warrior.v001",
   "asset_id": "character.light_warrior",
-  "provider_system": "image-engine",
+  "provider_system": "codex-image",
   "request_file": "prompt-package.json",
   "status": "planned",
   "human_approval_required": true,
-  "output_root": "assets/generated/concepts/character_light_warrior"
+  "output_root": "assets/generated/concepts/character_light_warrior",
+  "notes": "Codex image generation is an in-session provider. Save generated bitmap outputs into output_root and preserve prompt metadata before review."
 }

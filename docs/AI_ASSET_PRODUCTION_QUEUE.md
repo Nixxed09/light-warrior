@@ -18,6 +18,59 @@ Use:
 - `THEME_ALIGNMENT.md`
 - `ASSET_MANIFEST.json`
 
+Codex image generation may be used for fast in-session concept/reference images before `image-engine` packaging. Any useful Codex-generated image must be saved into the project package, recorded in metadata, reviewed against this file, and proven in UE5 before approval.
+
+## Internal Image Gen 2 Batch
+
+The repo now has a complete OpenAI image-generation batch for the first production pass:
+
+```text
+assets/generated/internal-image-gen-batch-20260623.json
+tools/generate-openai-image-assets.ps1
+```
+
+Dry run:
+
+```powershell
+npm run assets:dry-run
+```
+
+Generate all PNG candidates:
+
+```powershell
+$env:OPENAI_API_KEY="<key>"
+npm run assets:generate
+```
+
+Generate one asset:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\generate-openai-image-assets.ps1 -AssetId enemy.shadow_imp
+```
+
+The batch targets OpenAI's image generation endpoint with `gpt-image-2` by default and writes base64 responses into the asset package paths listed in the batch. If a workspace does not have that model enabled, pass `-Model <enabled-image-model>`.
+
+The first full batch covers:
+
+- `character.light_warrior`
+- `enemy.shadow_imp`
+- `enemy.berserker`
+- `vfx.sacred_circle`
+- `weapon.thunder_hammer`
+- `environment.arena`
+- `environment.thunder_hammer_temple`
+- `pickup.light_shard`
+- `material.corruption`
+- `material.restored_stone`
+- `ui.hud_icons`
+- `ui.upgrade_cards`
+
+Current local blocker:
+
+- The in-chat image tool can create references for review, but it did not expose saved file paths in this shell.
+- This shell does not have `OPENAI_API_KEY` set, so the repo-local generator can prepare requests but cannot fetch PNGs yet.
+- ProductOS `gen_asset.py` is still blocked by missing `boto3` and AWS CLI/Secrets Manager access.
+
 ## Current Priority
 
 The next visual leap should happen in this order:
@@ -294,9 +347,9 @@ Make one UE5 capture where the player, enemies, circle, temple, and first feedba
 
 ### Tasks
 
-1. Generate `character.light_warrior` concept sheet.
-2. Generate `enemy.shadow_imp` and `enemy.berserker` silhouette sheets.
-3. Generate `vfx.sacred_circle` reference frames.
+1. Generate `character.light_warrior` concept sheet through Codex image generation or `image-engine`.
+2. Generate `enemy.shadow_imp` and `enemy.berserker` silhouette sheets through Codex image generation or `image-engine`.
+3. Generate `vfx.sacred_circle` reference frames through Codex image generation or `image-engine`.
 4. Generate `audio.core_sfx` first pack.
 5. Import or implement one improved asset from each category into UE5.
 6. Capture a 30-second gameplay clip.
@@ -310,3 +363,30 @@ Make one UE5 capture where the player, enemies, circle, temple, and first feedba
 - At least three SFX are wired: dash, strike, enemy dissolve or circle expansion.
 - Capture proves the improved moment in actual UE5 gameplay.
 
+## ProductOS Pull-In: 2026-06-23
+
+Pulled the latest ProductOS GamesOS asset/style system and applied its stricter gates locally.
+
+New local package shape:
+
+```text
+assets/generated/concepts/character_light_warrior/request.json
+assets/generated/concepts/enemy_shadow_imp/request.json
+assets/generated/concepts/vfx_sacred_circle/request.json
+tools/gamesos-generate-concept.ps1
+```
+
+The wrapper calls:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\gamesos-generate-concept.ps1 -AssetId enemy.shadow_imp
+```
+
+Current generator blocker:
+
+- `D:\TE-Code\ProductOS\GamesOS\tools\gen_asset.py` is present.
+- `D:\TE-Code\teneo-production` is present.
+- Python module `boto3` is missing.
+- AWS CLI is not installed/on PATH, so Secrets Manager access is not yet configured.
+
+Until that is fixed, UE5 style implementation continues through authored runtime materials, shape language, VFX rings, combat tells, and capture evidence.

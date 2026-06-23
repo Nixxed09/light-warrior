@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "asset_id": "enemy.shadow_imp",
+  "provider_system": "gamesos.gen_asset.ideogram",
+  "asset_type": "enemy_silhouette_sheet",
+  "style_anchor": "STYLE_GUIDE.md",
+  "theme_anchor": "THEME_ALIGNMENT.md",
+  "gameplay_job": "fast weak enemy with readable attack tell and satisfying Light Strike defeat",
+  "positive_prompt": "small angular shadow imp enemy silhouette sheet, violet-black living darkness, bright red-violet attack tell ring, jagged body, glowing violet eyes, dissolves into reclaimed gold light on defeat, clean gameplay silhouette, UE5 third-person arena readability, front side back views, attack windup frame, defeat dissolve frame, stylized fantasy enemy, no text",
+  "negative_prompt": "gore, horror realism, tiny details, muddy black blob, friendly cute mascot, unreadable attack tell, text, words, watermark, logo, frame",
+  "output_requirements": [
+    "silhouette sheet",
+    "attack tell frame",
+    "hit flash frame",
+    "defeat dissolve frame"
+  ],
+  "review_gate": "enemy must be distinct from hero and attack tell must read before damage"
+}

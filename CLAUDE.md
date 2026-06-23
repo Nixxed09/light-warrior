@@ -4,7 +4,7 @@
 
 Build Light Warrior as a real GamesOS game, not a disposable browser toy.
 
-The current Vite/Three.js implementation is a first-playable prototype and evidence artifact. The production target remains Unreal Engine 5 unless the game direction is explicitly changed.
+The production engine is Unreal Engine 5 (5.8 at `D:\Games\UE_5.8`). The earlier Vite/Three.js implementation remains in the repo as a legacy reference artifact.
 
 ## Required Reading Order
 
@@ -19,29 +19,29 @@ The current Vite/Three.js implementation is a first-playable prototype and evide
 
 ## Current Environment Reality
 
-- Vite/Three.js prototype: available.
-- `npm run build`: passes.
-- UE5: not installed or not discoverable locally.
+- UE5: Unreal Editor 5.8 at `D:\Games\UE_5.8`. C++ module compiles. Procedural arena is playable.
+- UE iteration loop: `tools/ue-loop.ps1` builds, launches, captures screenshots, and writes review metadata.
+- Vite/Three.js prototype: legacy reference only (`npm run build` still passes).
+- Blender LTS 4.5.5: installed.
 - Unreal MCP: not configured locally.
-- Blender/audio/video asset services: not currently available.
+- AI asset generation: blocked by missing AWS credentials / `TE_SERVICE_KEY`.
 
-Do not mark UE5 production tasks complete until Unreal opens, Play-In-Editor runs, and screenshot/video evidence exists.
+Do not mark UE5 production tasks complete until Play-In-Editor runs and screenshot/video evidence exists.
 
 ## Working Loop
 
-For prototype work:
-
-```powershell
-.\tools\status.ps1
-.\tools\verify.ps1
-npm run dev
-```
-
-For production UE5 work after setup:
+Primary UE5 loop:
 
 ```powershell
 .\tools\status.ps1
 .\tools\verify.ps1 -RequireProductionEngine
+.\tools\ue-loop.ps1 -Scenario <name>
+```
+
+Legacy prototype (reference only):
+
+```powershell
+npm run dev
 ```
 
 ## Evidence Rules
@@ -55,6 +55,5 @@ For production UE5 work after setup:
 
 - Do not add more temples before the first 10 seconds are captured and reviewed.
 - Do not add bosses before the vertical slice proves combat feel.
-- Do not treat the Three.js prototype as final production architecture.
 - Do not generate production assets without `STYLE_GUIDE.md` and `ASSET_MANIFEST.json`.
 

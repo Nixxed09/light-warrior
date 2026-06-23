@@ -1,0 +1,12 @@
+﻿{
+    "schema_version":  "1.0",
+    "generated_request_at":  "2026-06-23T01:19:16.3995538Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "pickup.light_shard",
+    "kind":  "pickup_icon_and_prop_sheet",
+    "size":  "1024x1024",
+    "output_path":  "assets/generated/concepts/pickup_light_shard/concept_internal_image_gen_01.png",
+    "prompt":  "Game: Light Warrior.\nAsset ID: pickup.light_shard.\nLight shard pickup sheet for a UE5 third-person game. Small collectible shard of warm gold light with dawn-blue core, sacred geometry facets, clear glow at ground level, idle frame, collected burst frame, UI icon version, and gameplay camera thumbnail on neutral background.\nGlobal style rules: No text, logo, watermark, UI labels, or decorative frame inside generated images. Prioritize UE5 third-person gameplay readability over decorative micro-detail. Use the game world\u0027s reality: luminous guardian power, living darkness, sacred technology, resonance, etheric force, Tartaria-inspired restored architecture, and flat huge-world horizon logic. Hero reads as white-gold and dawn-blue. Enemies read as violet-black with red-violet danger tells. Restoration reads as warm gold and dawn-blue. Every output is a candidate until proven in a UE5 gameplay capture.\nAvoid: text, letters, logo, watermark, coin, generic gem, tiny unreadable object, harsh bloom, clutter.",
+    "review_gate":  "Pickup must read at ground distance without being confused with enemy VFX."
+}

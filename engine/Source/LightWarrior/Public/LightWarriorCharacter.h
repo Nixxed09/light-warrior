@@ -118,6 +118,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Movement")
     float NormalBrakingDeceleration = 2600.0f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Camera")
+    float CameraYawSensitivity = 1.35f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Camera")
+    float CameraPitchSensitivity = 0.85f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Camera")
+    float MinCameraPitch = -62.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Camera")
+    float MaxCameraPitch = -34.0f;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|Combat")
     float StrikeRadius = 360.0f;
 
@@ -151,6 +163,7 @@ private:
     void KillFromFall();
     void ApplyCirclePressure(float DeltaSeconds);
     void UpdateStrikePulse(float DeltaSeconds);
+    void UpdateHeroReadability(float DeltaSeconds);
     ASacredCircle* FindSacredCircle() const;
 
     float DashCooldownRemaining = 0.0f;

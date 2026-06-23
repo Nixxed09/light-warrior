@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "game_id": "light-warrior",
+  "created_at": "2026-06-23",
+  "provider_system": "openai.images.generations",
+  "default_model": "gpt-image-2",
+  "style_sources": [
+    "STYLE_GUIDE.md",
+    "THEME_ALIGNMENT.md",
+    "GAME_DESIGN.md",
+    "ASSET_MANIFEST.json"
+  ],
+  "global_rules": [
+    "No text, logo, watermark, UI labels, or decorative frame inside generated images.",
+    "Prioritize UE5 third-person gameplay readability over decorative micro-detail.",
+    "Use the game world's reality: luminous guardian power, living darkness, sacred technology, resonance, etheric force, Tartaria-inspired restored architecture, and flat huge-world horizon logic.",
+    "Hero reads as white-gold and dawn-blue. Enemies read as violet-black with red-violet danger tells. Restoration reads as warm gold and dawn-blue.",
+    "Every output is a candidate until proven in a UE5 gameplay capture."
+  ],
+  "assets": [
+    {
+      "asset_id": "character.light_warrior",
+      "kind": "character_concept_sheet",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/character_light_warrior/concept_internal_image_gen_01.png",
+      "positive_prompt": "Heroic Light Warrior player character concept sheet for a UE5 third-person arena game. Readable human champion with strong athletic body, visible face direction, white-gold armor, dawn-blue luminous accents, glowing thunder hammer silhouette, brave warm expression, sacred technology details, luminous guardian power made physical. Include front view, side view, back view, action pose, and small gameplay camera thumbnail on a plain neutral background.",
+      "negative_prompt": "text, letters, logo, watermark, gore, horror realism, grimdark mud, over-detailed armor noise, tiny face, hidden body, unreadable weapon, photorealistic clutter",
+      "review_gate": "Face direction, body, hammer, and white-gold/dawn-blue identity must read from the default UE5 camera."
+    },
+    {
+      "asset_id": "enemy.shadow_imp",
+      "kind": "enemy_silhouette_sheet",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/enemy_shadow_imp/concept_internal_image_gen_01.png",
+      "positive_prompt": "Small fast shadow imp enemy concept sheet for a UE5 third-person arena game. Angular violet-black living darkness body, jagged readable silhouette, glowing violet eyes, bright red-violet attack tell ring, hit-flash frame, and defeat frame where the body dissolves into reclaimed gold light. Include front view, side view, attack windup, hit feedback, defeat dissolve, and small gameplay camera thumbnail.",
+      "negative_prompt": "text, letters, logo, watermark, gore, horror realism, muddy black blob, friendly mascot, tiny unreadable details, hidden attack tell",
+      "review_gate": "Imp must be distinct from the hero and the attack tell must be visible before damage."
+    },
+    {
+      "asset_id": "enemy.berserker",
+      "kind": "enemy_silhouette_sheet",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/enemy_berserker/concept_internal_image_gen_01.png",
+      "positive_prompt": "Large heavy berserker enemy concept sheet for a UE5 third-person arena game. Embodied containment and retaliation made of violet-black corruption, broad angular silhouette, cracked shadow armor, slow powerful stance, red-violet charge tell across shoulders and weapon arm, stunned frame, and defeat frame dissolving into warm gold light. Include front view, side view, charge windup, stunned frame, defeat frame, and gameplay camera thumbnail.",
+      "negative_prompt": "text, letters, logo, watermark, gore, excessive spikes, muddy silhouette, tiny details, heroic armor, hidden charge tell",
+      "review_gate": "Berserker must read larger and slower than the imp, with a clear charge tell while moving."
+    },
+    {
+      "asset_id": "vfx.sacred_circle",
+      "kind": "vfx_reference_sheet",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/vfx_sacred_circle/concept_internal_image_gen_01.png",
+      "positive_prompt": "Sacred circle VFX reference sheet for a UE5 third-person arena game. A golden covenant field expands across violet corruption on pale stone. Show idle safety ring, darkness pressure at the boundary, Light Strike success pulse, one-second gold radial expansion, restored floor seams, and third-person gameplay camera frame. Warm gold safety, dawn-blue inner glow, clean readable boundary, enemies remain visible.",
+      "negative_prompt": "text, letters, logo, watermark, opaque smoke, particle wall, messy bloom, unreadable floor, sparks hiding enemies, horror gore",
+      "review_gate": "Boundary, expansion, danger, and restored territory must read without hiding combat."
+    },
+    {
+      "asset_id": "weapon.thunder_hammer",
+      "kind": "weapon_concept_sheet",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/weapon_thunder_hammer/concept_internal_image_gen_01.png",
+      "positive_prompt": "Thunder Hammer weapon concept sheet for a UE5 third-person arena game. Sacred luminous hammer made of electrum, pale stone, gold inlays, dawn-blue lightning core, etheric resonance coils, strong simple silhouette for gameplay readability. Include front view, side view, head detail, grip detail, impact shockwave thumbnail, and gameplay camera thumbnail.",
+      "negative_prompt": "text, letters, logo, watermark, tiny unreadable filigree, grimdark mud, realistic gore, generic steel warhammer, cluttered background",
+      "review_gate": "Hammer silhouette must read as the player's primary weapon during movement and strike effects."
+    },
+    {
+      "asset_id": "environment.arena",
+      "kind": "environment_kit_reference",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/environment_arena_kit/concept_internal_image_gen_01.png",
+      "positive_prompt": "Modular sacred arena kit reference for a UE5 third-person combat game. Pale stone floor tiles, circular sanctuary center, gold restored seams, dawn-blue navigation lanes, violet corruption chunks outside safe territory, light well pedestal, huge flat-world horizon, distant sacred technology towers, clean combat lanes, one gameplay mockup panel.",
+      "negative_prompt": "text, letters, logo, watermark, random clutter, dense props blocking movement, muddy brown palette, dark unreadable floor, marketing poster composition",
+      "review_gate": "Combat lanes, safe center, corruption pressure, and restored seams must remain readable."
+    },
+    {
+      "asset_id": "environment.thunder_hammer_temple",
+      "kind": "environment_landmark_reference",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/thunder_hammer_temple/concept_internal_image_gen_01.png",
+      "positive_prompt": "Thunder Hammer temple landmark reference for a UE5 third-person arena game. Tartaria-inspired and Egyptian-resonance sacred technology node, pale stone, gold inlays, dawn-blue lightning core, etheric resonance arches, pedestal outside the starting safety circle, huge flat-world horizon so the end cannot be seen. Include front view, side view, top-down footprint, material detail, and gameplay camera thumbnail.",
+      "negative_prompt": "text, letters, logo, watermark, generic medieval church, dark blurry temple, cluttered stairs, unsafe collision shapes, photorealistic noise",
+      "review_gate": "Temple must be the strongest landmark and support clean navigation/collision."
+    },
+    {
+      "asset_id": "pickup.light_shard",
+      "kind": "pickup_icon_and_prop_sheet",
+      "size": "1024x1024",
+      "output_path": "assets/generated/concepts/pickup_light_shard/concept_internal_image_gen_01.png",
+      "positive_prompt": "Light shard pickup sheet for a UE5 third-person game. Small collectible shard of warm gold light with dawn-blue core, sacred geometry facets, clear glow at ground level, idle frame, collected burst frame, UI icon version, and gameplay camera thumbnail on neutral background.",
+      "negative_prompt": "text, letters, logo, watermark, coin, generic gem, tiny unreadable object, harsh bloom, clutter",
+      "review_gate": "Pickup must read at ground distance without being confused with enemy VFX."
+    },
+    {
+      "asset_id": "material.corruption",
+      "kind": "material_reference_sheet",
+      "size": "1024x1024",
+      "output_path": "assets/generated/concepts/material_corruption/concept_internal_image_gen_01.png",
+      "positive_prompt": "Violet-black living corruption material reference sheet for UE5. Show tileable floor patch, edge transition into restored pale stone, pulse emissive veins, danger tell variant, and low-noise gameplay camera sample. The material feels like dark influence exerting pressure in the game world's reality.",
+      "negative_prompt": "text, letters, logo, watermark, gore, wet flesh, muddy black flat color, noisy unreadable texture, brown sludge",
+      "review_gate": "Corruption must communicate danger without hiding enemy silhouettes or circle boundary."
+    },
+    {
+      "asset_id": "material.restored_stone",
+      "kind": "material_reference_sheet",
+      "size": "1024x1024",
+      "output_path": "assets/generated/concepts/material_restored_stone/concept_internal_image_gen_01.png",
+      "positive_prompt": "Restored sacred stone material reference sheet for UE5. Pale stone, warm gold inlays, dawn-blue resonance lines, clean tileable floor patch, restored seam variant, light well pedestal material, and gameplay camera sample. This is reclaimed territory and sacred technology made visible.",
+      "negative_prompt": "text, letters, logo, watermark, beige monotone, brown palette, dirty cracked ruin only, tiny noisy ornament, unreadable floor",
+      "review_gate": "Restored floor must feel safe and sacred while keeping combat readable."
+    },
+    {
+      "asset_id": "ui.hud_icons",
+      "kind": "ui_icon_sheet",
+      "size": "1024x1024",
+      "output_path": "assets/generated/concepts/ui_hud_icons/concept_internal_image_gen_01.png",
+      "positive_prompt": "Clean HUD icon sheet for Light Warrior. Icon concepts only, no text: health light, courage meter, thunder hammer charge, dash, light strike, sacred circle expansion, temple activation, enemy danger. Flat readable shapes with white-gold, dawn-blue, and violet-black accents on transparent-style neutral background.",
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, ornate unreadable icons, tiny details, full UI mockup, rounded text labels",
+      "review_gate": "Icons must be recognizable at small HUD size without words."
+    },
+    {
+      "asset_id": "ui.upgrade_cards",
+      "kind": "ui_card_visual_reference",
+      "size": "1536x1024",
+      "output_path": "assets/generated/concepts/ui_upgrade_cards/concept_internal_image_gen_01.png",
+      "positive_prompt": "Upgrade card visual reference for Light Warrior, no readable text. Three simple card art variants: Light Strike, Sacred Circle, Thunder Hammer. White-gold/dawn-blue sacred tech frames, violet corruption pressure behind enemy upgrades, clean icon-first design, practical UE5 game UI readability.",
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, full menu screen, marketing poster, ornate unreadable frame, purple-only palette",
+      "review_gate": "Cards must separate upgrade identity by icon and color without relying on text."
+    }
+  ]
+}
