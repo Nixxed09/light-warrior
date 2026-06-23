@@ -2,7 +2,7 @@
 
 ## Last Checked
 
-2026-06-22
+2026-06-23
 
 ## Summary
 
@@ -23,6 +23,9 @@ UE5 is the active production engine. C++ compiles, the procedural arena is playa
 - `tools\verify.ps1` exists.
 - `npm run build` passes for the Vite/Three.js prototype.
 - GamesOS design foundation validator passes.
+- Internal OpenAI image-generation key is saved in the Windows user environment as `OPENAI_API_KEY`.
+- `npm run assets:generate` produced the first internal-image-gen visual batch.
+- `npm run assets:validate-routing` passes and maps concepts to Blender, UE VFX/materials, UE UI, or audio.
 - image-engine service responds on `http://127.0.0.1:3100`.
 - video-engine service responds on `http://127.0.0.1:8200/api/health`.
 - audio-engine service responds on `http://127.0.0.1:8300/api/health`.
@@ -34,13 +37,16 @@ UE5 is the active production engine. C++ compiles, the procedural arena is playa
 
 - Unreal Editor 5.8 is installed at `D:\Games\UE_5.8`.
 - `engine\LightWarrior.uproject` exists and compiles.
+- First-pass procedural UE5 SFX are wired for gameplay feedback. Production audio generation still belongs to `audio-engine`.
 - Unreal MCP/editor automation is not yet configured.
 
 ## Blocking Full Asset Pipeline
 
 - video-engine health reports PrusaSlicer and Whisper not found.
 - audio-engine health reports generation providers not configured.
+- `audio-engine` production SFX packages have not yet been generated or imported into UE5.
 - UE5 asset import evidence for generated FBX files has not been captured yet.
+- ProductOS `gen_asset.py` remains blocked by missing `boto3` and AWS CLI/Secrets Manager access; use `tools/generate-openai-image-assets.ps1` for repeatable local image generation.
 
 ## Current Valid Work
 
@@ -87,4 +93,12 @@ GamesOS toolchain:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File D:\TE-Code\ProductOS\scripts\validate_gamesos_toolchain.ps1 -ProductRoot D:\TE-Code\ProductOS -CodeRoot D:\TE-Code -GameProject D:\Phoenix\nix-code\games\light-warrior
+```
+
+Internal image asset pipeline:
+
+```powershell
+npm run assets:dry-run
+npm run assets:generate
+npm run assets:validate-routing
 ```

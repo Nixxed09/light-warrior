@@ -14,6 +14,7 @@ Use:
 
 - `D:\TE-Code\ProductOS\GamesOS\docs\GAMESOS_AI_ASSISTED_PRODUCTION_STANDARD.md`
 - `D:\TE-Code\ProductOS\GamesOS\docs\GAMESOS_ASSET_CREATION_FLOW.md`
+- `docs/INTERNAL_IMAGE_ASSET_PIPELINE.md`
 - `STYLE_GUIDE.md`
 - `THEME_ALIGNMENT.md`
 - `ASSET_MANIFEST.json`
@@ -38,7 +39,6 @@ npm run assets:dry-run
 Generate all PNG candidates:
 
 ```powershell
-$env:OPENAI_API_KEY="<key>"
 npm run assets:generate
 ```
 
@@ -49,6 +49,8 @@ powershell -ExecutionPolicy Bypass -File tools\generate-openai-image-assets.ps1 
 ```
 
 The batch targets OpenAI's image generation endpoint with `gpt-image-2` by default and writes base64 responses into the asset package paths listed in the batch. If a workspace does not have that model enabled, pass `-Model <enabled-image-model>`.
+
+Credential setup and repeatable use cases are documented in `docs/INTERNAL_IMAGE_ASSET_PIPELINE.md`. The key must live in the Windows user environment as `OPENAI_API_KEY`, not in repo files.
 
 The first full batch covers:
 
@@ -86,6 +88,22 @@ Use this file to decide which generator owns each asset:
 - HUD icons and upgrade cards use concept art as UI reference and go to UE UI/Canvas/UMG, not Blender.
 - Music and SFX use audio-engine and do not use image generation or Blender.
 
+## Procedural SFX Bridge
+
+Use `docs/UE5_PROCEDURAL_SFX_FLOW.md` for first-pass gameplay audio while `audio-engine` providers or production audio packages are not ready.
+
+Current procedural UE5 events:
+
+- dash
+- light strike
+- shadow dissolve
+- sacred circle expansion
+- Light Well completion
+- Thunder Hammer activation
+- hammer slam
+
+These are playable placeholders. They prove event timing and feedback in UE5, but they do not approve final audio quality. Production replacement still goes through `audio.core_sfx`, `audio-engine`, UE5 import, and capture evidence.
+
 Current generated Blender/model candidates:
 
 - `environment.arena` -> `assets/generated/models/arena`
@@ -93,11 +111,11 @@ Current generated Blender/model candidates:
 
 Current concept packages are references only until their matching Blender/UE package exists and passes gameplay capture.
 
-Current local blocker:
+Current local status:
 
-- The in-chat image tool can create references for review, but it did not expose saved file paths in this shell.
-- This shell does not have `OPENAI_API_KEY` set, so the repo-local generator can prepare requests but cannot fetch PNGs yet.
-- ProductOS `gen_asset.py` is still blocked by missing `boto3` and AWS CLI/Secrets Manager access.
+- `OPENAI_API_KEY` is configured in the Windows user environment.
+- `npm run assets:generate` produced the first internal-image-gen PNG batch and result metadata.
+- ProductOS `gen_asset.py` is still blocked by missing `boto3` and AWS CLI/Secrets Manager access, so this repo-local OpenAI generator is the working repeatable image path.
 
 ## Current Priority
 

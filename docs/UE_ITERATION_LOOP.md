@@ -62,6 +62,15 @@ These measurements are intentionally small and practical. Add deeper telemetry o
 
 ## Automation Flags
 
+Common scenarios:
+
+- `first-playable`: default opening state.
+- `combat-readability`: places the player near enemy pressure and checks attack/hit readability.
+- `first-light-well-loop`: proves a Light Well restoration payoff.
+- `thunder-hammer`: triggers the Thunder Hammer activation path for bold-beat proof.
+
+Use `docs\UE5_PROCEDURAL_SFX_FLOW.md` when a scenario is being used to prove audio event timing.
+
 The game mode listens for:
 
 - `-LWAutoCapture`

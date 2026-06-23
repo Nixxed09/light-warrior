@@ -109,6 +109,12 @@ Faster after a successful compile:
 
 See `docs\UE_ITERATION_LOOP.md`.
 
+## UE5 Procedural SFX
+
+Use `docs\UE5_PROCEDURAL_SFX_FLOW.md` when adding or tuning first-pass gameplay audio.
+
+Procedural SFX are allowed for immediate playable feedback while `audio-engine` production assets are pending. They must stay tied to reusable gameplay events and must be proven through `tools\ue-loop.ps1` captures before task state changes.
+
 Do this after UE5 is installed:
 
 1. Open `engine\LightWarrior.uproject`.

@@ -118,6 +118,8 @@ Format decision for Light Warrior:
 
 Use `audio-engine` for all game feedback audio and music planning.
 
+Until production audio packages are generated, use `docs/UE5_PROCEDURAL_SFX_FLOW.md` for repeatable UE5 procedural SFX placeholders. Procedural SFX should use the same event names that final `audio-engine` assets will replace.
+
 Relevant docs:
 
 - `D:\TE-Code\audio-engine\README.md`

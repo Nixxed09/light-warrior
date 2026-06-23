@@ -285,6 +285,8 @@ Use:
 - `video-engine` for Blender MCP, game asset generation, FBX export, metadata, validation, and later capture assembly.
 - `audio-engine` for SFX, music loop, mastering, and audio manifests.
 
+Use `docs/UE5_PROCEDURAL_SFX_FLOW.md` for the current first-pass runtime audio bridge. Procedural UE5 SFX prove event timing and feedback while `audio-engine` production packages are pending; final audio still comes from `audio-engine` and must be imported/proven in UE5.
+
 For UE5 asset candidates, request `target_engine: "ue5"` from the video-engine game asset pipeline so exports use FBX and `SM_<name>_LOD#` naming.
 
 ## Audio Blockout
