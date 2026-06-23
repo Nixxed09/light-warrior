@@ -8,6 +8,7 @@ class UPointLightComponent;
 class USphereComponent;
 class UStaticMeshComponent;
 class UTextRenderComponent;
+class ALightWarriorCharacter;
 
 UCLASS()
 class LIGHTWARRIOR_API AThunderHammerTemple : public AActor
@@ -18,6 +19,9 @@ public:
     AThunderHammerTemple();
 
     virtual void Tick(float DeltaSeconds) override;
+
+    UFUNCTION(BlueprintCallable, Category = "Temple")
+    void ActivateTemple(ALightWarriorCharacter* Character);
 
 protected:
     virtual void BeginPlay() override;
@@ -58,5 +62,5 @@ private:
 
     bool bActivated = false;
     float ActivationPulseTimer = 0.0f;
-    float ActivationPulseDuration = 1.15f;
+    float ActivationPulseDuration = 2.1f;
 };

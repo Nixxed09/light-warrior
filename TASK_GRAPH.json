@@ -284,10 +284,10 @@
       "id": "weapon.thunder_hammer",
       "title": "Implement Thunder Hammer temple",
       "phase": "gameplay",
-      "status": "pending",
-      "note": "UE5 temple actor grants Thunder Hammer, expands the sacred circle, flashes a large activation ring, and damages nearby shadows on activation. Still pending a focused Thunder Hammer capture before completion.",
+      "status": "complete",
+      "note": "UE5 temple actor grants Thunder Hammer, expands the sacred circle, flashes a large activation ring, damages nearby shadows on activation, and has a focused automation scenario. `ue5-thunder-hammer2` proves the active hammer HUD, Courage/Light rewards, visible field surge, and temple risk/reward payoff without mirrored debug text.",
       "inputs": ["GAME_DESIGN.md", "STYLE_GUIDE.md"],
-      "expected_artifacts": ["captures/thunder-hammer.mp4"],
+      "expected_artifacts": ["captures/ue-loop/ue5-thunder-hammer2-20260622-192703.png"],
       "acceptance": ["temple risk/reward is readable", "weapon power spike is clear", "temple placement tempts the player outside safety before activation"],
       "qa": ["play_in_editor", "capture_video"]
     },

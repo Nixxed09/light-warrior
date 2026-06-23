@@ -57,6 +57,7 @@ AThunderHammerTemple::AThunderHammerTemple()
     TempleLabel->SetTextRenderColor(FColor(255, 218, 96));
     TempleLabel->SetWorldSize(92.0f);
     TempleLabel->SetText(FText::FromString(TEXT("THUNDER HAMMER")));
+    TempleLabel->SetHiddenInGame(true);
 }
 
 void AThunderHammerTemple::BeginPlay()
@@ -97,6 +98,16 @@ void AThunderHammerTemple::OnTempleOverlap(
     const FHitResult& SweepResult)
 {
     ALightWarriorCharacter* Character = Cast<ALightWarriorCharacter>(OtherActor);
+    if (!Character)
+    {
+        return;
+    }
+
+    ActivateTemple(Character);
+}
+
+void AThunderHammerTemple::ActivateTemple(ALightWarriorCharacter* Character)
+{
     if (!Character || bActivated)
     {
         return;

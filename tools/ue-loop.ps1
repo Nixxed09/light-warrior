@@ -56,11 +56,14 @@ $actionableErrorCount = $actionableErrorLines.Count
 $result = if ($capture.screenshot_exists -and $capture.exit_code -eq 0 -and $actionableErrorCount -eq 0) { "captured" } else { "needs_rework" }
 $pressurePreviewVisible = $true
 $combatReadabilityScenario = $Scenario -eq "combat-readability"
-$firstLoopVisible = $pressurePreviewVisible -or $combatReadabilityScenario
+$thunderHammerScenario = $Scenario -eq "thunder-hammer"
+$firstLoopVisible = $pressurePreviewVisible -or $combatReadabilityScenario -or $thunderHammerScenario
 $objectiveCompleted = $Scenario -eq "first-light-well-loop" -and $ShotDelaySeconds -ge 6
 $attackTellVisible = $combatReadabilityScenario
 $hitFeedbackVisible = $combatReadabilityScenario
-$highestImpactNextFix = if ($combatReadabilityScenario) {
+$highestImpactNextFix = if ($thunderHammerScenario) {
+  "Wire production SFX for temple activation, hammer slam, and field surge so the bold beat is felt as well as seen."
+} elseif ($combatReadabilityScenario) {
   "Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable."
 } else {
   "Make combat readable under pressure: enemies need attack tells, hit feedback, and a clearer damage/death reaction when Light Strike lands."
@@ -98,7 +101,8 @@ $evidence = [pscustomobject]@{
     "HUD shows health, timer, wells, Light, Courage, objective, and controls",
     "first path now shows shadow sentinels before the player reaches the Light Well",
     "purification start spawns a focused shadow pressure wave around the active Light Well",
-    "restored Light Wells create a visible golden expansion ring and update objective progress"
+    "restored Light Wells create a visible golden expansion ring and update objective progress",
+    "Thunder Hammer scenario teleports to the temple and fires the same activation path used by overlap gameplay"
   )
   highest_impact_next_fix = $highestImpactNextFix
 }

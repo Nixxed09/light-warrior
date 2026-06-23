@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:27:44.0053149Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "character.light_warrior",
+    "output_path":  "assets/generated/concepts/character_light_warrior/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Face direction, body, hammer, and white-gold/dawn-blue identity must read from the default UE5 camera."
+}

@@ -4,10 +4,10 @@
     "build":  "ue5-development-editor",
     "result":  "captured",
     "capture":  {
-                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer2-20260622-192703.json",
+                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer1-20260622-192558.json",
                     "screenshot_exists":  true,
-                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer2-20260622-192703.png",
-                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer2-20260622-192703.log",
+                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer1-20260622-192558.png",
+                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\ue5-thunder-hammer1-20260622-192558.log",
                     "exit_code":  0
                 },
     "metrics":  {

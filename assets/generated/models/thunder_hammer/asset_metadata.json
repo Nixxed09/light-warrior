@@ -1,0 +1,48 @@
+{
+  "asset_id": "weapon.thunder_hammer",
+  "name": "Thunder Hammer",
+  "status": "generated_candidate",
+  "created": "2026-06-22",
+  "tool": "blender-mcp via Claude Code",
+  "blender_version": "4.5.5",
+  "source_file": "source.blend",
+  "exports": [
+    {
+      "file": "SM_ThunderHammer_LOD0.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "file_size_bytes": 84732
+    }
+  ],
+  "preview": "preview.png",
+  "meshes": [
+    "SM_ThunderHammer_Handle",
+    "SM_ThunderHammer_GripBand_25/45/65/85",
+    "SM_ThunderHammer_Pommel",
+    "SM_ThunderHammer_Head",
+    "SM_ThunderHammer_StrikeFace_L/R",
+    "SM_ThunderHammer_LightningCore",
+    "SM_ThunderHammer_CoreGlow_L/R",
+    "SM_ThunderHammer_Crown",
+    "SM_ThunderHammer_Collar",
+    "SM_ThunderHammer_Rune_0/90/180/270"
+  ],
+  "materials": [
+    "M_HammerGold",
+    "M_HammerStone",
+    "M_LightningCore"
+  ],
+  "dimensions": {
+    "total_length_m": 1.7,
+    "handle_length_m": 1.4,
+    "head_width_m": 0.7,
+    "head_depth_m": 0.44
+  },
+  "style_guide_alignment": {
+    "gold_sacred": "Hammer head and grip bands use sacred gold with metallic sheen",
+    "pale_stone": "Handle shaft and strike faces use pale stone/electrum",
+    "lightning_core": "Blue-white energy channel through head with glow nodes at endpoints",
+    "readable_silhouette": "Distinct T-shape hammer profile readable during combat motion"
+  },
+  "next_gate": "UE5 import, attach to character socket, Play-In-Editor combat feel test"
+}

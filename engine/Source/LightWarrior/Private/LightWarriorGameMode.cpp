@@ -203,6 +203,16 @@ void ALightWarriorGameMode::ConfigureAutomationLoop()
             0.75f,
             false);
     }
+    else if (AutomationScenario.Equals(TEXT("thunder-hammer"), ESearchCase::IgnoreCase))
+    {
+        FTimerHandle ScenarioTimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            ScenarioTimerHandle,
+            this,
+            &ALightWarriorGameMode::PlaceAutomationPlayerAtThunderHammer,
+            0.75f,
+            false);
+    }
 
     FTimerHandle CaptureTimerHandle;
     GetWorld()->GetTimerManager().SetTimer(
@@ -445,6 +455,36 @@ void ALightWarriorGameMode::PlaceAutomationPlayerInCombat()
     Character->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
     SpawnPressureEnemy(PlayerLocation + FVector(150.0f, 0.0f, -45.0f), TEXT("LW_CombatImp"), 1, EShadowEnemyArchetype::ShadowImp);
     SpawnPressureEnemy(PlayerLocation + FVector(420.0f, 260.0f, -45.0f), TEXT("LW_CombatBerserker"), 1, EShadowEnemyArchetype::Berserker);
+}
+
+void ALightWarriorGameMode::PlaceAutomationPlayerAtThunderHammer()
+{
+    UWorld* World = GetWorld();
+    ALightWarriorCharacter* Character = Cast<ALightWarriorCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0));
+    if (!World || !Character)
+    {
+        return;
+    }
+
+    AThunderHammerTemple* Temple = nullptr;
+    for (TActorIterator<AThunderHammerTemple> It(World); It; ++It)
+    {
+        Temple = *It;
+        break;
+    }
+
+    if (!Temple)
+    {
+        return;
+    }
+
+    const FVector TempleLocation = Temple->GetActorLocation();
+    Character->SetActorLocation(TempleLocation + FVector(-120.0f, -80.0f, 140.0f), false, nullptr, ETeleportType::TeleportPhysics);
+    Character->SetActorRotation(FRotator(0.0f, 45.0f, 0.0f));
+    Temple->ActivateTemple(Character);
+
+    SpawnPressureEnemy(TempleLocation + FVector(520.0f, 90.0f, 90.0f), TEXT("LW_HammerImp"), 1, EShadowEnemyArchetype::ShadowImp);
+    SpawnPressureEnemy(TempleLocation + FVector(-520.0f, -160.0f, 90.0f), TEXT("LW_HammerBerserker"), 1, EShadowEnemyArchetype::Berserker);
 }
 
 void ALightWarriorGameMode::HandleLightWellPurificationStarted(ALightWell* LightWell)

@@ -101,6 +101,7 @@ private:
     void SpawnPressureEnemy(const FVector& SpawnLocation, const TCHAR* LabelPrefix, int32 Index, EShadowEnemyArchetype Archetype = EShadowEnemyArchetype::ShadowImp);
     void PlaceAutomationPlayerAtFirstLightWell();
     void PlaceAutomationPlayerInCombat();
+    void PlaceAutomationPlayerAtThunderHammer();
     void ConfigureAutomationLoop();
     void CaptureAutomationScreenshot();
     void QuitAfterAutomationCapture();

@@ -61,7 +61,8 @@
                    {
                        "id":  "weapon.thunder_hammer",
                        "kind":  "prop",
-                       "status":  "planned",
+                       "status":  "generated_candidate",
+                       "source":  "assets/generated/models/thunder_hammer",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Primary player weapon silhouette and impact source for Light Strike and Thunder Hammer moments.",
