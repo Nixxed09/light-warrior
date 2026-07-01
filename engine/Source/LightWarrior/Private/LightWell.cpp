@@ -75,7 +75,7 @@ ALightWell::ALightWell()
     {
         RestorationRingMesh->SetStaticMesh(WellMeshAsset.Object);
     }
-    ApplyLightWellMeshColor(RestorationRingMesh, FLinearColor(1.0f, 0.86f, 0.22f), true);
+    ApplyLightWellMeshColor(RestorationRingMesh, FLinearColor(0.84f, 0.62f, 0.18f), false);
 
     PurificationSphere = CreateDefaultSubobject<USphereComponent>(TEXT("PurificationSphere"));
     PurificationSphere->SetupAttachment(SceneRoot);
@@ -119,7 +119,7 @@ void ALightWell::Tick(float DeltaSeconds)
     if (bPlayerInside)
     {
         const float Pulse = 0.5f + 0.5f * FMath::Sin(GetWorld()->GetTimeSeconds() * 7.0f);
-        WellLight->SetIntensity(FMath::Lerp(2800.0f, 7200.0f, Pulse));
+        WellLight->SetIntensity(FMath::Lerp(1800.0f, 4200.0f, Pulse));
 
         TimeSincePlayerLeft = 0.0f;
         SetPurificationProgress(PurificationProgress + DeltaSeconds);
@@ -209,8 +209,8 @@ void ALightWell::SetPurificationProgress(float NewProgress)
     OnPurificationChanged.Broadcast(GetPurification01(), IsBeingPurified());
 
     const float LightAlpha = GetPurification01();
-    WellLight->SetIntensity(FMath::Lerp(900.0f, 6500.0f, LightAlpha));
-    WellLight->SetAttenuationRadius(FMath::Lerp(900.0f, 1800.0f, LightAlpha));
+    WellLight->SetIntensity(FMath::Lerp(650.0f, 3600.0f, LightAlpha));
+    WellLight->SetAttenuationRadius(FMath::Lerp(720.0f, 1250.0f, LightAlpha));
 }
 
 void ALightWell::CompletePurification()
@@ -223,12 +223,12 @@ void ALightWell::CompletePurification()
     bPurified = true;
     PurificationProgress = PurificationSeconds;
     WellMesh->SetRelativeScale3D(FVector(1.85f, 1.85f, 0.62f));
-    ApplyLightWellMeshColor(WellMesh, FLinearColor(1.0f, 0.86f, 0.22f), true);
+    ApplyLightWellMeshColor(WellMesh, FLinearColor(0.94f, 0.68f, 0.20f), false);
     RestorationRingMesh->SetHiddenInGame(false);
-    RestorationRingMesh->SetRelativeScale3D(FVector(10.5f, 10.5f, 0.025f));
+    RestorationRingMesh->SetRelativeScale3D(FVector(3.2f, 3.2f, 0.025f));
     WellLight->SetLightColor(FLinearColor(1.0f, 0.92f, 0.45f));
-    WellLight->SetIntensity(24000.0f);
-    WellLight->SetAttenuationRadius(3600.0f);
+    WellLight->SetIntensity(4200.0f);
+    WellLight->SetAttenuationRadius(1450.0f);
     WellLabel->SetText(FText::FromString(TEXT("FIELD EXPANDS")));
     WellLabel->SetTextRenderColor(FColor(245, 245, 180));
     ULightWarriorAudio::PlaySfx(this, ELightWarriorSfx::CircleExpand, GetActorLocation(), 0.92f);

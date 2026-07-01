@@ -1,0 +1,9 @@
+﻿{
+    "asset_id":  "audio.core_sfx",
+    "status":  "pending_capture",
+    "required_commands":  [
+                              ".\\tools\\ue-build.ps1",
+                              ".\\tools\\ue-loop.ps1 -Name audio-combat -Scenario combat-readability -SkipBuild",
+                              ".\\tools\\ue-loop.ps1 -Name audio-hammer -Scenario thunder-hammer -SkipBuild"
+                          ]
+}

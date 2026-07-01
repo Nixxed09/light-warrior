@@ -28,6 +28,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Light Warrior|Combat")
     void GrantThunderHammer(float DurationSeconds);
 
+    UFUNCTION(BlueprintCallable, Category = "Light Warrior|Combat")
+    void TriggerLightStrike();
+
+    UFUNCTION(BlueprintCallable, Category = "Light Warrior|Progression")
+    bool InvestTempleOffering();
+
     UFUNCTION(BlueprintPure, Category = "Light Warrior|Combat")
     bool HasThunderHammer() const { return ThunderHammerTimer > 0.0f; }
 
@@ -36,6 +42,15 @@ public:
 
     UFUNCTION(BlueprintPure, Category = "Light Warrior|State")
     float GetHealthPercent() const { return MaxHealth > 0.0f ? Health / MaxHealth : 0.0f; }
+
+    UFUNCTION(BlueprintPure, Category = "Light Warrior|State")
+    float GetMaxHealth() const { return MaxHealth; }
+
+    UFUNCTION(BlueprintPure, Category = "Light Warrior|State")
+    float GetTotalDamageTaken() const { return TotalDamageTaken; }
+
+    UFUNCTION(BlueprintPure, Category = "Light Warrior|State")
+    int32 GetDamageEventCount() const { return DamageEventCount; }
 
     UFUNCTION(BlueprintPure, Category = "Light Warrior|State")
     bool IsDefeated() const { return Health <= 0.0f; }
@@ -146,6 +161,12 @@ protected:
     float Health = 200.0f;
 
     UPROPERTY(BlueprintReadOnly, Category = "Light Warrior|State")
+    float TotalDamageTaken = 0.0f;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Light Warrior|State")
+    int32 DamageEventCount = 0;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Light Warrior|State")
     float ThunderHammerTimer = 0.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Light Warrior|State")
@@ -164,12 +185,18 @@ private:
     void ApplyCirclePressure(float DeltaSeconds);
     void UpdateStrikePulse(float DeltaSeconds);
     void UpdateHeroReadability(float DeltaSeconds);
+    void LogRecordedInputAction(const TCHAR* ActionName, const FString& Details = FString()) const;
     ASacredCircle* FindSacredCircle() const;
 
     float DashCooldownRemaining = 0.0f;
     float DashTimeRemaining = 0.0f;
     float StrikePulseTimer = 0.0f;
     float StrikePulseDuration = 0.42f;
+    float LastRecordedMoveInputTime = -10.0f;
+    float LastRecordedLookInputTime = -10.0f;
+    bool bRecordPlayerInput = false;
+    bool bUsingGeneratedHeroMesh = false;
+    bool bUsingGeneratedHammerMesh = false;
     bool bWasInsideCircle = true;
     bool bAwardedCurrentExcursion = false;
     bool bKilledByFall = false;

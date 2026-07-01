@@ -1,0 +1,62 @@
+{
+  "asset_id": "character.light_warrior",
+  "name": "Light Warrior",
+  "status": "generated_candidate",
+  "created": "2026-06-22",
+  "tool": "blender-mcp via Claude Code",
+  "blender_version": "4.5.5",
+  "source_file": "source.blend",
+  "exports": [
+    {
+      "file": "SM_LightWarrior_LOD0.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "file_size_bytes": 162412
+    }
+  ],
+  "preview": "preview.png",
+  "meshes": [
+    "SM_LW_UpperLeg_L/R",
+    "SM_LW_LowerLeg_L/R",
+    "SM_LW_KneeGuard_L/R",
+    "SM_LW_Boot_L/R",
+    "SM_LW_Torso",
+    "SM_LW_ChestPlate",
+    "SM_LW_ChestEmblem",
+    "SM_LW_Belt",
+    "SM_LW_Pauldron_L/R",
+    "SM_LW_PauldronTrim_L/R",
+    "SM_LW_UpperArm_L/R",
+    "SM_LW_Bracer_L/R",
+    "SM_LW_BracerTrim_L/R",
+    "SM_LW_Hand_L/R",
+    "SM_LW_Neck",
+    "SM_LW_Head",
+    "SM_LW_Helmet",
+    "SM_LW_HelmetCrest",
+    "SM_LW_CrownBand",
+    "SM_LW_Eye_L/R",
+    "SM_LW_Cape",
+    "SM_LW_CapeTrim",
+    "SM_LW_BackSacredCircle",
+    "SM_LW_BackSpoke_0/1/2/3"
+  ],
+  "materials": [
+    "M_HeroArmor",
+    "M_HeroFabric",
+    "M_HeroSkin",
+    "M_HeroGoldGlow"
+  ],
+  "dimensions": {
+    "height_m": 1.65,
+    "shoulder_width_m": 0.6,
+    "body_type": "heroic proportioned, slightly stylized"
+  },
+  "style_guide_alignment": {
+    "color_identity": "White-gold armor + dawn-blue fabric + gold glow accents",
+    "silhouette": "Wide pauldrons, helmet crest, cape for motion — reads as heroic at gameplay distance",
+    "sacred_motifs": "Chest emblem (sacred circle), back device (radial spokes), crown band, gold trims",
+    "readability": "Warm palette contrasts sharply against violet corruption environment"
+  },
+  "next_gate": "UE5 import, skeleton/rigging, animation set, Play-In-Editor movement test"
+}

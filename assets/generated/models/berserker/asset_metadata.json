@@ -1,0 +1,61 @@
+{
+  "asset_id": "enemy.berserker",
+  "name": "Berserker",
+  "status": "polished",
+  "quality_tier": "polished",
+  "created": "2026-06-22",
+  "polished": "2026-06-22",
+  "tool": "blender-mcp via Claude Code",
+  "polish_details": {
+    "subdivision_levels": 2,
+    "render_levels": 3,
+    "material_upgrade": "procedural PBR (noise/voronoi textures, color ramps, bump, emission)",
+    "lighting": "enemy studio (cool violet key, red fill, white rim)"
+  },
+  "blender_version": "4.5.5",
+  "source_file": "source.blend",
+  "exports": [
+    {
+      "file": "SM_Berserker_LOD0.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "file_size_bytes": 118860
+    }
+  ],
+  "preview": "preview.png",
+  "meshes": [
+    "SM_Berserker_Torso",
+    "SM_Berserker_ChestPlate",
+    "SM_Berserker_Crack_0/1/2",
+    "SM_Berserker_Head",
+    "SM_Berserker_Eye_L/R",
+    "SM_Berserker_Shoulder_L/R",
+    "SM_Berserker_UpperArm_L/R",
+    "SM_Berserker_Forearm_L/R",
+    "SM_Berserker_Fist_L/R",
+    "SM_Berserker_FistGlow_L/R",
+    "SM_Berserker_Leg_L/R",
+    "SM_Berserker_Foot_L/R",
+    "SM_Berserker_BackSpike_0 through _5",
+    "SM_Berserker_ChargeCore",
+    "SM_Berserker_Horn_L/R"
+  ],
+  "materials": [
+    "M_BerserkerBody",
+    "M_BerserkerChargeTell",
+    "M_BerserkerArmor",
+    "M_BerserkerDamageCracks"
+  ],
+  "dimensions": {
+    "height_m": 1.75,
+    "shoulder_width_m": 1.3,
+    "body_type": "heavy gorilla-proportioned, short legs, massive arms"
+  },
+  "style_guide_alignment": {
+    "silhouette": "Heavy angular, containment/retaliation archetype — clearly bigger and slower than Shadow Imp",
+    "charge_tell": "Chest core + fist glows + eyes pulse red-violet before charge attack",
+    "damage_feedback": "Red crack lines on chest plate glow when taking damage",
+    "corruption": "Deep violet-black, darker than imp, with metallic armor plates"
+  },
+  "next_gate": "UE5 import, skeleton/rigging, charge AI behavior, Play-In-Editor combat test"
+}

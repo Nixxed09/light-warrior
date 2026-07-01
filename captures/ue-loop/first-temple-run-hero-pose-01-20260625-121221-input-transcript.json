@@ -1,0 +1,216 @@
+[
+    {
+        "action":  "move",
+        "details":  {
+                        "target":  "V(X=1450.00, Z=140.00)",
+                        "step":  0
+                    },
+        "source":  "LW_INPUT_ACTION move step=0 target=V(X=1450.00, Z=140.00)"
+    },
+    {
+        "action":  "hold",
+        "details":  {
+                        "step":  0,
+                        "seconds":  24
+                    },
+        "source":  "LW_INPUT_ACTION hold step=0 seconds=24.0"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  0,
+                        "actions":  1
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=0 actions=1"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  0,
+                        "actions":  2
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=0 actions=2"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  0,
+                        "actions":  3
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=0 actions=3"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  0,
+                        "actions":  4
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=0 actions=4"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  0,
+                        "actions":  5
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=0 actions=5"
+    },
+    {
+        "action":  "move",
+        "details":  {
+                        "target":  "V(X=-780.00, Y=1320.00, Z=140.00)",
+                        "step":  1
+                    },
+        "source":  "LW_INPUT_ACTION move step=1 target=V(X=-780.00, Y=1320.00, Z=140.00)"
+    },
+    {
+        "action":  "hold",
+        "details":  {
+                        "step":  1,
+                        "seconds":  24
+                    },
+        "source":  "LW_INPUT_ACTION hold step=1 seconds=24.0"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  1,
+                        "actions":  6
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=1 actions=6"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  1,
+                        "actions":  7
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=1 actions=7"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  1,
+                        "actions":  8
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=1 actions=8"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  1,
+                        "actions":  9
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=1 actions=9"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  1,
+                        "actions":  10
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=1 actions=10"
+    },
+    {
+        "action":  "move",
+        "details":  {
+                        "target":  "V(X=-780.00, Y=-1320.00, Z=140.00)",
+                        "step":  2
+                    },
+        "source":  "LW_INPUT_ACTION move step=2 target=V(X=-780.00, Y=-1320.00, Z=140.00)"
+    },
+    {
+        "action":  "hold",
+        "details":  {
+                        "step":  2,
+                        "seconds":  24
+                    },
+        "source":  "LW_INPUT_ACTION hold step=2 seconds=24.0"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  2,
+                        "actions":  11
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=2 actions=11"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  2,
+                        "actions":  12
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=2 actions=12"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  2,
+                        "actions":  13
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=2 actions=13"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  2,
+                        "actions":  14
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=2 actions=14"
+    },
+    {
+        "action":  "light_strike",
+        "details":  {
+                        "gate":  2,
+                        "actions":  15
+                    },
+        "source":  "LW_INPUT_ACTION light_strike gate=2 actions=15"
+    },
+    {
+        "action":  "move",
+        "details":  {
+                        "target":  "V(X=-95.00, Y=2120.00, Z=140.00)",
+                        "step":  3
+                    },
+        "source":  "LW_INPUT_ACTION move step=3 target=V(X=-95.00, Y=2120.00, Z=140.00)"
+    },
+    {
+        "action":  "offering",
+        "details":  {
+                        "step":  3
+                    },
+        "source":  "LW_INPUT_ACTION offering step=3"
+    },
+    {
+        "action":  "hold",
+        "details":  {
+                        "step":  3,
+                        "seconds":  15
+                    },
+        "source":  "LW_INPUT_ACTION hold step=3 seconds=15.0"
+    },
+    {
+        "action":  "move",
+        "details":  {
+                        "target":  "V(X=-160.00, Y=1320.00, Z=140.00)",
+                        "step":  4
+                    },
+        "source":  "LW_INPUT_ACTION move step=4 target=V(X=-160.00, Y=1320.00, Z=140.00)"
+    },
+    {
+        "action":  "survive_pressure",
+        "details":  {
+                        "actions":  1
+                    },
+        "source":  "LW_INPUT_ACTION survive_pressure actions=1"
+    },
+    {
+        "action":  "hold",
+        "details":  {
+                        "step":  4,
+                        "seconds":  70
+                    },
+        "source":  "LW_INPUT_ACTION hold step=4 seconds=70.0"
+    }
+]

@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:31:48.5860212Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "environment.arena",
+    "output_path":  "assets/generated/concepts/environment_arena_kit/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Combat lanes, safe center, corruption pressure, and restored seams must remain readable."
+}

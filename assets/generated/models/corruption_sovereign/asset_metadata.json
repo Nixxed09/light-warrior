@@ -1,0 +1,82 @@
+{
+  "asset_id": "boss.corruption_sovereign",
+  "name": "Corruption Sovereign",
+  "status": "polished",
+  "quality_tier": "polished",
+  "created": "2026-06-22",
+  "polished": "2026-06-22",
+  "tool": "blender-mcp via Claude Code (port 9877, parallel session)",
+  "polish_details": {
+    "subdivision_levels": 2,
+    "render_levels": 3,
+    "material_upgrade": "procedural PBR (noise/voronoi textures, color ramps, bump, emission)",
+    "lighting": "boss studio (cold desaturated key, deep purple underglow, white-violet rim)"
+  },
+  "blender_version": "4.5.5",
+  "source_file": "SM_LW_CorruptionSovereign.blend",
+  "exports": [
+    {
+      "file": "SM_LW_CorruptionSovereign.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "scale": "1 BU = 1 m",
+      "axis_forward": "-Y",
+      "axis_up": "Z"
+    }
+  ],
+  "meshes": [
+    "SM_LW_CorruptionSovereign_RobeBase",
+    "SM_LW_CorruptionSovereign_RobeTrim",
+    "SM_LW_CorruptionSovereign_Belt",
+    "SM_LW_CorruptionSovereign_Torso",
+    "SM_LW_CorruptionSovereign_ChestPlate",
+    "SM_LW_CorruptionSovereign_ChestRune",
+    "SM_LW_CorruptionSovereign_ChestRuneH",
+    "SM_LW_CorruptionSovereign_Pauldron_L/R",
+    "SM_LW_CorruptionSovereign_PauldronSpike_L/R_0/1/2",
+    "SM_LW_CorruptionSovereign_UpperArm_L/R",
+    "SM_LW_CorruptionSovereign_Forearm_L/R",
+    "SM_LW_CorruptionSovereign_Gauntlet_L/R",
+    "SM_LW_CorruptionSovereign_Claw_L/R_0/1/2",
+    "SM_LW_CorruptionSovereign_Head",
+    "SM_LW_CorruptionSovereign_Jaw",
+    "SM_LW_CorruptionSovereign_EyeCenter",
+    "SM_LW_CorruptionSovereign_Eye_L/R",
+    "SM_LW_CorruptionSovereign_CrownCenter",
+    "SM_LW_CorruptionSovereign_CrownRing",
+    "SM_LW_CorruptionSovereign_CrownTine_0-5",
+    "SM_LW_CorruptionSovereign_CrownRune",
+    "SM_LW_CorruptionSovereign_PhaseOrb_0/1/2",
+    "SM_LW_CorruptionSovereign_OrbCage_0/1/2",
+    "SM_LW_CorruptionSovereign_Wing_L/R",
+    "SM_LW_CorruptionSovereign_WingTip_L/R"
+  ],
+  "materials": [
+    "M_LW_VoidBody",
+    "M_LW_CorruptArmor",
+    "M_LW_CorruptCrown",
+    "M_LW_SovereignEyes",
+    "M_LW_CorruptRunes",
+    "M_LW_AttackTell"
+  ],
+  "dimensions": {
+    "total_height_m": 3.0,
+    "torso_width_m": 0.70,
+    "shoulder_span_m": 1.20,
+    "wing_span_m": 1.50
+  },
+  "part_count": 51,
+  "style_guide_alignment": {
+    "void_body": "Near-black void base reads as ultimate dark influence",
+    "corrupt_armor": "Deep violet armor with metallic sheen — regal corruption",
+    "corrupt_crown": "Multi-spike crown — anti-thesis of hero's single golden crown spike",
+    "tri_eyes": "Three emissive eyes — inhuman watchfulness",
+    "phase_orbs": "Three floating orbs in diamond cages — boss phase markers for the player to destroy",
+    "shadow_wings": "Flat angular planes spreading from the back — oppressive shadow presence",
+    "rune_glow": "Violet emissive runes on chest and crown — corrupt power channels",
+    "attack_tells": "Red-violet claws and chest core glow before attacks"
+  },
+  "gameplay_job": "Final boss encounter. Towering dark influence sovereign that tests all skills: charge reading (Berserker), reaction speed (Imp swarms), and phase-based orb destruction. Three phases, each removing one floating orb and changing attack patterns.",
+  "readability_requirement": "Crown silhouette, tri-eye glow, phase orbs, and attack-tell claws must read from the default UE5 camera at boss-fight distance.",
+  "next_gate": "Add to ASSET_MANIFEST, UE5 import, boss arena layout, phase behavior blueprint, Play-In-Editor boss fight test"
+}

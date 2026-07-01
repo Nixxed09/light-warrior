@@ -1,9 +1,17 @@
 {
   "asset_id": "weapon.thunder_hammer",
   "name": "Thunder Hammer",
-  "status": "generated_candidate",
+  "status": "polished",
+  "quality_tier": "polished",
   "created": "2026-06-22",
+  "polished": "2026-06-22",
   "tool": "blender-mcp via Claude Code",
+  "polish_details": {
+    "subdivision_levels": 2,
+    "render_levels": 3,
+    "material_upgrade": "procedural PBR (gold hammered metal, worn stone grain, brushed electrum wave, crackling energy core)",
+    "lighting": "hero studio (warm gold key, cool dawn-blue fill, white rim)"
+  },
   "blender_version": "4.5.5",
   "source_file": "source.blend",
   "exports": [

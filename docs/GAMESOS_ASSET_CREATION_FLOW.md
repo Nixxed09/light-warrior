@@ -22,6 +22,8 @@ Every character, enemy, prop, VFX, level piece, and audio cue should make that r
 | UE5 | Final import, materials, collision, sockets, animation blueprints, Niagara/VFX, gameplay fit, Play-In-Editor proof | Raw asset generation |
 | `audio-engine` | SFX, music loops, mastering, audio manifests | Gameplay event wiring inside UE5 |
 
+For the current Light Warrior local image path, see `docs/INTERNAL_IMAGE_ASSET_PIPELINE.md`. It defines the OpenAI image batch, saved credential location, resume behavior, routing map, and repeatable use cases.
+
 ## Correct Pipeline
 
 ### 1. Asset Brief
@@ -147,14 +149,19 @@ First Light Warrior audio package:
 assets/generated/audio/core_sfx/
   dash_shimmer.wav
   light_strike.wav
-  shadow_break.wav
-  circle_expand.wav
-  well_restore.wav
-  temple_awaken.wav
-  thunder_hammer_slam.wav
+  shadow_dissolve.wav
+  circle_expansion.wav
+  temple_activation.wav
+  hammer_slam.wav
+  request.json
+  prompt-package.json
   audio_metadata.json
-  ue5-import-notes.md
+  review-notes.md
+  ue-import-result.json
+  playable-evidence.json
 ```
+
+Generate it from the game repo with `npm run audio:generate`; use `npm run audio:generate:engine` when `audio-engine` is running with provider credentials.
 
 Review gate:
 
@@ -216,6 +223,27 @@ gamesos_asset_job
 ```
 
 Do not let this wrapper auto-approve production assets. It should prepare candidates and evidence. Final acceptance happens in UE5.
+
+## Current Repeatable Local Image Flow
+
+Light Warrior currently has a repo-local image flow that can run without ProductOS `gen_asset.py`:
+
+```powershell
+npm run assets:dry-run
+npm run assets:generate
+npm run assets:validate-routing
+npm run verify
+```
+
+The generator skips existing PNGs, so interrupted batches can be resumed. Use `-Force` only when deliberately replacing an existing candidate.
+
+Routing authority:
+
+```text
+assets/generated/asset-routing.json
+```
+
+This file determines whether a generated concept feeds Blender/video-engine, UE materials/VFX, UE UI, or audio planning. Keep it in sync with `ASSET_MANIFEST.json` before adding new asset IDs.
 
 ## Light Warrior Priority Order
 

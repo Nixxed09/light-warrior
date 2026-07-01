@@ -1,28 +1,57 @@
 # Light Warrior UE Loop Review
 
-Generated: 2026-06-22 19:35:51
-Scenario: combat-readability
+Generated: 2026-06-25 13:39:09
+Scenario: first-temple-run-paced-proof
 
 ## Evidence
 
-- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.png
+- Screenshot: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-temple-run-composition-02-20260625-133542.png
 - Screenshot exists: True
 - Exit code: 0
-- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.log
-- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529.json
-- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\ue5-audio-combat2-20260622-193529-evidence.json
+- Log: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-temple-run-composition-02-20260625-133542.log
+- Summary: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-temple-run-composition-02-20260625-133542.json
+- Evidence JSON: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-temple-run-composition-02-20260625-133542-evidence.json
+- Input transcript: D:\Phoenix\nix-code\games\light-warrior\captures\ue-loop\first-temple-run-composition-02-20260625-133542-input-transcript.json
 
 ## Measurements
 
-- UE log warnings: 23
+- UE log warnings: 22
 - UE log errors: 3
 - Actionable warnings: 0
 - Actionable errors: 0
-- Objective completed in capture: False
+- Objective completed in capture: True
 - First loop visible in capture: True
 - Pressure preview visible: True
 - Attack tell visible: True
 - Hit feedback visible: True
+- Temple route visible: True
+- Route clear seconds: 163.54
+- Target clear seconds: 180
+- Route pacing window met: True
+- Combat gates started: 3
+- Combat gates completed: 3
+- Combat gate requirement met: True
+- Shard pickups: 7
+- Temple offering spent: True
+- Resource requirement met: True
+- Final Light: 106
+- Final Courage: 67
+- Final Shards: 4
+- Final Aether: 1
+- Survival pressure applied: True
+- Damage events: 1
+- Final health: 166
+- Total damage taken: 34
+- Survival requirement met: True
+- Input move samples: 2448
+- Input hold seconds: 139.3
+- Input combat actions: 15
+- Input offering actions: 1
+- Input survival actions: 1
+- Input requirement met: True
+- Input transcript actions: 27
+- Input transcript written: True
+- Input transcript requirement met: True
 - HUD blocks action: False
 - World edge visible: False
 
@@ -39,4 +68,4 @@ Scenario: combat-readability
 
 ## Next Improvement
 
-Move from primitive combat actors to generated/approved hero and shadow silhouettes while keeping attack tells and hit feedback readable.
+Run a visible recorded manual playtest, compare its transcript against this paced baseline, then tune hesitation points, route readability, pickups, pressure, and hammer timing.

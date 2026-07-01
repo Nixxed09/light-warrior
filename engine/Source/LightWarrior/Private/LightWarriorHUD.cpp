@@ -19,6 +19,8 @@ void ALightWarriorHUD::DrawHUD()
 
     const ALightWarriorCharacter* Character = Cast<ALightWarriorCharacter>(GetOwningPawn());
     const ALightWarriorGameMode* GameMode = GetWorld() ? GetWorld()->GetAuthGameMode<ALightWarriorGameMode>() : nullptr;
+    const ELightWarriorRunState RunState = GameMode ? GameMode->GetRunState() : ELightWarriorRunState::Waiting;
+    const bool bRunningFinalWave = GameMode && RunState == ELightWarriorRunState::Running && GameMode->IsFinalWaveStarted();
 
     const float Padding = 28.0f;
     const float ViewW = Canvas->ClipX;
@@ -38,7 +40,11 @@ void ALightWarriorHUD::DrawHUD()
     const int32 Required = GameMode ? GameMode->GetRequiredLightWells() : 3;
     const float Remaining = GameMode ? GameMode->GetRemainingRunSeconds() : 0.0f;
     DrawValuePill(TEXT("Wells"), FString::Printf(TEXT("%d/%d"), Purified, Required), Padding, Padding + 82.0f, 118.0f, FLinearColor(0.48f, 0.84f, 1.0f));
-    DrawValuePill(TEXT("Time"), FormatTime(Remaining), Padding + 130.0f, Padding + 82.0f, 124.0f, FLinearColor(1.0f, 0.78f, 0.28f));
+    DrawValuePill(TEXT("Remaining"), FormatTime(Remaining), Padding + 130.0f, Padding + 82.0f, 124.0f, FLinearColor(1.0f, 0.78f, 0.28f));
+    if (bRunningFinalWave)
+    {
+        DrawValuePill(TEXT("Wave"), FString::Printf(TEXT("%d"), GameMode->GetActiveFinalWaveEnemies()), Padding + 266.0f, Padding + 82.0f, 100.0f, FLinearColor(0.94f, 0.26f, 1.0f));
+    }
 
     FString PowerText = TEXT("Power: Light Strike");
     if (Character && Character->HasThunderHammer())
@@ -52,26 +58,71 @@ void ALightWarriorHUD::DrawHUD()
         const ULightWarriorProgressionComponent* Progression = Character->GetProgressionComponent();
         DrawValuePill(TEXT("Light"), FString::Printf(TEXT("%.0f"), Progression->GetResource(ELightWarriorResource::Light)), Padding, Padding + 148.0f, 118.0f, FLinearColor(0.60f, 0.92f, 1.0f));
         DrawValuePill(TEXT("Courage"), FString::Printf(TEXT("%.0f"), Progression->GetResource(ELightWarriorResource::Courage)), Padding + 130.0f, Padding + 148.0f, 124.0f, FLinearColor(1.0f, 0.72f, 0.26f));
+        DrawValuePill(TEXT("Shards"), FString::Printf(TEXT("%.0f"), Progression->GetResource(ELightWarriorResource::ResonanceShards)), Padding + 266.0f, Padding + 148.0f, 100.0f, FLinearColor(1.0f, 0.90f, 0.34f));
 
         const float ShadowDebt = Progression->GetResource(ELightWarriorResource::ShadowDebt);
         if (ShadowDebt > 0.0f)
         {
-            DrawValuePill(TEXT("Debt"), FString::Printf(TEXT("%.0f"), ShadowDebt), Padding + 266.0f, Padding + 148.0f, 100.0f, FLinearColor(0.68f, 0.24f, 0.95f));
+            DrawValuePill(TEXT("Debt"), FString::Printf(TEXT("%.0f"), ShadowDebt), Padding + 378.0f, Padding + 148.0f, 88.0f, FLinearColor(0.68f, 0.24f, 0.95f));
         }
     }
 
-    DrawBar(TEXT("Active Well"), Padding, Padding + 182.0f, PanelWidth - 138.0f, 12.0f, GetBestLightWellProgress(), FLinearColor(0.47f, 0.83f, 1.0f));
+    if (RunState == ELightWarriorRunState::Victory)
+    {
+        DrawBar(TEXT("Run Complete"), Padding, Padding + 182.0f, PanelWidth - 138.0f, 12.0f, 1.0f, FLinearColor(1.0f, 0.86f, 0.22f));
+    }
+    else if (RunState == ELightWarriorRunState::Failure)
+    {
+        DrawBar(TEXT("Run Failed"), Padding, Padding + 182.0f, PanelWidth - 138.0f, 12.0f, 0.0f, FLinearColor(0.94f, 0.16f, 0.22f));
+    }
+    else if (bRunningFinalWave)
+    {
+        const float WavePercent = GameMode->GetFinalWaveDurationSeconds() > 0.0f
+            ? GameMode->GetFinalWaveRemainingSeconds() / GameMode->GetFinalWaveDurationSeconds()
+            : 0.0f;
+        DrawBar(TEXT("Final Wave"), Padding, Padding + 182.0f, PanelWidth - 138.0f, 12.0f, WavePercent, FLinearColor(0.94f, 0.26f, 1.0f));
+    }
+    else
+    {
+        DrawBar(TEXT("Active Well"), Padding, Padding + 182.0f, PanelWidth - 138.0f, 12.0f, GetBestLightWellProgress(), FLinearColor(0.47f, 0.83f, 1.0f));
+    }
 
     const float ObjectiveWidth = FMath::Clamp(ViewW * 0.38f, 390.0f, 620.0f);
     const float ObjectiveX = FMath::Clamp(ViewW - ObjectiveWidth - Padding, Padding, ViewW - ObjectiveWidth - Padding);
     DrawPanel(ObjectiveX, 24.0f, ObjectiveWidth, 76.0f, FLinearColor(0.012f, 0.018f, 0.030f, 0.66f));
     DrawShadowText(BuildObjectiveLine(GameMode), ObjectiveX + 20.0f, 42.0f, FLinearColor(0.94f, 0.98f, 1.0f), 0.96f);
-    DrawShadowText(TEXT("Restore wells. Strike shadows. Leave safety when the temple calls."), ObjectiveX + 20.0f, 67.0f, FLinearColor(0.70f, 0.82f, 0.90f), 0.76f);
+    FString ObjectiveHint = TEXT("Gather light shards. Restore wells. Reach the temple when the route wakes.");
+    if (RunState == ELightWarriorRunState::Victory)
+    {
+        ObjectiveHint = TEXT("The temple field holds. Restart to run it cleaner and faster.");
+    }
+    else if (RunState == ELightWarriorRunState::Failure)
+    {
+        ObjectiveHint = TEXT("The field collapsed. Restart begins another restoration attempt.");
+    }
+    else if (bRunningFinalWave)
+    {
+        ObjectiveHint = FString::Printf(TEXT("Final pressure: survive %.0fs or break every shadow."), GameMode->GetFinalWaveRemainingSeconds());
+    }
+    DrawShadowText(ObjectiveHint, ObjectiveX + 20.0f, 67.0f, FLinearColor(0.70f, 0.82f, 0.90f), 0.76f);
 
     const float HelpWidth = FMath::Clamp(ViewW * 0.52f, 560.0f, 780.0f);
     DrawPanel(Padding - 12.0f, ViewH - 70.0f, HelpWidth, 48.0f, FLinearColor(0.012f, 0.018f, 0.030f, 0.62f));
     DrawShadowText(TEXT("WASD move   Mouse look   Shift dash   Space/Left Click light strike"), Padding, ViewH - 56.0f, FLinearColor(0.78f, 0.86f, 0.90f), 0.76f);
-    DrawShadowText(TEXT("Light wells restore the node. Thunder Hammer turns risk into a field surge."), Padding, ViewH - 34.0f, FLinearColor(0.96f, 0.82f, 0.42f), 0.72f);
+    FString PhaseHint = TEXT("Light wells restore the node. Thunder Hammer turns risk into a field surge.");
+    if (RunState == ELightWarriorRunState::Victory)
+    {
+        PhaseHint = TEXT("Restoration complete. The forecourt is clear and the node is awake.");
+    }
+    else if (RunState == ELightWarriorRunState::Failure)
+    {
+        PhaseHint = TEXT("You fell from the field. The run restarts from the sacred circle.");
+    }
+    else if (bRunningFinalWave)
+    {
+        PhaseHint = TEXT("Thunder Hammer is live. Break shadows or hold the forecourt until pressure collapses.");
+    }
+    DrawShadowText(PhaseHint, Padding, ViewH - 34.0f, FLinearColor(0.96f, 0.82f, 0.42f), 0.72f);
 
     DrawCenterReticle();
 }
@@ -88,6 +139,10 @@ FString ALightWarriorHUD::FormatRunState(const ALightWarriorGameMode* GameMode) 
     case ELightWarriorRunState::Waiting:
         return TEXT("AWAITING IGNITION");
     case ELightWarriorRunState::Running:
+        if (GameMode->IsFinalWaveStarted())
+        {
+            return TEXT("THUNDER FIELD ACTIVE");
+        }
         return TEXT("NODE RESTORATION ACTIVE");
     case ELightWarriorRunState::Victory:
         return TEXT("NODE RESTORED");
@@ -114,10 +169,18 @@ FString ALightWarriorHUD::BuildObjectiveLine(const ALightWarriorGameMode* GameMo
     switch (GameMode->GetRunState())
     {
     case ELightWarriorRunState::Victory:
-        return TEXT("Restoration complete");
+        return TEXT("First Temple Run complete");
     case ELightWarriorRunState::Failure:
         return TEXT("Rise and reclaim the field");
     default:
+        if (GameMode->IsFinalWaveStarted())
+        {
+            return FString::Printf(TEXT("Survive final wave: %d shadows active"), GameMode->GetActiveFinalWaveEnemies());
+        }
+        if (GameMode->IsTempleUnlocked())
+        {
+            return TEXT("Temple route awake: claim the Thunder Hammer");
+        }
         return FString::Printf(TEXT("Purify light wells: %d / %d"), GameMode->GetPurifiedLightWells(), GameMode->GetRequiredLightWells());
     }
 }

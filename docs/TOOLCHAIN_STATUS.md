@@ -2,7 +2,7 @@
 
 ## Last Checked
 
-2026-06-23
+2026-06-25
 
 ## Summary
 
@@ -26,6 +26,7 @@ UE5 is the active production engine. C++ compiles, the procedural arena is playa
 - Internal OpenAI image-generation key is saved in the Windows user environment as `OPENAI_API_KEY`.
 - `npm run assets:generate` produced the first internal-image-gen visual batch.
 - `npm run assets:validate-routing` passes and maps concepts to Blender, UE VFX/materials, UE UI, or audio.
+- `npm run audio:generate` produces the first reusable WAV package for `audio.core_sfx`.
 - image-engine service responds on `http://127.0.0.1:3100`.
 - video-engine service responds on `http://127.0.0.1:8200/api/health`.
 - audio-engine service responds on `http://127.0.0.1:8300/api/health`.
@@ -37,14 +38,19 @@ UE5 is the active production engine. C++ compiles, the procedural arena is playa
 
 - Unreal Editor 5.8 is installed at `D:\Games\UE_5.8`.
 - `engine\LightWarrior.uproject` exists and compiles.
-- First-pass procedural UE5 SFX are wired for gameplay feedback. Production audio generation still belongs to `audio-engine`.
-- Unreal MCP/editor automation is not yet configured.
+- First-pass procedural UE5 SFX are wired for gameplay feedback.
+- Game-side audio package generation is wired through `tools\generate-audio-assets.ps1`; production provider output still belongs to `audio-engine`.
+- Unreal MCP/editor automation is configured with UE 5.8 native `ModelContextProtocol`.
+- Project-local MCP client config exists at `.mcp.json` for Claude Code-compatible clients.
+- Project-local Codex MCP config exists at `.codex\config.toml`.
+- Start Unreal MCP with `tools\start-unreal-mcp.ps1`; check endpoint reachability with `tools\check-unreal-mcp.ps1`.
+- Verified 2026-06-25: `initialize` POST to `http://127.0.0.1:8000/mcp` returned protocol `2025-11-25`; `tools/list` returned `list_toolsets`, `describe_toolset`, and `call_tool`.
 
 ## Blocking Full Asset Pipeline
 
 - video-engine health reports PrusaSlicer and Whisper not found.
 - audio-engine health reports generation providers not configured.
-- `audio-engine` production SFX packages have not yet been generated or imported into UE5.
+- `audio-engine` provider-backed production SFX packages have not yet been imported into UE5.
 - UE5 asset import evidence for generated FBX files has not been captured yet.
 - ProductOS `gen_asset.py` remains blocked by missing `boto3` and AWS CLI/Secrets Manager access; use `tools/generate-openai-image-assets.ps1` for repeatable local image generation.
 
@@ -101,4 +107,11 @@ Internal image asset pipeline:
 npm run assets:dry-run
 npm run assets:generate
 npm run assets:validate-routing
+```
+
+Unreal MCP:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File D:\Phoenix\nix-code\games\light-warrior\tools\start-unreal-mcp.ps1
+powershell -ExecutionPolicy Bypass -File D:\Phoenix\nix-code\games\light-warrior\tools\check-unreal-mcp.ps1
 ```

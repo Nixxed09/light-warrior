@@ -312,6 +312,14 @@ Sacred node under pressure: clear safe center, tempting temple beyond the bounda
 
 ## Asset 6: `audio.core_sfx`
 
+Generate the current package with:
+
+```powershell
+npm run audio:generate
+```
+
+Use `npm run audio:generate:engine` when `audio-engine` is running and provider credentials are configured. The command writes `assets/generated/audio/core_sfx/` with WAV files, request metadata, review notes, UE import status, and playable evidence placeholders.
+
 ### Gameplay Job
 
 Make bravery, danger, strike impact, enemy defeat, and restoration audible.

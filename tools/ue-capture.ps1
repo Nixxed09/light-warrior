@@ -5,6 +5,8 @@ param(
   [int]$ResX = 1280,
   [int]$ResY = 720,
   [string]$Scenario = "first-playable",
+  [switch]$RecordInput,
+  [switch]$Visible,
   [switch]$SkipBuild
 )
 
@@ -42,16 +44,33 @@ $arguments = @(
   "-LWScenario=$Scenario"
 )
 
-$process = Start-Process -FilePath $unrealEditor -ArgumentList $arguments -Wait -PassThru -WindowStyle Hidden
+if ($RecordInput) {
+  $arguments += "-LWRecordInput"
+}
+
+$windowStyle = if ($Visible) { "Normal" } else { "Hidden" }
+$process = Start-Process -FilePath $unrealEditor -ArgumentList $arguments -Wait -PassThru -WindowStyle $windowStyle
+
+$inputTranscriptPath = Join-Path $captureRoot "$Name-$timestamp-input-transcript.json"
+$inputTranscriptExists = $false
+$inputTranscriptActionCount = 0
+if ($RecordInput -and (Test-Path -LiteralPath $logPath)) {
+  $inputTranscript = & (Join-Path $PSScriptRoot "extract-input-transcript.ps1") -LogPath $logPath -OutPath $inputTranscriptPath
+  $inputTranscriptExists = [bool]$inputTranscript.transcript_exists
+  $inputTranscriptActionCount = [int]$inputTranscript.action_count
+}
 
 $summary = [pscustomobject]@{
   name = $Name
   timestamp = $timestamp
   scenario = $Scenario
+  record_input = [bool]$RecordInput
   exit_code = $process.ExitCode
   screenshot = $shotPath
   screenshot_exists = Test-Path $shotPath
   log = $logPath
+  input_transcript = if ($inputTranscriptExists) { $inputTranscriptPath } else { $null }
+  input_transcript_actions = $inputTranscriptActionCount
   summary = $summaryPath
 }
 

@@ -30,6 +30,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Shadow")
     void ConfigureArchetype(EShadowEnemyArchetype NewArchetype);
 
+    UFUNCTION(BlueprintCallable, Category = "Shadow")
+    void BeginPressurePreview(float DurationSeconds);
+
+    UFUNCTION(BlueprintCallable, Category = "Shadow")
+    void PulseHitFeedback(float DurationSeconds = 0.32f);
+
 protected:
     virtual void BeginPlay() override;
 
@@ -71,15 +77,19 @@ private:
     void StartAttackWindup();
     void FinishAttack(ALightWarriorCharacter* Player);
     void UpdateAttackTell(float DeltaSeconds);
+    void UpdatePressurePreview(float DeltaSeconds);
     void UpdateHitFeedback(float DeltaSeconds);
     void SpawnDeathBurst() const;
     void ApplyArchetypeVisuals();
 
     float AttackCooldownRemaining = 0.0f;
     float AttackWindupRemaining = 0.0f;
+    float PressurePreviewRemaining = 0.0f;
+    float PressurePreviewDuration = 0.0f;
     float HitFeedbackRemaining = 0.0f;
     FLinearColor BaseShadowColor = FLinearColor(0.08f, 0.015f, 0.16f);
     FLinearColor TellColor = FLinearColor(1.0f, 0.08f, 0.32f);
     FLinearColor BurstColor = FLinearColor(1.0f, 0.82f, 0.24f);
     bool bAttackWindingUp = false;
+    bool bPressurePreviewActive = false;
 };

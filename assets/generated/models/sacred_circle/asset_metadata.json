@@ -1,0 +1,46 @@
+{
+  "asset_id": "vfx.sacred_circle",
+  "name": "Sacred Circle",
+  "status": "generated_candidate",
+  "created": "2026-06-22",
+  "tool": "blender-mcp via Claude Code",
+  "blender_version": "4.5.5",
+  "source_file": "source.blend",
+  "exports": [
+    {
+      "file": "SM_SacredCircle_LOD0.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "file_size_bytes": 133436
+    }
+  ],
+  "preview": "preview.png",
+  "meshes": [
+    "SM_SacredCircle_MainRing",
+    "SM_SacredCircle_SafetyFill",
+    "SM_SacredCircle_InnerRing_250/375",
+    "SM_SacredCircle_Spoke_0 through _7",
+    "SM_SacredCircle_RuneNode_0/1/2/3",
+    "SM_SacredCircle_ExpansionPulse"
+  ],
+  "materials": [
+    "M_CircleGoldRing",
+    "M_CircleSafetyFill",
+    "M_CircleExpansionPulse",
+    "M_CircleSacredLines"
+  ],
+  "dimensions": {
+    "main_radius_m": 5.0,
+    "expansion_radius_m": 5.5,
+    "spoke_count": 8,
+    "rune_nodes": 4
+  },
+  "style_guide_alignment": {
+    "safety": "Dawn-blue translucent fill reads as warm safe zone",
+    "boundary": "Bright gold ring is the clear safety/danger edge",
+    "expansion": "Outer pulse ring visualizes bravery-driven territory growth",
+    "sacred_geometry": "Radial spokes + concentric rings + cardinal rune nodes"
+  },
+  "ue5_notes": "Ground mesh provides the static geometry. Full VFX (particles, glow, pulsing animation) should use Niagara in UE5 layered on top of this mesh.",
+  "next_gate": "UE5 import, Niagara overlay, dynamic radius scaling, Play-In-Editor territory test"
+}

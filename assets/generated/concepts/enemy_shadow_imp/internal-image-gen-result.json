@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:28:31.3617470Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "enemy.shadow_imp",
+    "output_path":  "assets/generated/concepts/enemy_shadow_imp/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Imp must be distinct from the hero and the attack tell must be visible before damage."
+}

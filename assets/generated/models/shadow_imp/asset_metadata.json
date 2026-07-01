@@ -1,0 +1,54 @@
+{
+  "asset_id": "enemy.shadow_imp",
+  "name": "Shadow Imp",
+  "status": "polished",
+  "quality_tier": "polished",
+  "created": "2026-06-22",
+  "polished": "2026-06-22",
+  "tool": "blender-mcp via Claude Code",
+  "polish_details": {
+    "subdivision_levels": 2,
+    "render_levels": 3,
+    "material_upgrade": "procedural PBR (noise/voronoi textures, color ramps, bump, emission)",
+    "lighting": "enemy studio (cool violet key, red fill, white rim)"
+  },
+  "blender_version": "4.5.5",
+  "source_file": "source.blend",
+  "exports": [
+    {
+      "file": "SM_ShadowImp_LOD0.fbx",
+      "format": "FBX",
+      "target_engine": "ue5",
+      "file_size_bytes": 83180
+    }
+  ],
+  "preview": "preview.png",
+  "meshes": [
+    "SM_ShadowImp_Torso",
+    "SM_ShadowImp_Head",
+    "SM_ShadowImp_Eye_L/R",
+    "SM_ShadowImp_Arm_L/R",
+    "SM_ShadowImp_Claw_L/R_0/1/2",
+    "SM_ShadowImp_Leg_L/R",
+    "SM_ShadowImp_Foot_L/R",
+    "SM_ShadowImp_BackSpike_0/1/2/3",
+    "SM_ShadowImp_AttackTellOrb"
+  ],
+  "materials": [
+    "M_ShadowBody",
+    "M_AttackTell",
+    "M_GoldDissolve"
+  ],
+  "dimensions": {
+    "height_m": 1.1,
+    "width_m": 0.8,
+    "depth_m": 0.6
+  },
+  "style_guide_alignment": {
+    "silhouette": "Angular violet-black body, jagged not round",
+    "attack_tell": "Red-violet glowing orb + eye glow telegraphs attacks",
+    "defeat_feedback": "Gold dissolve material for reclaimed light on death",
+    "readability": "Small fast enemy, distinct from hero's warm palette"
+  },
+  "next_gate": "UE5 import, animation skeleton, AI behavior, Play-In-Editor combat test"
+}

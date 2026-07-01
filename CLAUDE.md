@@ -23,7 +23,7 @@ The production engine is Unreal Engine 5 (5.8 at `D:\Games\UE_5.8`). The earlier
 - UE iteration loop: `tools/ue-loop.ps1` builds, launches, captures screenshots, and writes review metadata.
 - Vite/Three.js prototype: legacy reference only (`npm run build` still passes).
 - Blender LTS 4.5.5: installed.
-- Unreal MCP: not configured locally.
+- Unreal MCP: configured through UE 5.8 native `ModelContextProtocol` plugin. Project-local clients point at `http://127.0.0.1:8000/mcp`; start with `tools/start-unreal-mcp.ps1` and check with `tools/check-unreal-mcp.ps1`.
 - AI asset generation: blocked by missing AWS credentials / `TE_SERVICE_KEY`.
 
 Do not mark UE5 production tasks complete until Play-In-Editor runs and screenshot/video evidence exists.
@@ -36,6 +36,13 @@ Primary UE5 loop:
 .\tools\status.ps1
 .\tools\verify.ps1 -RequireProductionEngine
 .\tools\ue-loop.ps1 -Scenario <name>
+```
+
+Unreal MCP loop:
+
+```powershell
+.\tools\start-unreal-mcp.ps1
+.\tools\check-unreal-mcp.ps1
 ```
 
 Legacy prototype (reference only):
@@ -56,4 +63,3 @@ npm run dev
 - Do not add more temples before the first 10 seconds are captured and reviewed.
 - Do not add bosses before the vertical slice proves combat feel.
 - Do not generate production assets without `STYLE_GUIDE.md` and `ASSET_MANIFEST.json`.
-

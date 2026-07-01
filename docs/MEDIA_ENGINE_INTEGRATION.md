@@ -120,6 +120,16 @@ Use `audio-engine` for all game feedback audio and music planning.
 
 Until production audio packages are generated, use `docs/UE5_PROCEDURAL_SFX_FLOW.md` for repeatable UE5 procedural SFX placeholders. Procedural SFX should use the same event names that final `audio-engine` assets will replace.
 
+The game-side generator is now wired:
+
+```powershell
+npm run audio:dry-run
+npm run audio:generate
+npm run audio:generate:engine
+```
+
+See `docs/AUDIO_ENGINE_GAME_AUDIO_FLOW.md` for the command contract, fallback behavior, output package, and UE5 graduation checklist.
+
 Relevant docs:
 
 - `D:\TE-Code\audio-engine\README.md`
@@ -216,7 +226,7 @@ Before marking an asset production-ready:
 
 1. Configure generation provider credentials as needed.
 2. Generate the hero, enemy, and sacred circle concept packages from `docs/AI_ASSET_PRODUCTION_QUEUE.md`.
-3. Generate the core SFX pack through audio-engine once credentials are available.
+3. Generate the core SFX pack with `npm run audio:generate`; use `npm run audio:generate:engine` once credentials are available.
 4. Replace the procedural blockout with concept-driven geometry, materials, VFX, and SFX after each direction passes review.
 5. Capture a 30-second UE5 proof clip before approving any candidate for the first playable.
 

@@ -11,5 +11,8 @@
       "Bash(git commit:*)"
     ],
     "deny": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "unreal-mcp"
+  ]
 }

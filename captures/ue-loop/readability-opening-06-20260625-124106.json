@@ -1,0 +1,13 @@
+{
+    "name":  "readability-opening-06",
+    "timestamp":  "20260625-124106",
+    "scenario":  "first-playable",
+    "record_input":  false,
+    "exit_code":  0,
+    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-opening-06-20260625-124106.png",
+    "screenshot_exists":  true,
+    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-opening-06-20260625-124106.log",
+    "input_transcript":  null,
+    "input_transcript_actions":  0,
+    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-opening-06-20260625-124106.json"
+}

@@ -1,0 +1,54 @@
+﻿{
+    "asset_id":  "audio.core_sfx",
+    "constraints":  [
+                        "One-shot WAV cues for UE5 gameplay events.",
+                        "No vocals or spoken words.",
+                        "Readable transient first, stylized heroic fantasy color second.",
+                        "Keep event names stable so procedural UE5 fallbacks and production assets share one vocabulary."
+                    ],
+    "sfx":  [
+                {
+                    "prompt":  "Light Warrior dash shimmer SFX, quick holy air rush, bright crystal particles, agile heroic movement, no melody, game-ready one shot.",
+                    "duration_sec":  0.46,
+                    "id":  "dash_shimmer",
+                    "event":  "Dash",
+                    "envelope":  "fast shimmer rise, short luminous tail"
+                },
+                {
+                    "prompt":  "Light Warrior sword impact SFX, sacred light strike, metallic hit plus radiant spark burst, readable combat feedback, no voice.",
+                    "duration_sec":  0.54,
+                    "id":  "light_strike",
+                    "event":  "LightStrike",
+                    "envelope":  "sharp impact, radiant spark decay"
+                },
+                {
+                    "prompt":  "Enemy shadow dissolve SFX, corrupted smoke collapses then burns away into warm light, satisfying defeat cue, no gore, no voice.",
+                    "duration_sec":  0.82,
+                    "id":  "shadow_dissolve",
+                    "event":  "ShadowDissolve",
+                    "envelope":  "dark burst into upward purification fade"
+                },
+                {
+                    "prompt":  "Sacred circle expansion SFX, restorative holy pulse, warm choir-like resonance without vocals, magical boundary growing outward.",
+                    "duration_sec":  1.05,
+                    "id":  "circle_expansion",
+                    "event":  "CircleExpand",
+                    "envelope":  "soft pulse blooms into temple resonance"
+                },
+                {
+                    "prompt":  "Thunder Hammer temple activation SFX, ancient stone machinery wakes, sacred chimes, blue lightning core charges, heroic reveal.",
+                    "duration_sec":  1.18,
+                    "id":  "temple_activation",
+                    "event":  "TempleActivate",
+                    "envelope":  "ancient chime stack, energy core lights up"
+                },
+                {
+                    "prompt":  "Thunder Hammer slam SFX, heavy mythic impact, thunder crack, sacred shockwave, powerful but clean gameplay one shot.",
+                    "duration_sec":  0.92,
+                    "id":  "hammer_slam",
+                    "event":  "HammerSlam",
+                    "envelope":  "heavy transient, thunder crack, low heroic tail"
+                }
+            ],
+    "theme":  "Light Warrior: brave warmth and sacred restoration pushing back readable shadow corruption"
+}

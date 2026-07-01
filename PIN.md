@@ -6,9 +6,13 @@ UE5 is the active production environment (Unreal Editor 5.8 at `D:\Games\UE_5.8`
 
 The Vite/Three.js prototype remains in the repo as a legacy reference but is no longer the active build target.
 
+## Asset Pipeline
+
+Blender MCP → FBX → UE5 headless import is working. 6 asset packs (198 uassets) are imported. See `docs/BLENDER_TO_UE5_PIPELINE.md` for the repeatable process and `docs/ASSET_QUALITY_ROADMAP.md` for the quality improvement tiers.
+
 ## Next Task
 
-`design.reference_games`, then `playtest.first_10_seconds`
+`asset.material_quality_pass` — fix colors, PBR, emission, geometry, and lighting (Roadmap steps 1-5), then `playtest.first_10_seconds`.
 
 Both tasks should judge the build through the hook: safety, temptation, brave risk, power spike, and visible light expansion.
 

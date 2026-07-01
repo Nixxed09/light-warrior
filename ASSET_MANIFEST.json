@@ -13,7 +13,19 @@
                    {
                        "id":  "character.light_warrior",
                        "kind":  "character",
-                       "status":  "planned",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/Characters",
+                       "source":  "assets/generated/models/light_warrior_character",
+                       "hyper3d_version":  {
+                           "status":  "imported",
+                           "fbx":  "SM_LW_Hero_Hyper3D_LOD0.fbx",
+                           "glb":  "hyper3d_model.glb",
+                           "blend":  "hyper3d_source.blend",
+                           "verts":  21280,
+                           "faces":  33652,
+                           "fal_request_id":  "019ef289-1dec-7891-a494-c6e7cc15732c",
+                           "method":  "Hyper3D Rodin via fal.ai from concept art"
+                       },
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Third-person player avatar with readable body, face direction, and glowing hammer silhouette during movement and combat.",
@@ -25,7 +37,19 @@
                    {
                        "id":  "enemy.shadow_imp",
                        "kind":  "character",
-                       "status":  "planned",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/Enemies",
+                       "source":  "assets/generated/models/shadow_imp",
+                       "hyper3d_version":  {
+                           "status":  "imported",
+                           "fbx":  "SM_LW_ShadowImp_Hyper3D_LOD0.fbx",
+                           "glb":  "hyper3d_model.glb",
+                           "blend":  "hyper3d_source.blend",
+                           "verts":  20380,
+                           "faces":  31998,
+                           "fal_request_id":  "019ef289-3833-7bf2-ae06-ccaa642182e3",
+                           "method":  "Hyper3D Rodin via fal.ai from concept art"
+                       },
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Small fast pressure enemy that teaches the player to read attack tells and answer darkness with Light Strike.",
@@ -37,7 +61,9 @@
                    {
                        "id":  "enemy.berserker",
                        "kind":  "character",
-                       "status":  "planned",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/Enemies",
+                       "source":  "assets/generated/models/berserker",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Heavy pressure enemy that forces brave movement and teaches charge-tell recognition.",
@@ -49,7 +75,9 @@
                    {
                        "id":  "vfx.sacred_circle",
                        "kind":  "effect",
-                       "status":  "planned",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/VFX",
+                       "source":  "assets/generated/models/sacred_circle",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Show safety, danger, and restored territory without text.",
@@ -61,8 +89,19 @@
                    {
                        "id":  "weapon.thunder_hammer",
                        "kind":  "prop",
-                       "status":  "generated_candidate",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/Weapons",
                        "source":  "assets/generated/models/thunder_hammer",
+                       "hyper3d_version":  {
+                           "status":  "imported",
+                           "fbx":  "SM_LW_ThunderHammer_Hyper3D_LOD0.fbx",
+                           "glb":  "hyper3d_model.glb",
+                           "blend":  "hyper3d_source.blend",
+                           "verts":  22721,
+                           "faces":  36303,
+                           "fal_request_id":  "019ef289-384d-7341-bd79-cf2d3219555b",
+                           "method":  "Hyper3D Rodin via fal.ai from concept art"
+                       },
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Primary player weapon silhouette and impact source for Light Strike and Thunder Hammer moments.",
@@ -74,7 +113,8 @@
                    {
                        "id":  "environment.arena",
                        "kind":  "environment",
-                       "status":  "generated_candidate",
+                       "status":  "imported",
+                       "ue5_path":  "/Game/LightWarrior/Meshes/Arena",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "source":  "assets/generated/models/arena",
@@ -99,7 +139,8 @@
                    {
                        "id":  "pickup.light_shard",
                        "kind":  "pickup",
-                       "status":  "planned",
+                       "status":  "generated_candidate",
+                       "source":  "assets/generated/models/light_shard",
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "gameplay_job":  "Small resource pickup that rewards brave movement outside the circle.",
@@ -171,6 +212,19 @@
                        "style_anchor":  "STYLE_GUIDE.md",
                        "theme_anchor":  "THEME_ALIGNMENT.md",
                        "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. audio.core_sfx should make bravery and restoration audible: dash shimmer, light strike, dark dissolve, circle expansion pulse, temple activation, hammer slam."
+                   },
+                   {
+                       "id":  "boss.corruption_sovereign",
+                       "kind":  "character",
+                       "status":  "generated_candidate",
+                       "source":  "assets/generated/models/corruption_sovereign",
+                       "style_anchor":  "STYLE_GUIDE.md",
+                       "theme_anchor":  "THEME_ALIGNMENT.md",
+                       "gameplay_job":  "Final boss encounter. Towering dark-influence sovereign with corrupted crown, tri-eyes, three destructible phase orbs, shadow wings. Tests all player skills across three phases.",
+                       "readability_requirement":  "Crown silhouette, tri-eye glow, phase orbs, attack-tell claws, and rune channels must read from the default UE5 camera at boss-fight distance.",
+                       "target_engine":  "ue5",
+                       "output_dir":  "assets/generated/models/corruption_sovereign",
+                       "prompt_brief":  "Use STYLE_GUIDE.md and THEME_ALIGNMENT.md. boss.corruption_sovereign is ultimate dark influence: towering void-black sovereign with corrupted crown, spectral robe, shadow wings, three phase orbs in diamond cages, violet rune power channels, red-violet attack-tell claws."
                    }
                ]
 }

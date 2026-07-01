@@ -140,8 +140,14 @@ void AShadowEnemy::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 
     AttackCooldownRemaining = FMath::Max(0.0f, AttackCooldownRemaining - DeltaSeconds);
+    UpdatePressurePreview(DeltaSeconds);
     UpdateAttackTell(DeltaSeconds);
     UpdateHitFeedback(DeltaSeconds);
+
+    if (bPressurePreviewActive)
+    {
+        return;
+    }
 
     ALightWarriorCharacter* Player = FindPlayer();
     if (!Player)
@@ -177,10 +183,7 @@ float AShadowEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 {
     const float AppliedDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
     Health -= AppliedDamage;
-    HitFeedbackRemaining = 0.22f;
-    ApplyShadowColor(ShadowMesh, FLinearColor(0.72f, 0.18f, 1.0f), true);
-    ShadowLight->SetIntensity(7200.0f);
-    ShadowLight->SetLightColor(FLinearColor(0.85f, 0.20f, 1.0f));
+    PulseHitFeedback(0.22f);
 
     if (Health <= 0.0f)
     {
@@ -190,6 +193,24 @@ float AShadowEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
     }
 
     return AppliedDamage;
+}
+
+void AShadowEnemy::BeginPressurePreview(float DurationSeconds)
+{
+    bPressurePreviewActive = true;
+    PressurePreviewDuration = FMath::Max(0.1f, DurationSeconds);
+    PressurePreviewRemaining = PressurePreviewDuration;
+    AttackTellMesh->SetHiddenInGame(false);
+    ShadowLight->SetLightColor(TellColor);
+    ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 12000.0f : 8200.0f);
+}
+
+void AShadowEnemy::PulseHitFeedback(float DurationSeconds)
+{
+    HitFeedbackRemaining = FMath::Max(0.05f, DurationSeconds);
+    ApplyShadowColor(ShadowMesh, FLinearColor(0.72f, 0.18f, 1.0f), true);
+    ShadowLight->SetIntensity(7200.0f);
+    ShadowLight->SetLightColor(FLinearColor(0.85f, 0.20f, 1.0f));
 }
 
 ALightWarriorCharacter* AShadowEnemy::FindPlayer() const
@@ -244,6 +265,33 @@ void AShadowEnemy::UpdateAttackTell(float DeltaSeconds)
     ShadowLight->SetIntensity(FMath::Lerp(4200.0f, Archetype == EShadowEnemyArchetype::Berserker ? 13200.0f : 9200.0f, FMath::Max(Alpha, Pulse * 0.8f)));
 }
 
+void AShadowEnemy::UpdatePressurePreview(float DeltaSeconds)
+{
+    if (!bPressurePreviewActive)
+    {
+        return;
+    }
+
+    PressurePreviewRemaining = FMath::Max(0.0f, PressurePreviewRemaining - DeltaSeconds);
+    const float Alpha = 1.0f - PressurePreviewRemaining / FMath::Max(0.01f, PressurePreviewDuration);
+    const float Pulse = 0.5f + 0.5f * FMath::Sin(GetWorld()->GetTimeSeconds() * 14.0f);
+    const float BaseScale = Archetype == EShadowEnemyArchetype::Berserker ? 3.8f : 2.2f;
+    const float TellScale = BaseScale + Pulse * (Archetype == EShadowEnemyArchetype::Berserker ? 1.35f : 0.85f) + Alpha * 0.65f;
+    AttackTellMesh->SetHiddenInGame(false);
+    AttackTellMesh->SetRelativeScale3D(FVector(TellScale, TellScale, 0.03f));
+    ShadowLight->SetLightColor(TellColor);
+    ShadowLight->SetIntensity(FMath::Lerp(6200.0f, Archetype == EShadowEnemyArchetype::Berserker ? 14500.0f : 9800.0f, Pulse));
+
+    if (PressurePreviewRemaining <= 0.0f)
+    {
+        bPressurePreviewActive = false;
+        AttackTellMesh->SetHiddenInGame(true);
+        ShadowLight->SetLightColor(BaseShadowColor);
+        ShadowLight->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 2200.0f : 1600.0f);
+        AttackCooldownRemaining = FMath::Min(AttackCooldownRemaining, 0.35f);
+    }
+}
+
 void AShadowEnemy::UpdateHitFeedback(float DeltaSeconds)
 {
     if (HitFeedbackRemaining <= 0.0f)
@@ -277,7 +325,6 @@ void AShadowEnemy::SpawnDeathBurst() const
         Burst->PointLightComponent->SetIntensity(Archetype == EShadowEnemyArchetype::Berserker ? 32000.0f : 22000.0f);
         Burst->PointLightComponent->SetAttenuationRadius(Archetype == EShadowEnemyArchetype::Berserker ? 2100.0f : 1500.0f);
         Burst->SetLifeSpan(Archetype == EShadowEnemyArchetype::Berserker ? 0.72f : 0.42f);
-        Burst->SetActorLabel(Archetype == EShadowEnemyArchetype::Berserker ? TEXT("LW_BerserkerDeathBurst") : TEXT("LW_ShadowImpDeathBurst"));
     }
 }
 
@@ -285,8 +332,18 @@ void AShadowEnemy::ApplyArchetypeVisuals()
 {
     if (Archetype == EShadowEnemyArchetype::Berserker)
     {
-        ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -10.0f));
-        ShadowMesh->SetRelativeScale3D(FVector(1.35f, 1.05f, 1.85f));
+        UStaticMesh* BerserkerMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/LightWarrior/Meshes/Enemies/SM_Berserker_ChestPlate.SM_Berserker_ChestPlate"));
+        if (BerserkerMesh)
+        {
+            ShadowMesh->SetStaticMesh(BerserkerMesh);
+            ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -18.0f));
+            ShadowMesh->SetRelativeScale3D(FVector(1.2f, 1.2f, 1.2f));
+        }
+        else
+        {
+            ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -10.0f));
+            ShadowMesh->SetRelativeScale3D(FVector(1.35f, 1.05f, 1.85f));
+        }
         AttackTellMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.02f));
         ShadowLight->SetAttenuationRadius(780.0f);
         ShadowLabel->SetText(FText::FromString(TEXT("BERSERKER")));
@@ -295,8 +352,18 @@ void AShadowEnemy::ApplyArchetypeVisuals()
     }
     else
     {
-        ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -36.0f));
-        ShadowMesh->SetRelativeScale3D(FVector(0.66f, 0.66f, 0.92f));
+        UStaticMesh* ImpMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/LightWarrior/Meshes/Enemies/SM_LW_ShadowImp_Hyper3D.SM_LW_ShadowImp_Hyper3D"));
+        if (ImpMesh)
+        {
+            ShadowMesh->SetStaticMesh(ImpMesh);
+            ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -20.0f));
+            ShadowMesh->SetRelativeScale3D(FVector(0.42f, 0.42f, 0.42f));
+        }
+        else
+        {
+            ShadowMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -36.0f));
+            ShadowMesh->SetRelativeScale3D(FVector(0.66f, 0.66f, 0.92f));
+        }
         AttackTellMesh->SetRelativeScale3D(FVector(0.01f, 0.01f, 0.02f));
         ShadowLight->SetAttenuationRadius(520.0f);
         ShadowLabel->SetText(FText::FromString(TEXT("IMP")));

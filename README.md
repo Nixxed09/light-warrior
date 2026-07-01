@@ -57,6 +57,20 @@ Engine transition authority: `docs/ENGINE_TRANSITION_THREEJS_TO_UE5.md`.
 
 Next real milestone: UE5 first playable with movement, dash, light strike, sacred circle, one enemy, Thunder Hammer temple, 90-second run state, and Play-In-Editor evidence.
 
+Asset production authority:
+
+- `docs/AI_ASSET_PRODUCTION_QUEUE.md`
+- `docs/INTERNAL_IMAGE_ASSET_PIPELINE.md`
+- `assets/generated/asset-routing.json`
+
+Repeatable asset commands:
+
+```powershell
+npm run assets:dry-run
+npm run assets:generate
+npm run assets:validate-routing
+```
+
 Read these before expanding scope:
 
 - `LILA_ALIGNMENT.md`

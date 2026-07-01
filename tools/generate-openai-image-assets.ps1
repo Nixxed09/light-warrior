@@ -2,6 +2,7 @@ param(
   [string]$BatchPath = "assets/generated/internal-image-gen-batch-20260623.json",
   [string]$AssetId = "",
   [string]$Model = "",
+  [switch]$Force,
   [switch]$DryRun
 )
 
@@ -70,7 +71,16 @@ foreach ($asset in $assets) {
     continue
   }
 
-  $apiKey = $env:OPENAI_API_KEY
+  if ((Test-Path $outputPath) -and !$Force) {
+    Write-Host "[skip] $($asset.asset_id) already exists at $($asset.output_path)"
+    continue
+  }
+
+  $apiKey = if ($env:OPENAI_API_KEY) {
+    $env:OPENAI_API_KEY
+  } else {
+    [Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+  }
   if ([string]::IsNullOrWhiteSpace($apiKey)) {
     throw "OPENAI_API_KEY is not set. Set it, then rerun this command."
   }

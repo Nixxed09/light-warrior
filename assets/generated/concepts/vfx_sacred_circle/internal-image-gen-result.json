@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:30:11.0455248Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "vfx.sacred_circle",
+    "output_path":  "assets/generated/concepts/vfx_sacred_circle/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Boundary, expansion, danger, and restored territory must read without hiding combat."
+}

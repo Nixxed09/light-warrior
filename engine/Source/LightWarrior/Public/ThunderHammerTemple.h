@@ -23,6 +23,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Temple")
     void ActivateTemple(ALightWarriorCharacter* Character);
 
+    UFUNCTION(BlueprintCallable, Category = "Temple")
+    void SetTempleUnlocked(bool bNewUnlocked);
+
+    UFUNCTION(BlueprintPure, Category = "Temple")
+    bool IsTempleUnlocked() const { return bUnlocked; }
+
+    UFUNCTION(BlueprintPure, Category = "Temple")
+    bool IsActivated() const { return bActivated; }
+
 protected:
     virtual void BeginPlay() override;
 
@@ -31,6 +40,15 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UStaticMeshComponent> TempleMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UStaticMeshComponent> TemplePillarMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UStaticMeshComponent> TempleRingMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<UStaticMeshComponent> TempleCrownMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<UStaticMeshComponent> ActivationPulseMesh;
@@ -61,6 +79,9 @@ private:
     void OnTempleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
     bool bActivated = false;
+    bool bUnlocked = false;
+    bool bUsingGeneratedTempleMesh = false;
+    float LockedPulseTimer = 0.0f;
     float ActivationPulseTimer = 0.0f;
     float ActivationPulseDuration = 2.1f;
 };

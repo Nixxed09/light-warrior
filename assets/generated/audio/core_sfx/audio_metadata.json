@@ -1,0 +1,103 @@
+﻿{
+    "created_at":  "2026-06-23T03:18:50.0394275Z",
+    "asset_id":  "audio.core_sfx",
+    "audio_engine":  {
+                         "token_env":  "AUDIO_ENGINE_API_TOKEN",
+                         "provider":  "stable_audio",
+                         "url":  "http://127.0.0.1:8300",
+                         "health_available":  true
+                     },
+    "files":  [
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Light Warrior dash shimmer SFX, quick holy air rush, bright crystal particles, agile heroic movement, no melody, game-ready one shot.",
+                      "id":  "dash_shimmer",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "Dash",
+                      "duration_sec":  0.46,
+                      "audio_engine_job_id":  "058eb5955601",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/dash_shimmer.wav"
+                  },
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Light Warrior sword impact SFX, sacred light strike, metallic hit plus radiant spark burst, readable combat feedback, no voice.",
+                      "id":  "light_strike",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "LightStrike",
+                      "duration_sec":  0.54,
+                      "audio_engine_job_id":  "1e4e847359cd",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/light_strike.wav"
+                  },
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Enemy shadow dissolve SFX, corrupted smoke collapses then burns away into warm light, satisfying defeat cue, no gore, no voice.",
+                      "id":  "shadow_dissolve",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "ShadowDissolve",
+                      "duration_sec":  0.82,
+                      "audio_engine_job_id":  "3271bf2ce1e2",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/shadow_dissolve.wav"
+                  },
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Sacred circle expansion SFX, restorative holy pulse, warm choir-like resonance without vocals, magical boundary growing outward.",
+                      "id":  "circle_expansion",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "CircleExpand",
+                      "duration_sec":  1.05,
+                      "audio_engine_job_id":  "2ae1f8c570be",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/circle_expansion.wav"
+                  },
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Thunder Hammer temple activation SFX, ancient stone machinery wakes, sacred chimes, blue lightning core charges, heroic reveal.",
+                      "id":  "temple_activation",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "TempleActivate",
+                      "duration_sec":  1.18,
+                      "audio_engine_job_id":  "1a48b2906689",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/temple_activation.wav"
+                  },
+                  {
+                      "source":  "local_fallback_after_audio_engine_job",
+                      "prompt":  "Thunder Hammer slam SFX, heavy mythic impact, thunder crack, sacred shockwave, powerful but clean gameplay one shot.",
+                      "id":  "hammer_slam",
+                      "sample_rate":  44100,
+                      "format":  "wav",
+                      "event":  "HammerSlam",
+                      "duration_sec":  0.92,
+                      "audio_engine_job_id":  "1a57268add8d",
+                      "channels":  1,
+                      "file":  "assets/generated/audio/core_sfx/hammer_slam.wav"
+                  }
+              ],
+    "status":  "generated",
+    "provider_system":  "audio-engine-with-local-wav-fallback",
+    "notes":  [
+                  "audio-engine health check succeeded at http://127.0.0.1:8300.",
+                  "audio-engine accepted dash_shimmer as job 058eb5955601; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet.",
+                  "audio-engine accepted light_strike as job 1e4e847359cd; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet.",
+                  "audio-engine accepted shadow_dissolve as job 3271bf2ce1e2; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet.",
+                  "audio-engine accepted circle_expansion as job 2ae1f8c570be; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet.",
+                  "audio-engine accepted temple_activation as job 1a48b2906689; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet.",
+                  "audio-engine accepted hammer_slam as job 1a57268add8d; generated local fallback WAV because no provider-backed downloadable SFX file is imported yet."
+              ],
+    "ue5_event_map":  {
+                          "ShadowDissolve":  "assets/generated/audio/core_sfx/shadow_dissolve.wav",
+                          "CircleExpand":  "assets/generated/audio/core_sfx/circle_expansion.wav",
+                          "TempleActivate":  "assets/generated/audio/core_sfx/temple_activation.wav",
+                          "HammerSlam":  "assets/generated/audio/core_sfx/hammer_slam.wav",
+                          "LightStrike":  "assets/generated/audio/core_sfx/light_strike.wav",
+                          "Dash":  "assets/generated/audio/core_sfx/dash_shimmer.wav"
+                      }
+}

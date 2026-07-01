@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:37:36.0206711Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "ui.hud_icons",
+    "output_path":  "assets/generated/concepts/ui_hud_icons/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Icons must be recognizable at small HUD size without words."
+}

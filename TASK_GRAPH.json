@@ -204,11 +204,32 @@
       "qa": ["style_review"]
     },
     {
+      "id": "asset.blender_mcp_pipeline",
+      "title": "Set up Blender MCP pipeline and build first-pass 3D assets",
+      "phase": "asset",
+      "status": "complete",
+      "note": "Blender MCP (ahujasid/blender-mcp) connected to Claude Code. Built 6 asset packs (arena, character, 2 enemies, weapon, VFX) as geometric blockouts with flat materials. All 198 uassets imported into UE5. AssetShowcase.umap created. Pipeline documented in docs/BLENDER_TO_UE5_PIPELINE.md.",
+      "expected_artifacts": ["docs/BLENDER_TO_UE5_PIPELINE.md", "tools/ue-import-assets.py", "tools/ue-place-assets.py", "engine/Content/LightWarrior/Maps/AssetShowcase.umap"],
+      "acceptance": ["blender-mcp connected", "6 FBX packs exported", "198 uassets imported", "showcase level saved"],
+      "qa": ["toolchain_check", "asset_validation"]
+    },
+    {
+      "id": "asset.material_quality_pass",
+      "title": "Tier 1 material correction: fix colors, PBR, emission, geometry, lighting",
+      "phase": "asset",
+      "status": "pending",
+      "note": "Roadmap steps 1-5. Fix base colors to exact palette, add metallic/roughness, emission for glows, bevel+smooth geometry pass, showcase level lighting with fog and bloom.",
+      "inputs": ["docs/ASSET_QUALITY_ROADMAP.md", "STYLE_GUIDE.md"],
+      "expected_artifacts": ["captures/material-quality-pass.png"],
+      "acceptance": ["all materials use exact palette colors", "metallic/roughness set per material type", "glow elements emit light", "hard edges beveled", "showcase level has fog and bloom"],
+      "qa": ["style_review", "play_in_editor"]
+    },
+    {
       "id": "asset.ai_first_visual_audio_sprint",
       "title": "Run Light Warrior AI asset sprint for hero, enemies, VFX, and audio",
       "phase": "asset",
       "status": "pending",
-      "note": "First-pass procedural UE5 SFX are now wired for dash, light strike, shadow dissolve, sacred circle expansion, Light Well completion, and Thunder Hammer activation. This task remains pending because generated/imported production audio assets, hero/enemy meshes, VFX candidates, and 30-second approval capture are still required.",
+      "note": "First-pass procedural UE5 SFX wired. Blender blockout meshes imported (198 uassets). Still needs: Tier 3 AI-generated meshes from concept art (Hyper3D), production audio assets, and 30-second approval capture.",
       "inputs": ["docs/AI_ASSET_PRODUCTION_QUEUE.md", "STYLE_GUIDE.md", "THEME_ALIGNMENT.md", "ASSET_MANIFEST.json"],
       "expected_artifacts": [
         "assets/generated/concepts/character_light_warrior",

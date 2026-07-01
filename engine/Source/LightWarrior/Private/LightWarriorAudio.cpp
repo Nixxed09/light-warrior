@@ -2,6 +2,7 @@
 
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundBase.h"
 #include "Sound/SoundWaveProcedural.h"
 #include "TimerManager.h"
 
@@ -38,6 +39,38 @@ FLightWarriorTone GetTone(ELightWarriorSfx Sfx)
     default:
         return {};
     }
+}
+
+const TCHAR* GetProductionSoundPath(ELightWarriorSfx Sfx)
+{
+    switch (Sfx)
+    {
+    case ELightWarriorSfx::Dash:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/dash_shimmer.dash_shimmer");
+    case ELightWarriorSfx::LightStrike:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/light_strike.light_strike");
+    case ELightWarriorSfx::ShadowDissolve:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/shadow_dissolve.shadow_dissolve");
+    case ELightWarriorSfx::CircleExpand:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/circle_expansion.circle_expansion");
+    case ELightWarriorSfx::TempleActivate:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/temple_activation.temple_activation");
+    case ELightWarriorSfx::HammerSlam:
+        return TEXT("/Game/LightWarrior/Audio/CoreSfx/hammer_slam.hammer_slam");
+    default:
+        return nullptr;
+    }
+}
+
+USoundBase* LoadProductionSound(ELightWarriorSfx Sfx)
+{
+    const TCHAR* SoundPath = GetProductionSoundPath(Sfx);
+    if (!SoundPath)
+    {
+        return nullptr;
+    }
+
+    return Cast<USoundBase>(StaticLoadObject(USoundBase::StaticClass(), nullptr, SoundPath));
 }
 
 float Envelope(float Time, const FLightWarriorTone& Tone)
@@ -98,6 +131,12 @@ void ULightWarriorAudio::PlaySfx(const UObject* WorldContextObject, ELightWarrio
     UWorld* World = WorldContextObject->GetWorld();
     if (!World)
     {
+        return;
+    }
+
+    if (USoundBase* ProductionSound = LoadProductionSound(Sfx))
+    {
+        UGameplayStatics::PlaySoundAtLocation(WorldContextObject, ProductionSound, Location, Volume, 1.0f, 0.0f);
         return;
     }
 

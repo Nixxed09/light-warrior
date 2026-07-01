@@ -1,0 +1,13 @@
+{
+    "name":  "readability-hammer-01",
+    "timestamp":  "20260625-124504",
+    "scenario":  "thunder-hammer",
+    "record_input":  false,
+    "exit_code":  0,
+    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-hammer-01-20260625-124504.png",
+    "screenshot_exists":  true,
+    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-hammer-01-20260625-124504.log",
+    "input_transcript":  null,
+    "input_transcript_actions":  0,
+    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\readability-hammer-01-20260625-124504.json"
+}

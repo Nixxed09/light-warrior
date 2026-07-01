@@ -115,6 +115,14 @@ Use `docs\UE5_PROCEDURAL_SFX_FLOW.md` when adding or tuning first-pass gameplay 
 
 Procedural SFX are allowed for immediate playable feedback while `audio-engine` production assets are pending. They must stay tied to reusable gameplay events and must be proven through `tools\ue-loop.ps1` captures before task state changes.
 
+Generate the reusable WAV package with:
+
+```powershell
+npm run audio:generate
+```
+
+Use `npm run audio:generate:engine` when `audio-engine` is running on `http://127.0.0.1:8300` and provider credentials are configured. See `docs\AUDIO_ENGINE_GAME_AUDIO_FLOW.md`.
+
 Do this after UE5 is installed:
 
 1. Open `engine\LightWarrior.uproject`.

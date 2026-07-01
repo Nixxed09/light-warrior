@@ -1,0 +1,11 @@
+{
+    "schema_version":  "1.0",
+    "generated_at":  "2026-06-23T01:31:01.1432727Z",
+    "provider_system":  "openai.images.generations",
+    "model":  "gpt-image-2",
+    "asset_id":  "weapon.thunder_hammer",
+    "output_path":  "assets/generated/concepts/weapon_thunder_hammer/concept_internal_image_gen_01.png",
+    "source_batch":  "assets/generated/internal-image-gen-batch-20260623.json",
+    "status":  "generated_candidate",
+    "review_gate":  "Hammer silhouette must read as the player\u0027s primary weapon during movement and strike effects."
+}

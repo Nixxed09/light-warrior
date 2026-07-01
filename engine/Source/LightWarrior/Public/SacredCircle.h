@@ -41,7 +41,22 @@ protected:
     TObjectPtr<class UStaticMeshComponent> CircleMesh;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UStaticMeshComponent> MainRingMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UStaticMeshComponent> InnerRingMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TObjectPtr<class UStaticMeshComponent> OuterInnerRingMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<class UStaticMeshComponent> ExpansionPulseMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TArray<TObjectPtr<class UStaticMeshComponent>> BoundarySegments;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+    TArray<TObjectPtr<class UStaticMeshComponent>> SpokeSegments;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     TObjectPtr<class UPointLightComponent> CircleLight;
@@ -69,4 +84,5 @@ private:
     float ExpansionPulseTimer = 0.0f;
     float ExpansionPulseDuration = 0.82f;
     float PreviousRadius = 1400.0f;
+    bool bUsingGeneratedCircleMeshes = false;
 };

@@ -1,0 +1,42 @@
+{
+    "game_id":  "light-warrior",
+    "scenario":  "first-temple-run-route-proof",
+    "build":  "ue5-development-editor",
+    "result":  "needs_rework",
+    "capture":  {
+                    "summary":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-temple-run-route-diagnostic-20260625-102945.json",
+                    "screenshot_exists":  true,
+                    "screenshot":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-temple-run-route-diagnostic-20260625-102945.png",
+                    "log":  "D:\\Phoenix\\nix-code\\games\\light-warrior\\captures\\ue-loop\\first-temple-run-route-diagnostic-20260625-102945.log",
+                    "exit_code":  0
+                },
+    "metrics":  {
+                    "hud_blocks_action":  false,
+                    "hit_feedback_visible":  true,
+                    "attack_tell_visible":  true,
+                    "actionable_warnings":  0,
+                    "objective_completed":  false,
+                    "first_loop_visible":  true,
+                    "temple_route_visible":  true,
+                    "world_edge_visible":  false,
+                    "raw_errors":  3,
+                    "pressure_preview_visible":  true,
+                    "actionable_errors":  0,
+                    "raw_warnings":  22
+                },
+    "observations":  [
+                         "hero spawns in the playable arena",
+                         "huge flat world reads without a visible edge from the starting camera",
+                         "HUD shows health, timer, wells, Light, Courage, objective, and controls",
+                         "first path now shows shadow sentinels before the player reaches the Light Well",
+                         "purification start spawns a focused shadow pressure wave around the active Light Well",
+                         "restored Light Wells create a visible golden expansion ring and update objective progress",
+                         "Thunder Hammer scenario teleports to the temple and fires the same activation path used by overlap gameplay",
+                         "Temple unlock now creates an awakened gold-blue route with shard rewards and beacon lights",
+                         "First Temple Run scenario stages restored wells, temple unlock, Thunder Hammer activation, light shards, and the final pressure wave",
+                         "First Temple Run proof scenario runs wells, temple activation, final wave, and victory in one continuous PIE session",
+                         "First Temple Run route proof drives the pawn through the route with movement input instead of teleporting between objectives",
+                         "Final-wave enemies enter with readable pressure tells and a short hit-feedback flash for combat readability"
+                     ],
+    "highest_impact_next_fix":  "Tune the real 3-minute route: reduce dead travel, balance outside-circle pressure, add input-recorded combat beats, and measure clear time against target."
+}

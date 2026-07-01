@@ -10,6 +10,20 @@
     "screenshot_required": true,
     "play_in_editor_required": true
   },
+  "ue5_automation": {
+    "unreal_version": "5.8",
+    "uproject": "engine/LightWarrior.uproject",
+    "native_mcp_enabled": true,
+    "mcp_auto_start": false,
+    "mcp_start_script": "tools/start-unreal-mcp.ps1",
+    "mcp_check_script": "tools/check-unreal-mcp.ps1",
+    "mcp_url": "http://127.0.0.1:8000/mcp",
+    "mcp_config_path": ".mcp.json",
+    "codex_config_path": ".codex/config.toml",
+    "companion_plugin": "",
+    "fresh_session_confirmed": true,
+    "last_readiness_check": "2026-06-25"
+  },
   "media_engines": {
     "image_engine": {
       "path": "D:\\TE-Code\\image-engine",

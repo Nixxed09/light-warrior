@@ -16,6 +16,11 @@
     "assets:generate": "powershell -ExecutionPolicy Bypass -File tools/generate-openai-image-assets.ps1",
     "assets:dry-run": "powershell -ExecutionPolicy Bypass -File tools/generate-openai-image-assets.ps1 -DryRun",
     "assets:validate-routing": "powershell -ExecutionPolicy Bypass -File tools/validate-asset-routing.ps1",
+    "audio:generate": "powershell -ExecutionPolicy Bypass -File tools/generate-audio-assets.ps1",
+    "audio:generate:engine": "powershell -ExecutionPolicy Bypass -File tools/generate-audio-assets.ps1 -UseAudioEngine -Force",
+    "audio:dry-run": "powershell -ExecutionPolicy Bypass -File tools/generate-audio-assets.ps1 -DryRun",
+    "audio:import:ue": "powershell -ExecutionPolicy Bypass -File tools/ue-import-audio.ps1",
+    "audio:import:ue:fresh": "powershell -ExecutionPolicy Bypass -File tools/ue-import-audio.ps1 -GenerateFirst",
     "capture:smoke": "node tools/capture-smoke.mjs"
   },
   "keywords": [],

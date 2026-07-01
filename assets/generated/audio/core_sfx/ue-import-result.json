@@ -1,0 +1,57 @@
+{
+  "asset_id": "audio.core_sfx",
+  "status": "imported",
+  "target": "/Game/LightWarrior/Audio/CoreSfx",
+  "imported": [
+    {
+      "id": "dash_shimmer",
+      "event": "Dash",
+      "source": "assets/generated/audio/core_sfx/dash_shimmer.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/dash_shimmer.dash_shimmer"
+      ]
+    },
+    {
+      "id": "light_strike",
+      "event": "LightStrike",
+      "source": "assets/generated/audio/core_sfx/light_strike.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/light_strike.light_strike"
+      ]
+    },
+    {
+      "id": "shadow_dissolve",
+      "event": "ShadowDissolve",
+      "source": "assets/generated/audio/core_sfx/shadow_dissolve.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/shadow_dissolve.shadow_dissolve"
+      ]
+    },
+    {
+      "id": "circle_expansion",
+      "event": "CircleExpand",
+      "source": "assets/generated/audio/core_sfx/circle_expansion.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/circle_expansion.circle_expansion"
+      ]
+    },
+    {
+      "id": "temple_activation",
+      "event": "TempleActivate",
+      "source": "assets/generated/audio/core_sfx/temple_activation.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/temple_activation.temple_activation"
+      ]
+    },
+    {
+      "id": "hammer_slam",
+      "event": "HammerSlam",
+      "source": "assets/generated/audio/core_sfx/hammer_slam.wav",
+      "ue_assets": [
+        "/Game/LightWarrior/Audio/CoreSfx/hammer_slam.hammer_slam"
+      ]
+    }
+  ],
+  "errors": [],
+  "note": "C++ runtime maps ELightWarriorSfx events to these imported assets and falls back to procedural tones if an asset is missing."
+}

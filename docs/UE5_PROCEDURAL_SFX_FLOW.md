@@ -15,16 +15,16 @@ audio-engine generation -> asset package metadata -> UE5 import/wiring -> UE loo
 Implemented now:
 
 - UE5 procedural SFX helper: `ULightWarriorAudio`
+- Runtime lookup for imported production `USoundBase` assets under `/Game/LightWarrior/Audio/CoreSfx`
 - Runtime generated tones through `USoundWaveProcedural`
 - Gameplay event wiring for dash, light strike, shadow dissolve, circle expansion, Light Well completion, Thunder Hammer activation, and hammer slam
 - UE loop evidence showing the game runs with the SFX layer active
 
 Not implemented yet:
 
-- Generated `audio-engine` WAV/OGG assets
-- `assets/generated/audio/core_sfx/` production package
-- UE5 imported production sound assets
-- Data-driven replacement of procedural tones with imported `USoundBase` assets
+- UE5 capture evidence proving imported production sound assets in context
+
+Generated package support now exists through `tools/generate-audio-assets.ps1`; see `docs/AUDIO_ENGINE_GAME_AUDIO_FLOW.md`.
 
 ## Files
 
@@ -102,6 +102,12 @@ When `audio-engine` is ready, create:
 
 ```text
 assets/generated/audio/core_sfx/
+  dash_shimmer.wav
+  light_strike.wav
+  shadow_dissolve.wav
+  circle_expansion.wav
+  temple_activation.wav
+  hammer_slam.wav
   request.json
   prompt-package.json
   audio_metadata.json
@@ -110,7 +116,15 @@ assets/generated/audio/core_sfx/
   playable-evidence.json
 ```
 
-Then replace procedural tones by mapping the same event names to imported UE5 sound assets. Keep procedural tones as fallbacks until the production package has capture evidence.
+Generate it with:
+
+```powershell
+npm run audio:generate
+npm run audio:generate:engine
+npm run audio:import:ue
+```
+
+`ULightWarriorAudio` maps the same event names to imported UE5 sound assets. Procedural tones remain fallbacks until the production package has capture evidence.
 
 ## Acceptance
 
